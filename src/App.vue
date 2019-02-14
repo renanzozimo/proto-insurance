@@ -1,273 +1,176 @@
 <template>
-  <div id="app">
-    <div class="s1-prop__auto-gen">
-      <md-button class="md-primary md-icon-button squared" @click="setMockData('User')">
-        <md-icon>person</md-icon>
-      </md-button>
-    </div>
-    <section class="s1-U__width--900px s1-U__pd32" style="margin: 0 auto;">
-      <h1 class="md-display-1 s1-U__mg--bt32">Usuários</h1>
-      <div class="s1-U__text-align--center s1-U__pd32" v-if="User.Data.length === 0">
-        <p class="md-body-2 s1-U__mg--bt16 s1-U__text-color--dark-2">Nenhum usuário cadastrado</p>
-        <md-button class="md-raised md-primary" @click="create('User', 'User-Name')">
-          <div class="s1-U__align-children--center s1-U__pd--rt8 s1-U__pd--lt4">
-            <md-icon class="s1-U__mg--rt4">add</md-icon>
-            <span>usuário</span>
-          </div>
+  <div id="app" class="s1-U__flex-column" style="height: 100vh">
+    <div
+      class="s1-U__flex-shrink-0 s1-U__pd--tp8 s1-U__pd--bt8 s1-U__border--bottom1 s1-U__bg-color--white s1-U__align-children--center"
+    >
+      <md-divider class="s1-U__mg--bt32 s1-U__flex-shrink-0" style="width: 10vw"></md-divider>
+      <div
+        class="s1-U__text-align--center s1-U__pd--bt32 s1-U__flex-shrink-0"
+        style="position: relative"
+      >
+        <md-button class="md-icon-button s1-md-bordered md-primary s1-loc__step-button">
+          <md-icon>category</md-icon>
         </md-button>
-      </div>
-      <div v-else>
-        <div
-          class="s1-U__align-children--center s1-U__mg--bt16 s1-U__justify-content--space-between"
-        >
-          <md-button class="s1-md-bordered s1-U__mg--bt16">
-            <div class="s1-U__align-children--center">
-              <md-icon>filter_list</md-icon>
-              <span>filtros</span>
-            </div>
-          </md-button>
-          <md-button
-            class="md-raised md-primary s1-U__mg--bt16"
-            @click="create('User', 'User-Name')"
-          >
-            <div class="s1-U__align-children--center">
-              <md-icon>add</md-icon>
-              <span>usuário</span>
-            </div>
-          </md-button>
+        <div style="position: absolute; bottom: 2px; transform: translateX(-50%); left: 50%">
+          <span class="md-body-2 s1-U__text-color--primary">Composição</span>
         </div>
-        <div class="md-layout md-gutter">
-          <div
-            class="md-layout-item md-size-50 s1-U__mg--bt20"
-            v-for="user in User.Data"
-            :key="user.Id"
-          >
-            <md-card>
-              <div class="s1-U__pd16">
-                <h2 class="md-title">{{user.Name}}</h2>
-                <p class="md-caption">{{getNameById(Profiles, user.Profile)}}</p>
+      </div>
+      <md-divider class="s1-U__full-width s1-U__mg--bt32"></md-divider>
+      <div
+        class="s1-U__text-align--center s1-U__pd--bt32 s1-U__flex-shrink-0"
+        style="position: relative"
+      >
+        <md-button class="md-icon-button s1-md-bordered s1-loc__step-button">
+          <md-icon>attach_money</md-icon>
+        </md-button>
+        <div style="position: absolute; bottom: 2px; transform: translateX(-50%); left: 50%">
+          <span class="md-body-2 s1-U__text-color--dark-2">Preço</span>
+        </div>
+      </div>
+      <md-divider class="s1-U__full-width s1-U__mg--bt32"></md-divider>
+      <div
+        class="s1-U__text-align--center s1-U__pd--bt32 s1-U__flex-shrink-0"
+        style="position: relative"
+      >
+        <md-button class="md-icon-button s1-md-bordered s1-loc__step-button">
+          <md-icon>list</md-icon>
+        </md-button>
+        <div style="position: absolute; bottom: 2px; transform: translateX(-50%); left: 50%">
+          <span class="md-body-2 s1-U__text-color--dark-2">Resumo</span>
+        </div>
+      </div>
+      <md-divider class="s1-U__full-width s1-U__mg--bt32"></md-divider>
+      <div
+        class="s1-U__text-align--center s1-U__pd--bt32 s1-U__flex-shrink-0"
+        style="position: relative"
+      >
+        <md-button class="md-icon-button s1-md-bordered s1-loc__step-button">
+          <md-icon>check_circle</md-icon>
+        </md-button>
+        <div style="position: absolute; bottom: 2px; transform: translateX(-50%); left: 50%">
+          <span class="md-body-2 s1-U__text-color--dark-2">Conclusão</span>
+        </div>
+      </div>
+      <md-divider class="s1-U__mg--bt32 s1-U__flex-shrink-0" style="width: 10vw"></md-divider>
+    </div>
+
+    <div class="s1-U__align-children--center s1-U__full-height">
+      <div class="s1-U__full-height s1-U__bg-color--body-bg s1-U__flex-column" style="width: 70%">
+        <div class="s1-U__flex-shrink-0 s1-U__pd16 s1-U__border--bottom1">
+          <div class="s1-U__align-children--center s1-U__justify-content--space-between">
+            <div class="s1-U__align-children--center">
+              <md-button class="s1-md-bordered">
+                <div class="s1-U__align-children--center">
+                  <md-icon>filter_list</md-icon>
+                  <span>Filtros</span>
+                </div>
+              </md-button>
+              <div class="s1-U__vertical-divider s1-U__mg--lt16 s1-U__mg--rt16"></div>
+              <div class="s1-U__align-children--center">
+                <md-icon>sort_by_alpha</md-icon>
+                <p class="md-body-2 s1-U__mg--lt4 s1-U__mg--rt8">Ordenar por:</p>
+                <div class="s1-loc__md-field-wrapper s1-U__width--180px">
+                  <md-field
+                    :class="{'md-invalid' : $v.User.Form.Profile.$dirty && $v.User.Form.Profile.$invalid}"
+                    class="s1-U__mg0"
+                  >
+                    <label for="User-Profile">Perfil</label>
+                    <md-select
+                      id="User-Profile"
+                      name="User-Profile"
+                      v-model="User.Form.Profile"
+                      @blur="$v.User.Form.Profile.$touch()"
+                      @focus="$v.User.Form.Profile.$reset()"
+                      required
+                    >
+                      <md-option
+                        v-for="profile in Profiles"
+                        :key="'profile' + profile.Id"
+                        :value="profile.Id"
+                      >{{profile.Name}}</md-option>
+                    </md-select>
+                    <span class="md-error" v-if="!$v.User.Form.Profile.required">Campo obrigatório</span>
+                  </md-field>
+                </div>
               </div>
-              <div class="s1-U__text-align--right s1-U__pd16 s1-U__pd--tp0">
-                <md-button
-                  class="md-icon-button"
-                  @click="remove('User', user.Id, 'Name', 'usuário')"
+            </div>
+            <div class="s1-U__text-align--right">
+              <div class="s1-loc__md-field-wrapper s1-U__width--180px">
+                <md-field
+                  class="s1-U__mg0"
+                  :class="{'md-invalid md-field-helper-text': $v.User.Form.Name.$dirty && $v.User.Form.Name.$invalid}"
                 >
-                  <md-icon>delete</md-icon>
-                </md-button>
-                <md-button class="md-icon-button" @click="setEditingIndex('User', user.Id)">
-                  <md-icon>edit</md-icon>
-                </md-button>
+                  <label for="User-Name">Nome</label>
+                  <md-input
+                    id="User-Name"
+                    name="User-Name"
+                    type="text"
+                    @blur="$v.User.Form.Name.$touch()"
+                    @focus="$v.User.Form.Name.$reset()"
+                    v-model="User.Form.Name"
+                    required
+                  ></md-input>
+                  <span class="md-error" v-if="!$v.User.Form.Name.required">Campo obrigatório</span>
+                  <span class="md-error" v-if="!$v.User.Form.Name.minLength">Mínimo de 4 caracteres</span>
+                </md-field>
               </div>
-            </md-card>
+            </div>
           </div>
+        </div>
+        <div class="s1-U__align-children--center s1-U__full-height">
+          <md-content
+            class="md-scrollbar s1-U__pd0 s1-U__pd16 s1-U__full-height s1-U__bg-color--body-bg"
+            style="overflow: auto"
+          >
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+          </md-content>
+          <md-content
+            class="md-scrollbar s1-U__pd0 s1-U__pd16 s1-U__full-height s1-U__bg-color--body-bg"
+            style="overflow: auto"
+          >
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+          </md-content>
         </div>
       </div>
-
-      <md-dialog
-        class="s1-U__width--400px"
-        :md-close-on-esc="false"
-        :md-click-outside-to-close="false"
-        :md-active.sync="User.CreationInterface"
-        :class="User.DiscardCreationInterface && 's1-U__invisible'"
-      >
+      <div class="s1-U__full-height s1-U__flex-column" style="width: 30%">
         <div
-          class="md-layout md-alignment-center-center s1-loc__loading"
-          :class="User.Loading && 'active'"
+          class="s1-U__pd--tp8 s1-U__pd--bt8 s1-U__pd--lt16 s1-U__pd--rt16 s1-U__border-solid--1"
+          style="border-width: 0 0 1px 1px"
         >
-          <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+          <h3 class="md-title">Resumo</h3>
         </div>
-        <div
-          class="s1-U__border--bottom1 s1-U__pd16 s1-U__flex-shrink-0 s1-U__align-children--center s1-U__justify-content--space-between"
+        <md-content
+          class="md-scrollbar s1-U__pd0 s1-U__pd16 s1-U__full-height s1-U__bg-color--body-bg s1-U__border-solid--1"
+          style="overflow: auto; border-width: 0 0 0 1px"
         >
-          <div class="md-title">Novo usuário</div>
-          <md-button class="md-icon-button" @click="User.DiscardCreationInterface = true">
-            <md-icon>close</md-icon>
-          </md-button>
-        </div>
-        <md-content class="md-scrollbar s1-U__pd0 s1-U__pd16" style="overflow: auto">
-          <div class="s1-loc__md-field-wrapper s1-U__width--180px">
-            <md-field
-              :class="{'md-invalid md-field-helper-text': $v.User.Form.Name.$dirty && $v.User.Form.Name.$invalid}"
-            >
-              <label for="User-Name">Nome</label>
-              <md-input
-                id="User-Name"
-                name="User-Name"
-                type="text"
-                @blur="$v.User.Form.Name.$touch()"
-                @focus="$v.User.Form.Name.$reset()"
-                v-model="User.Form.Name"
-                required
-              ></md-input>
-              <span class="md-error" v-if="!$v.User.Form.Name.required">Campo obrigatório</span>
-              <span class="md-error" v-if="!$v.User.Form.Name.minLength">Mínimo de 4 caracteres</span>
-            </md-field>
-          </div>
-          <div class="s1-loc__md-field-wrapper s1-U__width--180px">
-            <md-field
-              :class="{'md-invalid' : $v.User.Form.Profile.$dirty && $v.User.Form.Profile.$invalid}"
-            >
-              <label for="User-Profile">Perfil</label>
-              <md-select
-                id="User-Profile"
-                name="User-Profile"
-                v-model="User.Form.Profile"
-                @blur="$v.User.Form.Profile.$touch()"
-                @focus="$v.User.Form.Profile.$reset()"
-                required
-              >
-                <md-option
-                  v-for="profile in Profiles"
-                  :key="'profile' + profile.Id"
-                  :value="profile.Id"
-                >{{profile.Name}}</md-option>
-              </md-select>
-              <span class="md-error" v-if="!$v.User.Form.Profile.required">Campo obrigatório</span>
-            </md-field>
-          </div>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae incidunt nemo cumque non laudantium deserunt nulla? Doloremque dolorum sed obcaecati, nihil, quis dolor animi id voluptate tempora voluptas cum porro at officia distinctio. Alias, ipsa pariatur nihil et repellendus doloremque rerum necessitatibus dolor ipsam facilis. Omnis enim assumenda quos illum dignissimos ut molestias ab, sed pariatur totam aut natus quas placeat similique rem explicabo cumque quod aliquid ipsa quae sequi dolorem, error ullam animi. Similique ratione tempore corrupti velit, itaque expedita facere, aut voluptatem alias facilis sapiente, libero suscipit rem harum placeat. Dicta quibusdam provident nihil assumenda consequuntur placeat delectus?</p>
         </md-content>
-        <md-dialog-actions class="s1-U__pd16 s1-U__border--top1 s1-U__flex-shrink-0">
-          <md-button
-            class="md-primary md-raised"
-            :disabled="$v.User.Form.$invalid"
-            @click="saveCreated('User')"
-          >
-            <span class="s1-U__pd--lt8 s1-U__pd--rt8">Cadastrar</span>
-          </md-button>
-        </md-dialog-actions>
-      </md-dialog>
-
-      <md-dialog
-        class="s1-U__width--400px"
-        :md-close-on-esc="false"
-        :md-click-outside-to-close="false"
-        :md-active.sync="User.EditionInterface"
-        :class="User.DiscardEditionInterface && 's1-U__invisible'"
-        v-if="User.Data.length > 0"
-      >
-        <div
-          class="md-layout md-alignment-center-center s1-loc__loading"
-          :class="User.Loading && 'active'"
-        >
-          <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
-        </div>
-        <div
-          class="s1-U__border--bottom1 s1-U__pd16 s1-U__flex-shrink-0 s1-U__align-children--center s1-U__justify-content--space-between"
-        >
-          <div class="md-title">{{User.Data[User.EditingIndex].Name}}</div>
-          <md-button class="md-icon-button" @click="User.DiscardEditionInterface = true">
-            <md-icon>close</md-icon>
-          </md-button>
-        </div>
-        <md-content class="md-scrollbar s1-U__pd0 s1-U__pd16" style="overflow: auto">
-          <div class="s1-loc__md-field-wrapper s1-U__width--180px">
-            <md-field
-              :class="{'md-invalid md-field-helper-text': $v.User.Form.Name.$dirty && $v.User.Form.Name.$invalid}"
-            >
-              <label for="Edit-User-Name">Nome</label>
-              <md-input
-                id="Edit-User-Name"
-                name="Edit-User-Name"
-                type="text"
-                @blur="$v.User.Form.Name.$touch()"
-                @focus="$v.User.Form.Name.$reset()"
-                v-model="User.Form.Name"
-                required
-              ></md-input>
-              <span class="md-error" v-if="!$v.User.Form.Name.required">Campo obrigatório</span>
-              <span class="md-error" v-if="!$v.User.Form.Name.minLength">Mínimo de 4 caracteres</span>
-            </md-field>
-          </div>
-          <div class="s1-loc__md-field-wrapper s1-U__width--180px">
-            <md-field
-              :class="{'md-invalid' : $v.User.Form.Profile.$dirty && $v.User.Form.Profile.$invalid}"
-            >
-              <label for="Edit-User-Profile">Perfil</label>
-              <md-select
-                id="Edit-User-Profile"
-                name="Edit-User-Profile"
-                v-model="User.Form.Profile"
-                @blur="$v.User.Form.Profile.$touch()"
-                @focus="$v.User.Form.Profile.$reset()"
-                required
-              >
-                <md-option
-                  v-for="profile in Profiles"
-                  :key="'profile' + profile.Id"
-                  :value="profile.Id"
-                >{{profile.Name}}</md-option>
-              </md-select>
-              <span class="md-error" v-if="!$v.User.Form.Profile.required">Campo obrigatório</span>
-            </md-field>
-          </div>
-        </md-content>
-        <md-dialog-actions class="s1-U__pd16 s1-U__border--top1 s1-U__flex-shrink-0">
-          <md-button
-            class="md-primary md-raised"
-            :disabled="$v.User.Form.$invalid"
-            @click="saveEdited('User')"
-          >
-            <span class="s1-U__pd--lt8 s1-U__pd--rt8">Cadastrar</span>
-          </md-button>
-        </md-dialog-actions>
-      </md-dialog>
-
-      <md-dialog-confirm
-        :md-backdrop="false"
-        :md-active.sync="User.DiscardCreationInterface"
-        md-title="Descartar cadastro?"
-        md-content="Ao sair, as informações do usuário em cadastro serão descartadas"
-        md-confirm-text="descartar"
-        md-cancel-text="voltar"
-        @md-cancel="User.DiscardCreationInterface = false"
-        @md-confirm="discardCreation('User')"
-      />
-
-      <md-dialog-confirm
-        :md-backdrop="false"
-        :md-active.sync="User.DiscardEditionInterface"
-        md-title="Descartar edição?"
-        md-content="Ao sair, as informações do usuário em edição serão descartadas"
-        md-confirm-text="descartar"
-        md-cancel-text="voltar"
-        @md-cancel="User.DiscardEditionInterface = false"
-        @md-confirm="discardEdit('User')"
-      />
-
-      <md-dialog-confirm
-        :md-active.sync="User.DeleteConfirmation"
-        :md-title="User.DeleteInfo.Title"
-        :md-content="User.DeleteInfo.Content"
-        md-confirm-text="excluir"
-        md-cancel-text="voltar"
-        @md-cancel="User.DeleteConfirmation = false"
-        @md-confirm="removeItem('User', User.DeleteInfo.Id)"
-      />
-      <md-snackbar
-        :md-duration="Settings.snackbarDuration"
-        :md-active.sync="User.SuccessFeedbackCreation"
-        md-persistent
-      >
-        <span>Usuário criado com sucesso</span>
-        <md-button class="md-accent" @click="User.SuccessFeedbackCreation = false">OK</md-button>
-      </md-snackbar>
-      <md-snackbar
-        :md-duration="Settings.snackbarDuration"
-        :md-active.sync="User.SuccessFeedbackEdition"
-        md-persistent
-      >
-        <span>Usuário editado com sucesso</span>
-        <md-button class="md-accent" @click="User.SuccessFeedbackEdition = false">OK</md-button>
-      </md-snackbar>
-      <md-snackbar
-        :md-duration="Settings.snackbarDuration"
-        :md-active.sync="User.SuccessFeedbackDeletion"
-        md-persistent
-      >
-        <span>Usuário deletado com sucesso</span>
-        <md-button class="md-accent" @click="User.SuccessFeedbackDeletion = false">OK</md-button>
-      </md-snackbar>
-    </section>
+      </div>
+    </div>
   </div>
 </template>
 
