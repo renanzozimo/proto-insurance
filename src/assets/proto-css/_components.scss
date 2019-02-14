@@ -1,1 +1,8 @@
 //ALL SPECIFIC COMPONENTS
+.s1-loc__step-button {
+  width: 48px;
+  height: 48px;
+  &::after {
+    border-width: 2px !important;
+  }
+}
