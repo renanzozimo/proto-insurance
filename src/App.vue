@@ -40,7 +40,13 @@
       </section>
       <section class="s1-U__mg--bt32">
         <h2 class="s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16">Composição</h2>
-        <div class="s1-U__pd--lt16"></div>
+        <div class="s1-U__pd--lt16 s1-U__pd--rt16">
+          <div class="md-layout md-gutter">
+            <md-card>
+              <div></div>
+            </md-card>
+          </div>
+        </div>
       </section>
     </div>
   </div>
