@@ -1,8 +1,19 @@
 //ALL SPECIFIC COMPONENTS
-.s1-loc__step-button {
+.s1-loc-comp__step-button {
   width: 48px;
   height: 48px;
   &::after {
     border-width: 2px !important;
   }
+}
+
+.s1-loc-comp__services-dialog {
+  left: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 75%;
+  max-height: 100%;
+  transform: none;
+  border-radius: 0;
 }

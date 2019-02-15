@@ -1,5 +1,90 @@
 <template>
   <div id="app">
+    <div class="s1-U__width--900px s1-U__pd16" style="margin: 0 auto;">
+      <h1 class="md-display-1 s1-U__text-color--primary s1-U__mg--bt32">Pacotes</h1>
+      <div class="s1-U__text-align--center" v-if="Package.Data.length === 0">
+        <p class="md-body-2 s1-U__text-color--dark-2 s1-U__mg--bt4">Nenhum pacote criado</p>
+        <md-button class="md-primary md-raised">
+          <div class="s1-U__align-children--center s1-U__pd--rt8 s1-U__pd--lt4">
+            <md-icon class="s1-U__mg--rt4">add</md-icon>
+            <span>Criar Pacote</span>
+          </div>
+        </md-button>
+      </div>
+      <div class="s1-U__pd--lt20 s1-U__pd--rt20" v-else>
+        <div class="md-layout md-gutter">
+          <div class="md-layout md-gutter">
+            <div
+              class="md-layout-item md-xsmall-size-100 md-medium-size-50 md-size-33 s1-U__mg--bt20"
+              v-for="pack in Package.Data"
+              :key="'Package-' + pack.Id"
+            >
+              <md-card>
+                <div class="s1-U__pd--lt16 s1-U__pd--rt16 s1-U__pd--tp16">
+                  <h2 class="md-title s1-U__text-color--primary">{{pack.Name}}</h2>
+                </div>
+                <div class="s1-U__pd--lt16 s1-U__pd--rt16 s1-U__pd--bt16 s1-U__pd--tp8">
+                  <ul
+                    class="s1-U__mg0 s1-U__pd0 s1-U__pd--lt16 s1-U__text-color--dark-2"
+                    :style="`min-height: ${Package.moreQty * 20}px`"
+                  >
+                    <li
+                      v-for="service in getXItems(pack.Services, Package.moreQty).items"
+                      :key="'Service-'+ service+'-Package-'+pack.Id"
+                    >
+                      <span>{{getNameById(Services, service)}}</span>
+                    </li>
+                    <li v-if="getXItems(pack.Services, Package.moreQty).rest.length > 0">
+                      <span>
+                        <span>+ {{getXItems(pack.Services, Package.moreQty).rest.length}}</span>
+                        <md-tooltip md-direction="right">
+                          <span
+                            v-for="(rest, index) in getXItems(pack.Services, Package.moreQty).rest"
+                            :key="rest"
+                          >{{getNameById(Services, rest)}} {{ index === (getXItems(pack.Services, Package.moreQty).rest.length - 1) ? '' : ', ' }}</span>
+                        </md-tooltip>
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+                <p class="s1-U__text-align--right s1-U__pd--rt16">
+                  <span class="md-caption s1-U__text-color--dark-3">
+                    <b>{{formatMoney(pack.ServicesCost)}}</b>
+                    <md-tooltip md-direction="left">Custo fornecedor</md-tooltip>
+                  </span>
+                </p>
+                <div
+                  class="s1-U__align-children--center s1-U__pd--lt16 s1-U__pd--rt16 s1-U__pd--bt16"
+                >
+                  <div class="s1-U__full-width">
+                    <md-button class="md-icon-button md-dense s1-md-bordered squared s1-U__mg--rt4">
+                      <md-icon>launch</md-icon>
+                      <md-tooltip md-direction="right">Gerar release</md-tooltip>
+                    </md-button>
+                    <md-button class="md-icon-button md-dense s1-md-bordered squared s1-U__mg--rt4">
+                      <md-icon>list</md-icon>
+                      <md-tooltip md-direction="right">Ver detalhes</md-tooltip>
+                    </md-button>
+                    <md-button class="md-icon-button md-dense s1-md-bordered squared">
+                      <md-icon>edit</md-icon>
+                      <md-tooltip md-direction="right">Editar</md-tooltip>
+                    </md-button>
+                  </div>
+                  <p
+                    class="md-title s1-U__text-color--accent s1-U__text-align--right s1-U__full-width"
+                  >
+                    <span>
+                      {{formatMoney(pack.TotalCost)}}
+                      <md-tooltip md-direction="left">Custo repassado</md-tooltip>
+                    </span>
+                  </p>
+                </div>
+              </md-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- REGISTER -->
     <div class="s1-U__width--900px s1-U__pd16" style="margin: 0 auto;">
       <h1 class="md-display-1 s1-U__text-color--primary s1-U__mg--bt32">Cadastro de pacote</h1>
@@ -8,26 +93,26 @@
         <div class="s1-U__pd--lt16">
           <div class="s1-loc__md-field-wrapper s1-U__width--240px">
             <md-field
-              :class="{'md-invalid md-field-helper-text': $v.User.Form.Name.$dirty && $v.User.Form.Name.$invalid}"
+              :class="{'md-invalid md-field-helper-text': $v.Package.Form.Name.$dirty && $v.Package.Form.Name.$invalid}"
             >
-              <label for="User-Name">Nome</label>
+              <label for="Package-Name">Nome</label>
               <md-input
-                id="User-Name"
-                name="User-Name"
+                id="Package-Name"
+                name="Package-Name"
                 type="text"
-                @blur="$v.User.Form.Name.$touch()"
-                @focus="$v.User.Form.Name.$reset()"
-                v-model="User.Form.Name"
+                @blur="$v.Package.Form.Name.$touch()"
+                @focus="$v.Package.Form.Name.$reset()"
+                v-model="Package.Form.Name"
                 required
               ></md-input>
-              <span class="md-error" v-if="!$v.User.Form.Name.required">Campo obrigatório</span>
-              <span class="md-error" v-if="!$v.User.Form.Name.minLength">Mínimo de 4 caracteres</span>
+              <span class="md-error" v-if="!$v.Package.Form.Name.required">Campo obrigatório</span>
+              <span class="md-error" v-if="!$v.Package.Form.Name.minLength">Mínimo de 4 caracteres</span>
             </md-field>
           </div>
           <div class="s1-loc__md-field-wrapper s1-U__width--180px">
             <md-field>
-              <label for="User-Company">Empresa</label>
-              <md-select id="User-Company" name="User-Company" v-model="User.Form.Company">
+              <label for="Package-Company">Empresa</label>
+              <md-select id="Package-Company" name="Package-Company" v-model="Package.Form.Company">
                 <md-option
                   v-for="company in Companies"
                   :key="'company' + company.Id"
@@ -39,15 +124,46 @@
         </div>
       </section>
       <section class="s1-U__mg--bt32">
-        <h2 class="s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16">Composição</h2>
+        <h2 class="s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16">Serviços</h2>
         <div class="s1-U__pd--lt16 s1-U__pd--rt16">
-          <div class="md-layout md-gutter">
+          <div v-if="Package.Form.Services.length === 0">
+            <p class="md-body-2 s1-U__text-color--dark-2 s1-U__mg--bt4">Nenhum serviço adicionado</p>
+            <md-button class="md-primary md-raised">
+              <div class="s1-U__align-children--center s1-U__pd--rt8 s1-U__pd--lt4">
+                <md-icon class="s1-U__mg--rt4">add</md-icon>
+                <span>Serviço</span>
+              </div>
+            </md-button>
+          </div>
+          <div class="md-layout md-gutter" v-else>
             <md-card>
               <div></div>
             </md-card>
           </div>
         </div>
       </section>
+      <md-dialog
+        class="s1-loc-comp__services-dialog"
+        :md-close-on-esc="false"
+        :md-click-outside-to-close="false"
+        :md-active.sync="Package.ServicesDialog"
+      >
+        <div class="s1-U__pd16 s1-U__border--bottom1">
+          <h2 class="md-title">Serviços</h2>
+        </div>
+        <div class="s1-U__full-height s1-U__align-children--center">
+          <md-content
+            class="md-scrollbar s1-U__full-height s1-U__full-width s1-U__pd0 s1-U__pd16"
+            style="overflow: auto"
+          ></md-content>
+          <md-content
+            class="md-scrollbar s1-U__full-height s1-U__full-width s1-U__pd0 s1-U__pd16"
+            style="overflow: auto"
+          >
+            <p>{{LongText}}</p>
+          </md-content>
+        </div>
+      </md-dialog>
     </div>
   </div>
 </template>
@@ -55,9 +171,15 @@
 <script>
 import { required, minLength } from "vuelidate/lib/validators";
 
-import Users from "./data/Users.js";
-import Companies from "./data/Companies.js";
+import LongText from "./data/LongText.js";
 
+import Packages from "./data/Packages.js";
+import Companies from "./data/Companies.js";
+import Services from "./data/Services.js";
+import Suppliers from "./data/Suppliers.js";
+import ServiceTypes from "./data/ServiceTypes.js";
+
+import formatMoney from "./assets/utils/formatMoney.js";
 import getListByProp from "./assets/utils/getListByProp.js";
 import getNameById from "./assets/utils/getNameById.js";
 import getObjByProp from "./assets/utils/getObjByProp.js";
@@ -69,21 +191,28 @@ export default {
   name: "App",
   data: () => ({
     Companies,
-    User: {
+    Services,
+    Suppliers,
+    ServiceTypes,
+    LongText,
+    Package: {
+      moreQty: 3,
       Form: {
         Id: null,
         Name: null,
-        Company: null,
-        Abbr: null
+        Services: [],
+        FinalValue: null,
+        TotalCost: null
       },
       DefaultForm: {
         Id: null,
         Name: null,
-        Company: null,
-        Abbr: null
+        Services: [],
+        FinalValue: null,
+        TotalCost: null
       },
-      Data: [],
-      MockData: Users,
+      Data: Packages,
+      MockData: Packages,
       Loading: false,
       EditingIndex: 0,
       EditionInterface: false,
@@ -98,7 +227,8 @@ export default {
         Id: null,
         Title: null,
         Content: null
-      }
+      },
+      ServicesDialog: true
     },
     Settings: {
       snackbarDuration: 3000
@@ -110,6 +240,24 @@ export default {
     getObjByProp,
     getPropById,
     getPropByProp,
+    formatMoney,
+    getXItems(array, n) {
+      if (array.length <= n) {
+        return {
+          items: array,
+          rest: []
+        };
+      } else {
+        return {
+          items: array.filter((item, index) => {
+            if (index < n - 1) return item;
+          }),
+          rest: array.filter((item, index) => {
+            if (index >= n - 1) return item;
+          })
+        };
+      }
+    },
     setMockData(entityName) {
       this[entityName].Data = [
         ...this[entityName].Data,
@@ -223,7 +371,7 @@ export default {
     }
   },
   validations: {
-    User: {
+    Package: {
       Form: {
         Name: {
           required,
