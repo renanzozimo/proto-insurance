@@ -148,22 +148,118 @@
         :md-click-outside-to-close="false"
         :md-active.sync="Package.ServicesDialog"
       >
-        <div class="s1-U__pd16 s1-U__border--bottom1">
+        <!-- <md-card class="s1-loc-comp__services-summary">
+          <div class="s1-U__pd16 s1-U__border--bottom1">
+            <h1 class="s1-U__fw--300 s1-U__text-color--primary">Resumo</h1>
+          </div>
+          <div class="s1-U__pd16">
+            <div
+              class="s1-U__align-children--center s1-U__text-color--dark-2 s1-U__justify-content--space-between s1-U__mg--bt8"
+            >
+              <div>
+                <p>Capitalização 9,90</p>
+                <span class="md-caption">R$ 0,99</span>
+              </div>
+              <md-button class="md-dense md-icon-button">
+                <md-icon>close</md-icon>
+              </md-button>
+            </div>
+            <div
+              class="s1-U__align-children--center s1-U__text-color--dark-2 s1-U__justify-content--space-between s1-U__mg--bt8"
+            >
+              <div>
+                <p>Seguro de VIDA TOP</p>
+                <span class="md-caption">R$ 0,99</span>
+              </div>
+              <md-button class="md-dense md-icon-button">
+                <md-icon>close</md-icon>
+              </md-button>
+            </div>
+            <div
+              class="s1-U__align-children--center s1-U__text-color--dark-2 s1-U__justify-content--space-between s1-U__mg--bt8"
+            >
+              <div>
+                <p>Golpe</p>
+                <span class="md-caption">R$ 0,99</span>
+              </div>
+              <md-button class="md-dense md-icon-button">
+                <md-icon>close</md-icon>
+              </md-button>
+            </div>
+          </div>
+          <div class="s1-U__pd16 s1-U__bg-color--accent s1-U__text-align--right">
+            <span class="s1-U__text-color--white">R$ 2,89</span>
+          </div>
+        </md-card>-->
+        <div class="s1-U__pd16 s1-U__border--bottom1 s1-U__flex-shrink-0">
           <h2 class="md-title">Serviços</h2>
         </div>
-        <div class="s1-U__full-height s1-U__align-children--center">
-          <md-content
-            class="md-scrollbar s1-U__full-height s1-U__full-width s1-U__pd0 s1-U__pd16"
-            style="overflow: auto"
-          ></md-content>
-          <md-content
-            class="md-scrollbar s1-U__full-height s1-U__full-width s1-U__pd0 s1-U__pd16"
-            style="overflow: auto"
-          >
-            <p>{{LongText}}</p>
-          </md-content>
+        <div class="s1-U__pd16 s1-U__border--bottom1 s1-U__flex-shrink-0">
+          <h4>Colé</h4>
+        </div>
+        <div class="s1-U__align-children--top s1-U__bg-color--body-bg">
+          <div>
+            <p>{{Package.Form.Services}}</p>
+            <md-list>
+              <md-list-item v-for="type in ServiceTypes" :key="'type-' + type.Id + '-menu'">
+                <div>
+                  <p>{{type.Name}}</p>
+                  <p
+                    class="md-caption s1-U__mg--tp4"
+                  >{{getIncludedServicesByType(type.Id).length > 0 ? `x${getIncludedServicesByType(type.Id).length}` : 'Nenhum adicionado'}}</p>
+                </div>
+                <div
+                  :class="{'s1-U__invisible' : getIncludedServicesByType(type.Id).length === 0}"
+                  class="s1-U__pd--lt32 md-title s1-U__text-color--dark-2"
+                >{{formatMoney(getTotalValueByType(type.Id))}}</div>
+              </md-list-item>
+            </md-list>
+          </div>
+          <div class="s1-U__full-height s1-U__align-children--center s1-U__bg-color--body-bg">
+            <md-content
+              class="md-scrollbar s1-U__full-height s1-U__full-width s1-U__pd0 s1-U__pd16 s1-U__bg-color--body-bg"
+              style="overflow: auto;"
+            >
+              <md-card
+                class="s1-U__mg--bt16"
+                v-for="service in getServices(Package.ActiveCategory)"
+                :key="service.Id"
+              >
+                <div class="s1-U__pd16">
+                  <h3 class="md-title">{{service.Name}}</h3>
+                </div>
+                <div class="s1-U__pd--rt64 s1-U__pd--bt16 s1-U__pd--lt16">
+                  <p class="md-caption s1-U__text-color--dark-2">Custo fornecedor</p>
+                  <p>{{formatMoney(service.Cost)}}</p>
+                </div>
+                <div class="s1-U__pd--rt16 s1-U__pd--bt16 s1-U__pd--lt16">
+                  <p class="md-title">{{formatMoney(service.Value)}}</p>
+                </div>
+                <div class="s1-U__pd16 s1-U__text-align--right">
+                  <md-button
+                    class="s1-md-bordered md-primary"
+                    @click="Package.Form.Services = addNewItemAbove(Package.Form.Services, service.Id)"
+                    v-show="!hasIncluded(service.Id)"
+                  >adicionar</md-button>
+                  <md-button
+                    class="s1-md-bordered md-primary"
+                    @click="Package.Form.Services = removeItemFromArray(Package.Form.Services, service.Id)"
+                    v-show="hasIncluded(service.Id)"
+                  >remover</md-button>
+                </div>
+              </md-card>
+            </md-content>
+          </div>
         </div>
       </md-dialog>
+      <md-card class="s1-U__full-height s1-U__pd16">
+        <md-content
+          class="md-scrollbar s1-U__full-height s1-U__full-width s1-U__pd0 s1-U__pd16"
+          style="overflow: auto"
+        >
+          <p>{{LongText}}</p>
+        </md-content>
+      </md-card>
     </div>
   </div>
 </template>
@@ -228,7 +324,8 @@ export default {
         Title: null,
         Content: null
       },
-      ServicesDialog: true
+      ServicesDialog: true,
+      ActiveCategory: "0"
     },
     Settings: {
       snackbarDuration: 3000
@@ -313,6 +410,11 @@ export default {
     addNewItemBelow(array, item) {
       return [...array, item];
     },
+    removeItemFromArray(array, id) {
+      return array.filter(item => {
+        return item !== id;
+      });
+    },
     remove(entityName, id, prop, label) {
       let name = getPropById(this[entityName].Data, id, prop);
       this[entityName].DeleteConfirmation = true;
@@ -368,6 +470,22 @@ export default {
         self.$v[entityName].Form.$reset();
         self.$forceUpdate();
       }, 1200);
+    },
+    hasIncluded(id) {
+      return this.Package.Form.Services.includes(id);
+    },
+    getServices(type) {
+      return this.getListByProp(this.Services, type, "Type");
+    },
+    getIncludedServicesByType(type) {
+      debugger;
+      return this.getListByProp(this.Package.Form.Services, type, "Type");
+    },
+    getTotalValueByType(type) {
+      if (this.getIncludedServicesByType(type).length === 0) return 0;
+      this.getIncludedServicesByType(type).reduce((total, item) => {
+        return total + item.Value;
+      });
     }
   },
   validations: {
