@@ -8,14 +8,8 @@
 }
 
 .s1-loc-comp__services-dialog {
-  left: auto;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 60%;
-  max-height: 100%;
-  transform: none;
-  border-radius: 0;
+  width: 80%;
+  height: 80%;
   overflow: visible;
 }
 
@@ -25,4 +19,9 @@
   top: 76px;
   transform: translateX(-50%);
   width: 288px;
+}
+
+.s1-loc-comp__avtive-border-right {
+  background-color: #efefef;
+  border-right: 2px solid;
 }
