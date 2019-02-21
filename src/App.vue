@@ -256,7 +256,7 @@
                   <md-input
                     id="Package-TotalValue"
                     name="Package-TotalValue"
-                    type="text"
+                    type="number"
                     @blur="$v.Package.Form.TotalValue.$touch()"
                     @focus="$v.Package.Form.TotalValue.$reset()"
                     v-model="Package.Form.TotalValue"
