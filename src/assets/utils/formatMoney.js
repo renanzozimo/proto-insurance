@@ -1,4 +1,5 @@
 const formatMoney = value => {
+  value = parseFloat(value);
   value = value.toFixed(2);
   let v = value.toString().split(".");
 
