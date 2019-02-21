@@ -71,7 +71,7 @@
                     <b>{{formatMoney(pack.ServicesCost)}}</b>
                     <md-tooltip md-direction="left">Custo fornecedor</md-tooltip>
                   </span>
-                  <span class="s1-U__mg--lt4 s1-U__mg--rt4 s1-U__text-color--dark-2">/</span>
+                  <span class="s1-U__mg--lt8 s1-U__mg--rt8 s1-U__text-color--dark-3">|</span>
                   <span class="md-caption s1-U__text-color--dark-2">
                     {{formatMoney(pack.TotalCost)}}
                     <md-tooltip md-direction="left">Custo mínimo repassado</md-tooltip>
