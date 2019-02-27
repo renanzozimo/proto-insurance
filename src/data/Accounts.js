@@ -1,26 +1,26 @@
 export default [
   {
-    id: "5c3784c0b3264775f0d3acdd",
-    name: "Non non",
-    description: "Uma conta muito louca",
-    cultureIsoCode: "pt-BR",
-    countryIsoCode: "BR",
-    currencyIsoCodes: ["BRL", "USD"]
+    Id: "5c3784c0b3264775f0d3acdd",
+    Name: "Non non",
+    Description: "Uma conta muito louca",
+    CultureIsoCode: "pt-BR",
+    CountryIsoCode: "BR",
+    CurrencyIsoCodes: ["BRL", "USD"]
   },
   {
-    id: "as8udsihda8sdoahojklsda8sasddadasd",
-    name: "SURAMI",
-    description: "Outra conta",
-    cultureIsoCode: "en-US",
-    countryIsoCode: "BR",
-    currencyIsoCodes: ["USD"]
+    Id: "as8udsihda8sdoahojklsda8sasddadasd",
+    Name: "SURAMI",
+    Description: "Outra conta",
+    CultureIsoCode: "en-US",
+    CountryIsoCode: "BR",
+    CurrencyIsoCodes: ["USD"]
   },
   {
-    id: "asdauihda89hu123hu2jkhq8dasoda",
-    name: "NYPMV",
-    description: "Outra conta",
-    cultureIsoCode: "en-US",
-    countryIsoCode: "BR",
-    currencyIsoCodes: ["BRL", "USD", "COP"]
+    Id: "asdauihda89hu123hu2jkhq8dasoda",
+    Name: "NYPMV",
+    Description: "Outra conta",
+    CultureIsoCode: "en-US",
+    CountryIsoCode: "BR",
+    CurrencyIsoCodes: ["BRL", "USD", "COP"]
   }
 ];
