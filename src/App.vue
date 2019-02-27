@@ -231,7 +231,7 @@
               </div>
             </div>
             <h3
-              class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp4"
+              class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
             >Favorecidos</h3>
             <div class="s1-U__pd--lt16 s1-U__pd--rt16">
               <table style="border-spacing: 0">
@@ -305,6 +305,46 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <h3
+              class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
+            >Campos</h3>
+            <div class="service-fields s1-U__pd--lt16 s1-U__pd--rt16">
+              <h4 class="s1-U__text-color--dark-2 md-body-2">Titular</h4>
+              <div class="s1-chip-wrapper--left s1-U__mg--bt16">
+                <md-chip class="md-primary">Nome</md-chip>
+                <md-chip class="md-primary">Documento</md-chip>
+                <md-chip class="md-primary">Tipo de documento</md-chip>
+                <md-chip class="md-primary" md-deletable>Data de nascimento</md-chip>
+                <md-chip class="md-primary" md-deletable>Endereço 1</md-chip>
+                <md-chip class="md-primary" md-deletable>Endereço 2</md-chip>
+                <md-chip class="md-primary" md-deletable>Endereço 3</md-chip>
+                <md-chip class="md-primary" md-deletable>Telefone</md-chip>
+                <md-chip class="md-primary" md-deletable>E-mail</md-chip>
+                <md-chip class="md-primary" md-deletable>Facebook</md-chip>
+                <md-chip class="md-primary" md-deletable>Horário preferencial de contato</md-chip>
+                <md-button class="md-primary s1-md-bordered md-dense s1-U__mg--tp4">
+                  <div class="s1-U__align-children--center">
+                    <md-icon>add</md-icon>
+                    <span class="s1-U__mg--lt4 s1-U__mg--rt8">adicionar</span>
+                  </div>
+                </md-button>
+              </div>
+              <h4 class="s1-U__text-color--dark-2 md-body-2">Dependente</h4>
+              <div class="s1-chip-wrapper--left">
+                <md-chip class="md-primary">Nome</md-chip>
+                <md-chip class="md-primary">Documento</md-chip>
+                <md-chip class="md-primary">Tipo de documento</md-chip>
+                <md-chip class="md-primary" md-deletable>Data de nascimento</md-chip>
+                <md-chip class="md-primary" md-deletable>Telefone</md-chip>
+                <md-chip class="md-primary" md-deletable>E-mail</md-chip>
+                <md-button class="md-primary s1-md-bordered md-dense s1-U__mg--tp4">
+                  <div class="s1-U__align-children--center">
+                    <md-icon>add</md-icon>
+                    <span class="s1-U__mg--lt4 s1-U__mg--rt8">adicionar</span>
+                  </div>
+                </md-button>
+              </div>
             </div>
           </md-content>
           <md-dialog-actions class="s1-U__pd16 s1-U__border--top1 s1-U__flex-shrink-0">
@@ -1630,7 +1670,7 @@ export default {
     },
     Settings: {
       snackbarDuration: 3000,
-      activePage: "allServices"
+      activePage: "allPackages"
     }
   }),
   methods: {
