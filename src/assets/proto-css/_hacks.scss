@@ -2,3 +2,10 @@
   background-image: linear-gradient(#fff 50%, #e5e5e5 0) !important;
   color: #757575 !important;
 }
+
+.md-chip.md-theme-default .md-icon.md-icon-image svg {
+  color: rgba(0, 0, 0, 0.54);
+  color: var(--md-theme-default-text-primary-on-text-primary, rgba(0, 0, 0, 0.54));
+  fill: rgba(0, 0, 0, 0.54);
+  fill: var(--md-theme-default-text-primary-on-text-primary, rgba(0, 0, 0, 0.54));
+}

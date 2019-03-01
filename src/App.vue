@@ -4,18 +4,13 @@
     :class="{'s1-loc-comp__mezzanine-is-active' : Package.ShowServiceDetails && !Package.ServicesDialog}"
   >
     <div v-show="Settings.activePage === 'allServices'">
-      <section class="s1-U__width--900px s1-U__pd32" style="margin: 0 auto;">
-        <h1 class="md-display-1 s1-U__mg--bt32">Usuários</h1>
-        <div class="s1-U__text-align--center s1-U__pd32" v-if="Service.Data.length === 0">
-          <p class="md-body-2 s1-U__mg--bt16 s1-U__text-color--dark-2">Nenhum serviço cadastrado</p>
-          <md-button class="md-raised md-primary" @click="create('Service', 'Service-Name')">
-            <div class="s1-U__align-children--center s1-U__pd--rt8 s1-U__pd--lt4">
-              <md-icon class="s1-U__mg--rt4">add</md-icon>
-              <span>serviço</span>
-            </div>
-          </md-button>
-        </div>
-        <div v-else>
+      <section class="s1-U__width--900px s1-U__pd16" style="margin: 0 auto;">
+        <div v-show="Service.Data.length > 0 && !Service.CreationInterface">
+          <div class="s1-U__full-width s1-U__mg--bt32">
+            <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
+              <span>Serviços</span>
+            </h1>
+          </div>
           <div
             class="s1-U__align-children--center s1-U__mg--bt16 s1-U__justify-content--space-between"
           >
@@ -61,302 +56,368 @@
           </div>
         </div>
 
-        <md-dialog
-          :md-close-on-esc="false"
-          :md-click-outside-to-close="false"
-          :md-active.sync="Service.CreationInterface"
-          :class="Service.DiscardCreationInterface && 's1-U__invisible'"
-        >
+        <div v-show="Service.CreationInterface">
           <div
             class="md-layout md-alignment-center-center s1-loc__loading"
             :class="Service.Loading && 'active'"
           >
             <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
           </div>
-          <div
-            class="s1-U__border--bottom1 s1-U__pd16 s1-U__flex-shrink-0 s1-U__align-children--center s1-U__justify-content--space-between"
-          >
-            <div class="md-title">Novo serviço</div>
-            <md-button class="md-icon-button" @click="Service.DiscardCreationInterface = true">
-              <md-icon>close</md-icon>
-            </md-button>
-          </div>
-          <md-content class="md-scrollbar s1-U__pd0 s1-U__pd16" style="overflow: auto">
-            <div class="s1-loc__md-field-wrapper s1-U__width--210px">
-              <md-field
-                :md-counter="false"
-                :class="{'md-invalid md-field-helper-text': $v.Service.Form.Name.$dirty && $v.Service.Form.Name.$invalid}"
+          <div class="s1-U__mg--bt32">
+            <div class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
+              <md-button
+                class="md-dense md-icon-button s1-U__mg--rt16"
+                @click="Service.DiscardCreationInterface = true"
               >
-                <label for="Service-Name">Nome</label>
-                <md-input
-                  id="Service-Name"
-                  name="Service-Name"
-                  type="text"
-                  @blur="$v.Service.Form.Name.$touch()"
-                  @focus="$v.Service.Form.Name.$reset()"
-                  v-model="Service.Form.Name"
-                  maxlength="20"
-                  required
-                ></md-input>
-                <span class="md-error" v-if="!$v.Service.Form.Name.required">Obrigatório</span>
-              </md-field>
-            </div>
-            <div class="s1-loc__md-field-wrapper s1-U__width--210px">
-              <md-field
-                :md-counter="false"
-                :class="{'md-invalid md-field-helper-text': $v.Service.Form.FriendlyName.$dirty && $v.Service.Form.FriendlyName.$invalid}"
-              >
-                <label for="Service-FriendlyName">Nome camarada</label>
-                <md-input
-                  id="Service-FriendlyName"
-                  name="Service-FriendlyName"
-                  type="text"
-                  @blur="$v.Service.Form.FriendlyName.$touch()"
-                  @focus="$v.Service.Form.FriendlyName.$reset()"
-                  v-model="Service.Form.FriendlyName"
-                  maxlength="20"
-                  required
-                ></md-input>
-                <span class="md-error" v-if="!$v.Service.Form.FriendlyName.required">Obrigatório</span>
-              </md-field>
-            </div>
-            <div class="s1-loc__md-field-wrapper s1-U__width--180px">
-              <md-field
-                :class="{'md-invalid md-field-helper-text': $v.Service.Form.Supplier.$dirty && $v.Service.Form.Supplier.$invalid}"
-              >
-                <label for="Service-Supplier">Fornecedor</label>
-                <md-select
-                  id="Service-Supplier"
-                  name="Service-Supplier"
-                  @blur="$v.Service.Form.Supplier.$touch()"
-                  @focus="$v.Service.Form.Supplier.$reset()"
-                  v-model="Service.Form.Supplier"
-                  required
-                >
-                  <md-option
-                    v-for="supplier in Suppliers"
-                    :key="'supplier' + supplier.Id"
-                    :value="supplier.Id"
-                  >{{supplier.Name}}</md-option>
-                </md-select>
-                <span class="md-error" v-if="!$v.Service.Form.Supplier.required">Obrigatório</span>
-              </md-field>
-            </div>
-            <div class="s1-loc__md-field-wrapper s1-U__width--144px">
-              <md-field
-                :class="{'md-invalid md-field-helper-text': $v.Service.Form.Type.$dirty && $v.Service.Form.Type.$invalid}"
-              >
-                <label for="Service-Type">Tipo</label>
-                <md-select
-                  id="Service-Type"
-                  name="Service-Type"
-                  @blur="$v.Service.Form.Type.$touch()"
-                  @focus="$v.Service.Form.Type.$reset()"
-                  v-model="Service.Form.Type"
-                  required
-                >
-                  <md-option
-                    v-for="serviceType in ServiceTypes"
-                    :key="'serviceType' + serviceType.Id"
-                    :value="serviceType.Id"
-                  >{{serviceType.Name}}</md-option>
-                </md-select>
-                <span class="md-error" v-if="!$v.Service.Form.Type.required">Obrigatório</span>
-              </md-field>
-            </div>
-            <div class="s1-loc__md-field-wrapper">
-              <md-field>
-                <label for="Service-Description">Descrição</label>
-                <md-textarea
-                  id="Service-Description"
-                  name="Service-Description"
-                  v-model="Service.Form.Description"
-                  md-autogrow
-                ></md-textarea>
-              </md-field>
-            </div>
-            <div class="s1-loc__md-field-wrapper s1-U__width--180px">
-              <md-field>
-                <label for="Service-CurrencyCode">Moeda</label>
-                <md-select
-                  id="Service-CurrencyCode"
-                  name="Service-CurrencyCode"
-                  v-model="Service.Form.CurrencyCode"
-                  required
-                >
-                  <md-option
-                    v-for="currency in Currencies"
-                    :key="'currency' + currency.Id"
-                    :value="currency.Id"
-                  >{{currency.Name}}</md-option>
-                </md-select>
-              </md-field>
-            </div>
-            <div class="s1-loc__md-field-wrapper s1-U__width--100px">
-              <md-field
-                :class="{'md-invalid md-field-helper-text': $v.Service.Form.Cost.$dirty && $v.Service.Form.Cost.$invalid}"
-              >
-                <label for="Service-Cost">Custo</label>
-                <md-input
-                  id="Service-Cost"
-                  name="Service-Cost"
-                  type="number"
-                  @blur="$v.Service.Form.Cost.$touch()"
-                  @focus="$v.Service.Form.Cost.$reset()"
-                  v-model="Service.Form.Cost"
-                  required
-                ></md-input>
-                <span class="md-error" v-if="!$v.Service.Form.Cost.required">Obrigatório</span>
-              </md-field>
-            </div>
-            <div class="s1-loc__md-field-wrapper">
-              <div class="s1-U__text-color--dark-2 s1-U__mg--bt8">Vigência</div>
-              <div class="s1-U__align-children--bottom s1-U__mg--bt16">
-                <md-field
-                  class="s1-md-field--w50px s1-U__mg0"
-                  :class="{'md-invalid md-field-helper-text': $v.Service.Form.Vigence.$dirty && $v.Service.Form.Vigence.$invalid}"
-                >
-                  <md-input
-                    class="s1-U__text-align--center"
-                    id="Service-Vigence"
-                    name="Service-Vigence"
-                    type="number"
-                    @blur="$v.Service.Form.Vigence.$touch()"
-                    @focus="$v.Service.Form.Vigence.$reset()"
-                    v-model="Service.Form.Vigence"
-                    required
-                  ></md-input>
-                </md-field>
-                <p class="s1-U__mg--lt8">dias</p>
+                <md-icon>arrow_back</md-icon>
+              </md-button>
+              <div>
+                <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
+                  <span>Criação de serviço</span>
+                </h1>
               </div>
             </div>
-            <h3
-              class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
-            >Favorecidos</h3>
-            <div class="s1-U__pd--lt16 s1-U__pd--rt16">
-              <table style="border-spacing: 0">
-                <tbody>
-                  <tr v-for="(fav, index) in Service.Form.Rules" :key="fav.Appliedto + '-in-form'">
-                    <td class="s1-U__pd--rt8">
-                      <p
-                        class="md-body-2 s1-U__flex-shrink-0 s1-U__text-color--dark-2 s1-U__text-align--right"
-                      >{{fav.Appliedto}}:</p>
-                    </td>
-                    <td
-                      class="s1-U__pd--rt8 s1-U__pd--bt8 s1-U__pd--tp8"
-                      v-show="Service.FormFavoredVisibility[fav.Appliedto]"
+          </div>
+          <md-card>
+            <md-content class="md-scrollbar s1-U__pd0 s1-U__pd16" style="overflow: auto">
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp4"
+              >Geral</h3>
+              <div class="s1-U__pd--lt16">
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field
+                    :md-counter="false"
+                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.Name.$dirty && $v.Service.Form.Name.$invalid}"
+                  >
+                    <label for="Service-Name">Nome</label>
+                    <md-input
+                      id="Service-Name"
+                      name="Service-Name"
+                      type="text"
+                      @blur="$v.Service.Form.Name.$touch()"
+                      @focus="$v.Service.Form.Name.$reset()"
+                      v-model="Service.Form.Name"
+                      maxlength="20"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Service.Form.Name.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field
+                    :md-counter="false"
+                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.FriendlyName.$dirty && $v.Service.Form.FriendlyName.$invalid}"
+                  >
+                    <label for="Service-FriendlyName">Nome camarada</label>
+                    <md-input
+                      id="Service-FriendlyName"
+                      name="Service-FriendlyName"
+                      type="text"
+                      @blur="$v.Service.Form.FriendlyName.$touch()"
+                      @focus="$v.Service.Form.FriendlyName.$reset()"
+                      v-model="Service.Form.FriendlyName"
+                      maxlength="20"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Service.Form.FriendlyName.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--180px">
+                  <md-field
+                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.Supplier.$dirty && $v.Service.Form.Supplier.$invalid}"
+                  >
+                    <label for="Service-Supplier">Fornecedor</label>
+                    <md-select
+                      id="Service-Supplier"
+                      name="Service-Supplier"
+                      @blur="$v.Service.Form.Supplier.$touch()"
+                      @focus="$v.Service.Form.Supplier.$reset()"
+                      v-model="Service.Form.Supplier"
+                      required
                     >
-                      <md-field class="s1-md-field--w150px s1-U__mg0">
-                        <md-select
-                          id="Service-CurrencyCode"
-                          name="Service-CurrencyCode"
-                          v-model="Service.Form.Rules[index].Operator"
-                          required
+                      <md-option
+                        v-for="supplier in Suppliers"
+                        :key="'supplier' + supplier.Id"
+                        :value="supplier.Id"
+                      >{{supplier.Name}}</md-option>
+                    </md-select>
+                    <span class="md-error" v-if="!$v.Service.Form.Supplier.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--144px">
+                  <md-field
+                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.Type.$dirty && $v.Service.Form.Type.$invalid}"
+                  >
+                    <label for="Service-Type">Tipo</label>
+                    <md-select
+                      id="Service-Type"
+                      name="Service-Type"
+                      @blur="$v.Service.Form.Type.$touch()"
+                      @focus="$v.Service.Form.Type.$reset()"
+                      v-model="Service.Form.Type"
+                      required
+                    >
+                      <md-option
+                        v-for="serviceType in ServiceTypes"
+                        :key="'serviceType' + serviceType.Id"
+                        :value="serviceType.Id"
+                      >{{serviceType.Name}}</md-option>
+                    </md-select>
+                    <span class="md-error" v-if="!$v.Service.Form.Type.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--540px">
+                  <md-field>
+                    <label for="Service-Description">Descrição</label>
+                    <md-textarea
+                      id="Service-Description"
+                      name="Service-Description"
+                      v-model="Service.Form.Description"
+                      md-autogrow
+                    ></md-textarea>
+                  </md-field>
+                </div>
+              </div>
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
+              >Contratação</h3>
+              <div class="s1-U__pd--lt16">
+                <div class="s1-loc__md-field-wrapper s1-U__width--180px">
+                  <md-field>
+                    <label for="Service-CurrencyCode">Moeda</label>
+                    <md-select
+                      id="Service-CurrencyCode"
+                      name="Service-CurrencyCode"
+                      v-model="Service.Form.CurrencyCode"
+                      required
+                    >
+                      <md-option
+                        v-for="currency in Currencies"
+                        :key="'currency' + currency.Id"
+                        :value="currency.Id"
+                      >{{currency.Name}}</md-option>
+                    </md-select>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--100px">
+                  <md-field
+                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.Cost.$dirty && $v.Service.Form.Cost.$invalid}"
+                  >
+                    <label for="Service-Cost">Custo</label>
+                    <md-input
+                      id="Service-Cost"
+                      name="Service-Cost"
+                      type="number"
+                      @blur="$v.Service.Form.Cost.$touch()"
+                      @focus="$v.Service.Form.Cost.$reset()"
+                      v-model="Service.Form.Cost"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Service.Form.Cost.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper">
+                  <div class="s1-U__text-color--dark-2 s1-U__mg--bt8">Vigência</div>
+                  <div class="s1-U__align-children--bottom s1-U__mg--bt16">
+                    <md-field
+                      class="s1-md-field--w50px s1-U__mg0"
+                      :class="{'md-invalid md-field-helper-text': $v.Service.Form.Vigence.$dirty && $v.Service.Form.Vigence.$invalid}"
+                    >
+                      <md-input
+                        class="s1-U__text-align--center"
+                        id="Service-Vigence"
+                        name="Service-Vigence"
+                        type="number"
+                        @blur="$v.Service.Form.Vigence.$touch()"
+                        @focus="$v.Service.Form.Vigence.$reset()"
+                        v-model="Service.Form.Vigence"
+                        required
+                      ></md-input>
+                    </md-field>
+                    <p class="s1-U__mg--lt8">dias</p>
+                  </div>
+                </div>
+              </div>
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
+              >Favorecidos</h3>
+              <div class="s1-U__pd--lt16 s1-U__pd--rt16">
+                <table style="border-spacing: 0">
+                  <tbody>
+                    <tr
+                      v-for="(fav, index) in Service.Form.Rules"
+                      :key="fav.Appliedto + '-in-form'"
+                    >
+                      <td class="s1-U__pd--rt8">
+                        <p
+                          class="md-body-2 s1-U__flex-shrink-0 s1-U__text-color--dark-2 s1-U__text-align--right"
+                        >{{fav.Appliedto}}:</p>
+                      </td>
+                      <td
+                        class="s1-U__pd--rt8 s1-U__pd--bt8 s1-U__pd--tp8"
+                        v-show="Service.FormFavoredVisibility[fav.Appliedto]"
+                      >
+                        <md-field class="s1-md-field--w150px s1-U__mg0">
+                          <md-select
+                            id="Service-CurrencyCode"
+                            name="Service-CurrencyCode"
+                            v-model="Service.Form.Rules[index].Operator"
+                            required
+                          >
+                            <md-option
+                              v-for="operator in Operators"
+                              :key="'operator' + operator.Id"
+                              :value="operator.Id"
+                            >{{operator.Name}}</md-option>
+                          </md-select>
+                        </md-field>
+                      </td>
+                      <td
+                        class="s1-U__pd--rt8 s1-U__pd--bt8 s1-U__pd--tp8"
+                        v-show="Service.FormFavoredVisibility[fav.Appliedto]"
+                      >
+                        <md-field class="s1-md-field--w50px s1-U__mg0">
+                          <md-input
+                            class="s1-U__text-align--center"
+                            id="Service-Value"
+                            name="Service-Value"
+                            type="number"
+                            v-model="Service.Form.Rules[index].Value"
+                            @change="(!Service.Form.Rules[index].Value || Service.Form.Rules[index].Value === '0') && Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '1' : null"
+                            required
+                          ></md-input>
+                        </md-field>
+                      </td>
+                      <td colspan="2" v-show="!Service.FormFavoredVisibility[fav.Appliedto]">
+                        <div class="s1-U__align-children--center">
+                          <span
+                            class="s1-U__text-color--dark-2 s1-U__pd--rt16 s1-U__flex-shrink-0"
+                          >nenhum</span>
+                          <md-button
+                            class="md-dense s1-U__mg--bt4 md-primary s1-md-bordered"
+                            @click="Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.Appliedto] = !Service.FormFavoredVisibility[fav.Appliedto]"
+                          >
+                            <div class="s1-U__align-children--center">
+                              <md-icon>{{Service.FormFavoredVisibility[fav.Appliedto] ? 'close' : 'add'}}</md-icon>
+                              <span class="s1-U__mg--lt4">Adicionar</span>
+                            </div>
+                          </md-button>
+                        </div>
+                      </td>
+                      <td class v-show="Service.FormFavoredVisibility[fav.Appliedto]">
+                        <md-button
+                          class="md-dense s1-U__mg--bt4 md-icon-button"
+                          @click="Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.Appliedto] = !Service.FormFavoredVisibility[fav.Appliedto]"
+                          v-if="fav.Appliedto !== 'Titular'"
                         >
-                          <md-option
-                            v-for="operator in Operators"
-                            :key="'operator' + operator.Id"
-                            :value="operator.Id"
-                          >{{operator.Name}}</md-option>
-                        </md-select>
-                      </md-field>
-                    </td>
-                    <td
-                      class="s1-U__pd--rt8 s1-U__pd--bt8 s1-U__pd--tp8"
-                      v-show="Service.FormFavoredVisibility[fav.Appliedto]"
+                          <md-icon>{{Service.FormFavoredVisibility[fav.Appliedto] ? 'close' : 'add'}}</md-icon>
+                        </md-button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
+              >Campos</h3>
+              <!-- RENAN -->
+              <div class="service-fields s1-U__pd--lt16 s1-U__pd--rt16">
+                <div
+                  v-for="favored in ['Titular', 'Beneficiário', 'Dependente']"
+                  :key="favored + '-group'"
+                >
+                  <h4
+                    class="s1-U__text-color--dark-2 md-body-2"
+                    v-if="Service.FormFavoredVisibility[favored]"
+                  >{{favored}}</h4>
+                  <div
+                    class="s1-U__mg--tp4 s1-U__align-children--center s1-U__flex-wrap s1-U__mg--bt16"
+                    v-if="Service.FormFavoredVisibility[favored]"
+                  >
+                    <div
+                      class="s1-U__bg-color--body-bg s1-U__border-solid--1 s1-U__border-radius--5px s1-U__mg--rt4 s1-U__mg--bt4 s1-U__align-children--center s1-U__pd--lt16 s1-U__pd--rt4 s1-U__pd--tp4 s1-U__pd--bt4"
+                      v-for="field in getListByProp(Service.Form.Fields, favored, 'AppliedTo')"
+                      :key="field.Id + '-chip'"
+                      :md-deletable="!Service.RequiredFields.includes(field.Type)"
                     >
-                      <md-field class="s1-md-field--w50px s1-U__mg0">
+                      <div class="md-caption s1-U__text-uppercase s1-U__text-nowrap s1-U__mg--rt16">
+                        <p>
+                          <small>
+                            <b>{{getNameById(Fields, field.Type)}}</b>
+                          </small>
+                        </p>
+                      </div>
+                      <md-field
+                        class="s1-U__mg0 s1-U__mg--tp4"
+                        :style="`width: ${(field.Label.length + 2 )* 8 + 16}px;`"
+                      >
                         <md-input
-                          class="s1-U__text-align--center"
-                          id="Service-Value"
-                          name="Service-Value"
-                          type="number"
-                          v-model="Service.Form.Rules[index].Value"
-                          @change="(!Service.Form.Rules[index].Value || Service.Form.Rules[index].Value === '0') && Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '1' : null"
+                          type="text"
+                          @blur="field.Label.length === 0 ? field.Label = getNameById(Fields, field.Type) : null"
+                          v-model="field.Label"
                           required
                         ></md-input>
                       </md-field>
-                    </td>
-                    <td colspan="2" v-show="!Service.FormFavoredVisibility[fav.Appliedto]">
-                      <div class="s1-U__align-children--center">
-                        <span
-                          class="s1-U__text-color--dark-2 s1-U__pd--rt16 s1-U__flex-shrink-0"
-                        >nenhum</span>
-                        <md-button
-                          class="md-dense s1-U__mg--bt4 md-primary s1-md-bordered"
-                          @click="Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.Appliedto] = !Service.FormFavoredVisibility[fav.Appliedto]"
-                        >
-                          <div class="s1-U__align-children--center">
-                            <md-icon>{{Service.FormFavoredVisibility[fav.Appliedto] ? 'close' : 'add'}}</md-icon>
-                            <span class="s1-U__mg--lt4">Adicionar</span>
-                          </div>
-                        </md-button>
-                      </div>
-                    </td>
-                    <td class v-show="Service.FormFavoredVisibility[fav.Appliedto]">
                       <md-button
-                        class="md-dense s1-U__mg--bt4 md-icon-button"
-                        @click="Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.Appliedto] = !Service.FormFavoredVisibility[fav.Appliedto]"
-                        v-if="fav.Appliedto !== 'Titular'"
+                        class="md-icon-button s1-U__mg--lt4 squared"
+                        @click="removeField(field.Id)"
+                        v-if="!Service.RequiredFields.includes(field.Type)"
                       >
-                        <md-icon>{{Service.FormFavoredVisibility[fav.Appliedto] ? 'close' : 'add'}}</md-icon>
+                        <md-icon>close</md-icon>
                       </md-button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <h3
-              class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
-            >Campos</h3>
-            <div class="service-fields s1-U__pd--lt16 s1-U__pd--rt16">
-              <h4 class="s1-U__text-color--dark-2 md-body-2">Titular</h4>
-              <div class="s1-chip-wrapper--left s1-U__mg--bt16">
-                <md-chip class="md-primary">Nome</md-chip>
-                <md-chip class="md-primary">Documento</md-chip>
-                <md-chip class="md-primary">Tipo de documento</md-chip>
-                <md-chip class="md-primary" md-deletable>Data de nascimento</md-chip>
-                <md-chip class="md-primary" md-deletable>Endereço 1</md-chip>
-                <md-chip class="md-primary" md-deletable>Endereço 2</md-chip>
-                <md-chip class="md-primary" md-deletable>Endereço 3</md-chip>
-                <md-chip class="md-primary" md-deletable>Telefone</md-chip>
-                <md-chip class="md-primary" md-deletable>E-mail</md-chip>
-                <md-chip class="md-primary" md-deletable>Facebook</md-chip>
-                <md-chip class="md-primary" md-deletable>Horário preferencial de contato</md-chip>
-                <md-button class="md-primary s1-md-bordered md-dense s1-U__mg--tp4">
-                  <div class="s1-U__align-children--center">
-                    <md-icon>add</md-icon>
-                    <span class="s1-U__mg--lt4 s1-U__mg--rt8">adicionar</span>
+                    </div>
+                    <md-menu>
+                      <md-button
+                        class="md-accent md-icon-button s1-md-bordered s1-U__mg--bt4 squared"
+                        md-menu-trigger
+                      >
+                        <md-icon>add</md-icon>
+                      </md-button>
+
+                      <md-menu-content>
+                        <md-menu-item
+                          v-for="field in Service.FieldOptions"
+                          :key="field.Id + '-option-to-add'"
+                          @click="addNewField(favored, field.Value)"
+                        >
+                          <span>{{field.Label}}</span>
+                          <md-icon>{{ field.Value.length > 1 ? 'apps' : 'stop' }}</md-icon>
+                        </md-menu-item>
+                      </md-menu-content>
+                    </md-menu>
                   </div>
-                </md-button>
+                </div>
               </div>
-              <h4 class="s1-U__text-color--dark-2 md-body-2">Dependente</h4>
-              <div class="s1-chip-wrapper--left">
-                <md-chip class="md-primary">Nome</md-chip>
-                <md-chip class="md-primary">Documento</md-chip>
-                <md-chip class="md-primary">Tipo de documento</md-chip>
-                <md-chip class="md-primary" md-deletable>Data de nascimento</md-chip>
-                <md-chip class="md-primary" md-deletable>Telefone</md-chip>
-                <md-chip class="md-primary" md-deletable>E-mail</md-chip>
-                <md-button class="md-primary s1-md-bordered md-dense s1-U__mg--tp4">
-                  <div class="s1-U__align-children--center">
-                    <md-icon>add</md-icon>
-                    <span class="s1-U__mg--lt4 s1-U__mg--rt8">adicionar</span>
-                  </div>
-                </md-button>
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
+              >Critérios</h3>
+              <div class="s1-U__pd--lt16 s1-U__pd--rt16">
+                <div
+                  v-for="favored in ['Titular', 'Beneficiário', 'Dependente']"
+                  :key="favored + '-criterias'"
+                >
+                  <h4
+                    class="s1-U__text-color--dark-2 md-body-2"
+                    v-if="Service.FormFavoredVisibility[favored]"
+                  >{{favored}}</h4>
+                  <p class="md-caption" v-if="Service.FormFavoredVisibility[favored]">
+                    Nenhum critério para campos do
+                    <span class="s1-U__text-lowercase">{{favored}}</span>
+                  </p>
+                </div>
               </div>
+            </md-content>
+            <div class="s1-U__text-align--right s1-U__pd16 s1-U__border--top1 s1-U__flex-shrink-0">
+              <md-button
+                class="md-primary md-raised"
+                :disabled="$v.Service.Form.$invalid"
+                @click="saveCreated('Service')"
+              >
+                <span class="s1-U__pd--lt8 s1-U__pd--rt8">Cadastrar</span>
+              </md-button>
             </div>
-          </md-content>
-          <md-dialog-actions class="s1-U__pd16 s1-U__border--top1 s1-U__flex-shrink-0">
-            <md-button
-              class="md-primary md-raised"
-              :disabled="$v.Service.Form.$invalid"
-              @click="saveCreated('Service')"
-            >
-              <span class="s1-U__pd--lt8 s1-U__pd--rt8">Cadastrar</span>
-            </md-button>
-          </md-dialog-actions>
-        </md-dialog>
+          </md-card>
+        </div>
 
         <md-dialog
           class="s1-U__width--400px"
@@ -412,7 +473,6 @@
         </md-dialog>
 
         <md-dialog-confirm
-          :md-backdrop="false"
           :md-active.sync="Service.DiscardCreationInterface"
           md-title="Descartar cadastro?"
           md-content="Ao sair, as informações do serviço em cadastro serão descartadas"
@@ -483,8 +543,6 @@
               <div>
                 <p class="md-caption">
                   <span class="s1-U__text-uppercase">RZ Corporation</span>
-                  <span class="s1-U__mg--lt4 s1-U__mg--rt4">/</span>
-                  <span class="s1-U__text-uppercase">Conta 2</span>
                 </p>
                 <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
                   <span>Pacotes</span>
@@ -615,8 +673,6 @@
               <div>
                 <p class="md-caption">
                   <span class="s1-U__text-uppercase">RZ Corporation</span>
-                  <span class="s1-U__mg--lt4 s1-U__mg--rt4">/</span>
-                  <span class="s1-U__text-uppercase">Conta 2</span>
                 </p>
                 <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
                   <span>Criação de pacote</span>
@@ -624,15 +680,6 @@
               </div>
             </div>
           </div>
-          <!-- <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
-          <md-button
-            class="md-dense md-icon-button s1-U__mg--rt16"
-            @click="Package.DiscardCreationInterface = true"
-          >
-            <md-icon>arrow_back</md-icon>
-          </md-button>
-          <span>Cadastro de pacote</span>
-          </h1>-->
         </div>
         <md-card>
           <md-card-content>
@@ -1470,6 +1517,7 @@ import Suppliers from "./data/Suppliers.js";
 import ServiceTypes from "./data/ServiceTypes.js";
 import Currencies from "./data/Currencies.js";
 import Operators from "./data/Operators.js";
+import Fields from "./data/Fields.js";
 
 import formatMoney from "./assets/utils/formatMoney.js";
 import getListByProp from "./assets/utils/getListByProp.js";
@@ -1489,6 +1537,7 @@ export default {
     LongText,
     Currencies,
     Operators,
+    Fields,
     Package: {
       moreQty: 3,
       Form: {
@@ -1585,12 +1634,65 @@ export default {
             Operator: "=",
             Value: "0"
           }
+        ],
+        Fields: [
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
+            Type: "Name",
+            Label: "Nome",
+            DataType: "string",
+            AppliedTo: "Titular",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl2",
+            Type: "CPF",
+            Label: "CPF",
+            DataType: "string",
+            AppliedTo: "Titular",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl3",
+            Type: "Email",
+            Label: "E-mail",
+            DataType: "string",
+            AppliedTo: "Titular",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
+            Type: "Name",
+            Label: "Nome",
+            DataType: "string",
+            AppliedTo: "Beneficiário",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl2",
+            Type: "CPF",
+            Label: "CPF",
+            DataType: "string",
+            AppliedTo: "Beneficiário",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
+            Type: "Name",
+            Label: "Nome",
+            DataType: "string",
+            AppliedTo: "Dependente",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl2",
+            Type: "CPF",
+            Label: "CPF",
+            DataType: "string",
+            AppliedTo: "Dependente",
+            Criterias: []
+          }
         ]
-      },
-      FormFavoredVisibility: {
-        Titular: true,
-        Beneficiário: false,
-        Dependente: false
       },
       DefaultForm: {
         Id: null,
@@ -1617,6 +1719,64 @@ export default {
             Appliedto: "Dependente",
             Operator: "=",
             Value: "0"
+          }
+        ],
+        Fields: [
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
+            Type: "Name",
+            Label: "Nome",
+            DataType: "string",
+            AppliedTo: "Titular",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl2",
+            Type: "CPF",
+            Label: "CPF",
+            DataType: "string",
+            AppliedTo: "Titular",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl3",
+            Type: "Email",
+            Label: "E-mail",
+            DataType: "string",
+            AppliedTo: "Titular",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
+            Type: "Name",
+            Label: "Nome",
+            DataType: "string",
+            AppliedTo: "Beneficiário",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl2",
+            Type: "CPF",
+            Label: "CPF",
+            DataType: "string",
+            AppliedTo: "Beneficiário",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
+            Type: "Name",
+            Label: "Nome",
+            DataType: "string",
+            AppliedTo: "Dependente",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl2",
+            Type: "CPF",
+            Label: "CPF",
+            DataType: "string",
+            AppliedTo: "Dependente",
+            Criterias: []
           }
         ]
       },
@@ -1665,12 +1825,162 @@ export default {
             Operator: "=",
             Value: "0"
           }
+        ],
+        Fields: [
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
+            Type: "Name",
+            Label: "Nome",
+            DataType: "string",
+            AppliedTo: "Titular",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl2",
+            Type: "CPF",
+            Label: "CPF",
+            DataType: "string",
+            AppliedTo: "Titular",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl3",
+            Type: "Email",
+            Label: "E-mail",
+            DataType: "string",
+            AppliedTo: "Titular",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
+            Type: "Name",
+            Label: "Nome",
+            DataType: "string",
+            AppliedTo: "Beneficiário",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl2",
+            Type: "CPF",
+            Label: "CPF",
+            DataType: "string",
+            AppliedTo: "Beneficiário",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
+            Type: "Name",
+            Label: "Nome",
+            DataType: "string",
+            AppliedTo: "Dependente",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl2",
+            Type: "CPF",
+            Label: "CPF",
+            DataType: "string",
+            AppliedTo: "Dependente",
+            Criterias: []
+          }
         ]
-      }
+      },
+      FormFavoredVisibility: {
+        Titular: true,
+        Beneficiário: false,
+        Dependente: false
+      },
+      FieldOptions: [
+        {
+          Id: "Name",
+          Label: "Nome",
+          Value: ["Name"]
+        },
+        {
+          Id: "FirstName",
+          Label: "Primeiro nome",
+          Value: ["FirstName"]
+        },
+        {
+          Id: "SecondName",
+          Label: "Sobrenome",
+          Value: ["SecondName"]
+        },
+        {
+          Id: "Document",
+          Label: "Documento",
+          Value: ["DocumentType", "Document"]
+        },
+        {
+          Id: "Addresses",
+          Label: "Endereço livre",
+          Value: ["Address", "Address", "Address"]
+        },
+        {
+          Id: "BrAddresses",
+          Label: "Endereço brasileiro",
+          Value: [
+            "CEP",
+            "Country",
+            "State",
+            "City",
+            "Neighbor",
+            "Street",
+            "Number",
+            "Complement"
+          ]
+        },
+        {
+          Id: "Birthdate",
+          Label: "Data de nascimento",
+          Value: ["Birthdate"]
+        },
+        {
+          Id: "Genre",
+          Label: "Gênero",
+          Value: ["Genre"]
+        },
+        {
+          Id: "Facebook",
+          Label: "Facebook",
+          Value: ["Facebook"]
+        },
+        {
+          Id: "Twitter",
+          Label: "Twitter",
+          Value: ["Twitter"]
+        },
+        {
+          Id: "Email",
+          Label: "E-mail",
+          Value: ["Email"]
+        },
+        {
+          Id: "Email2x",
+          Label: "E-mails (x2)",
+          Value: ["Email", "Email"]
+        },
+        {
+          Id: "Phone",
+          Label: "Telefone",
+          Value: ["Phone"]
+        },
+        {
+          Id: "Phone2x",
+          Label: "Telefones (x2)",
+          Value: ["Phone", "Phone"]
+        },
+        {
+          Id: "Phone3x",
+          Label: "Telefones (x3)",
+          Value: ["Phone", "Phone", "Phone"]
+        }
+      ],
+      RequiredFields: ["Name", "CPF", "Email"]
     },
     Settings: {
       snackbarDuration: 3000,
-      activePage: "allPackages"
+      activePage: "allServices"
     }
   }),
   methods: {
@@ -1751,6 +2061,7 @@ export default {
       return [item, ...array];
     },
     addNewItemBelow(array, item) {
+      debugger;
       return [...array, item];
     },
     removeItemFromArray(array, id) {
@@ -1883,6 +2194,36 @@ export default {
 
       this.Package.Form.TotalCost = value;
       return value;
+    },
+    addNewField(favored, ids) {
+      const getOccurrence = (array, value) => {
+        var count = 0;
+        array.forEach(v => v === value && count++);
+        return count;
+      };
+
+      let count = [];
+      let item = ids.map(i => {
+        count = [...count, i];
+        let label = `${getPropById(Fields, i, "DefaultLabel")}${
+          getOccurrence(ids, i) > 1 ? ` ${getOccurrence(count, i)}` : ""
+        }`;
+
+        return {
+          Id: randomString(64, "#aA"),
+          Type: i,
+          Label: label,
+          DataType: "string",
+          AppliedTo: favored,
+          Criterias: []
+        };
+      });
+      this.Service.Form.Fields = [...this.Service.Form.Fields, ...item];
+    },
+    removeField(id) {
+      this.Service.Form.Fields = this.Service.Form.Fields.filter(f => {
+        return f.Id !== id;
+      });
     }
   },
   validations: {
