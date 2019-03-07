@@ -255,7 +255,7 @@
                       </td>
                       <td
                         class="s1-U__pd--rt8 s1-U__pd--bt8 s1-U__pd--tp8"
-                        v-show="Service.FormFavoredVisibility[fav.Appliedto]"
+                        v-show="Service.FormFavoredVisibility[fav.Appliedto] && fav.Appliedto !== 'Titular'"
                       >
                         <md-field class="s1-md-field--w150px s1-U__mg0">
                           <md-select
@@ -283,7 +283,7 @@
                             name="Service-Value"
                             type="number"
                             v-model="Service.Form.Rules[index].Value"
-                            @change="(!Service.Form.Rules[index].Value || Service.Form.Rules[index].Value === '0') && Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '1' : null"
+                            @change="(!Service.Form.Rules[index].Value || parseInt(Service.Form.Rules[index].Value) === 0) && Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '1' : null"
                             required
                           ></md-input>
                         </md-field>
@@ -295,7 +295,7 @@
                           >nenhum</span>
                           <md-button
                             class="md-dense s1-U__mg--bt4 md-primary s1-md-bordered"
-                            @click="Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.Appliedto] = !Service.FormFavoredVisibility[fav.Appliedto]"
+                            @click="Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.Appliedto] = !Service.FormFavoredVisibility[fav.Appliedto]; reshuffle(index)"
                           >
                             <div class="s1-U__align-children--center">
                               <md-icon>{{Service.FormFavoredVisibility[fav.Appliedto] ? 'close' : 'add'}}</md-icon>
@@ -331,12 +331,12 @@
                     v-if="Service.FormFavoredVisibility[favored]"
                   >{{favored}}</h4>
                   <div
-                    class="s1-U__mg--tp4 s1-U__align-children--center s1-U__flex-wrap s1-U__mg--bt16"
+                    class="s1-U__mg--tp4 s1-U__align-children--stretch s1-U__flex-wrap s1-U__mg--bt16 s1-U__pd16 s1-U__bg-color--body-bg"
                     v-if="Service.FormFavoredVisibility[favored]"
                   >
-                    <div
+                    <!-- <div
                       class="s1-U__bg-color--body-bg s1-U__border-solid--1 s1-U__border-radius--5px s1-U__mg--rt4 s1-U__mg--bt4 s1-U__align-children--center s1-U__pd--lt16 s1-U__pd--rt4 s1-U__pd--tp4 s1-U__pd--bt4"
-                      v-for="field in getListByProp(Service.Form.Fields, favored, 'AppliedTo')"
+                      v-for="(field) in getListByProp(Service.Form.Fields, favored, 'AppliedTo')"
                       :key="field.Id + '-chip'"
                       :md-deletable="!Service.RequiredFields.includes(field.Type)"
                     >
@@ -365,10 +365,47 @@
                       >
                         <md-icon>close</md-icon>
                       </md-button>
-                    </div>
+                    </div>-->
+                    <md-card
+                      class="s1-U__mg--bt8 s1-U__mg--rt8 s1-U__pd16"
+                      v-for="(field, index) in getListByProp(Service.Form.Fields, favored, 'AppliedTo')"
+                      :key="field.Id + '-chip'"
+                    >
+                      <div
+                        class="s1-U__mg--bt8 s1-U__align-children--center s1-U__justify-content--space-between s1-U__text-uppercase"
+                      >
+                        <div class="s1-U__align-children--center">
+                          <md-icon class="md-accent">stop</md-icon>
+                          <p class="md-caption s1-U__mg--rt4 s1-U__text-color--accent">
+                            <b>{{getNameById(Fields, field.Type)}}</b>
+                          </p>
+                        </div>
+                        <md-button
+                          class="md-icon-button s1-U__mg--lt4 squared md-dense"
+                          @click="removeField(field.Id)"
+                          :disabled="index < 2"
+                        >
+                          <md-icon>
+                            <span :class="{'s1-U__text-color--dark-3' : index < 2}">close</span>
+                          </md-icon>
+                          <md-tooltip md-direction="left">remover</md-tooltip>
+                        </md-button>
+                      </div>
+                      <div class="s1-loc__md-field-wrapper s1-U__width--180px">
+                        <p class="md-caption s1-U__mg--rt8">Nome do campo</p>
+                        <md-field class="s1-U__mg0 s1-U__mg--tp8">
+                          <md-input
+                            type="text"
+                            @blur="field.Label.length === 0 ? field.Label = getNameById(Fields, field.Type) : null"
+                            v-model="field.Label"
+                            required
+                          ></md-input>
+                        </md-field>
+                      </div>
+                    </md-card>
                     <md-menu>
                       <md-button
-                        class="md-accent md-icon-button s1-md-bordered s1-U__mg--bt4 squared"
+                        class="md-accent md-icon-button s1-md-bordered squared"
                         md-menu-trigger
                       >
                         <md-icon>add</md-icon>
@@ -391,21 +428,9 @@
               <h3
                 class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
               >Critérios</h3>
-              <div class="s1-U__pd--lt16 s1-U__pd--rt16">
-                <div
-                  v-for="favored in ['Titular', 'Beneficiário', 'Dependente']"
-                  :key="favored + '-criterias'"
-                >
-                  <h4
-                    class="s1-U__text-color--dark-2 md-body-2"
-                    v-if="Service.FormFavoredVisibility[favored]"
-                  >{{favored}}</h4>
-                  <p class="md-caption" v-if="Service.FormFavoredVisibility[favored]">
-                    Nenhum critério para campos do
-                    <span class="s1-U__text-lowercase">{{favored}}</span>
-                  </p>
-                </div>
-              </div>
+              <div
+                class="s1-U__pd--lt16 s1-U__pd--rt16 s1-U__mg--bt32 s1-U__text-color--dark-2"
+              >Nenhum critério disponível para configuração.</div>
             </md-content>
             <div class="s1-U__text-align--right s1-U__pd16 s1-U__border--top1 s1-U__flex-shrink-0">
               <md-button
@@ -1638,7 +1663,7 @@ export default {
         Fields: [
           {
             Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
-            Type: "Name",
+            Type: "Text",
             Label: "Nome",
             DataType: "string",
             AppliedTo: "Titular",
@@ -1653,16 +1678,8 @@ export default {
             Criterias: []
           },
           {
-            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl3",
-            Type: "Email",
-            Label: "E-mail",
-            DataType: "string",
-            AppliedTo: "Titular",
-            Criterias: []
-          },
-          {
             Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
-            Type: "Name",
+            Type: "Text",
             Label: "Nome",
             DataType: "string",
             AppliedTo: "Beneficiário",
@@ -1678,7 +1695,7 @@ export default {
           },
           {
             Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
-            Type: "Name",
+            Type: "Text",
             Label: "Nome",
             DataType: "string",
             AppliedTo: "Dependente",
@@ -1724,7 +1741,7 @@ export default {
         Fields: [
           {
             Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
-            Type: "Name",
+            Type: "Text",
             Label: "Nome",
             DataType: "string",
             AppliedTo: "Titular",
@@ -1739,16 +1756,8 @@ export default {
             Criterias: []
           },
           {
-            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl3",
-            Type: "Email",
-            Label: "E-mail",
-            DataType: "string",
-            AppliedTo: "Titular",
-            Criterias: []
-          },
-          {
             Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
-            Type: "Name",
+            Type: "Text",
             Label: "Nome",
             DataType: "string",
             AppliedTo: "Beneficiário",
@@ -1764,7 +1773,7 @@ export default {
           },
           {
             Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
-            Type: "Name",
+            Type: "Text",
             Label: "Nome",
             DataType: "string",
             AppliedTo: "Dependente",
@@ -1829,7 +1838,7 @@ export default {
         Fields: [
           {
             Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
-            Type: "Name",
+            Type: "Text",
             Label: "Nome",
             DataType: "string",
             AppliedTo: "Titular",
@@ -1844,16 +1853,8 @@ export default {
             Criterias: []
           },
           {
-            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl3",
-            Type: "Email",
-            Label: "E-mail",
-            DataType: "string",
-            AppliedTo: "Titular",
-            Criterias: []
-          },
-          {
             Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
-            Type: "Name",
+            Type: "Text",
             Label: "Nome",
             DataType: "string",
             AppliedTo: "Beneficiário",
@@ -1869,7 +1870,7 @@ export default {
           },
           {
             Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
-            Type: "Name",
+            Type: "Text",
             Label: "Nome",
             DataType: "string",
             AppliedTo: "Dependente",
@@ -1892,63 +1893,29 @@ export default {
       },
       FieldOptions: [
         {
-          Id: "Name",
-          Label: "Nome",
-          Value: ["Name"]
+          Id: "Text",
+          Label: "Texto simples",
+          Value: ["Text"]
         },
         {
-          Id: "FirstName",
-          Label: "Primeiro nome",
-          Value: ["FirstName"]
-        },
-        {
-          Id: "SecondName",
-          Label: "Sobrenome",
-          Value: ["SecondName"]
-        },
-        {
-          Id: "Document",
-          Label: "Documento",
-          Value: ["DocumentType", "Document"]
+          Id: "Number",
+          Label: "Campo numérico",
+          Value: ["Number"]
         },
         {
           Id: "Addresses",
-          Label: "Endereço livre",
-          Value: ["Address", "Address", "Address"]
+          Label: "Endereço",
+          Value: ["Address", "Address"]
         },
         {
-          Id: "BrAddresses",
-          Label: "Endereço brasileiro",
-          Value: [
-            "CEP",
-            "Country",
-            "State",
-            "City",
-            "Neighbor",
-            "Street",
-            "Number",
-            "Complement"
-          ]
-        },
-        {
-          Id: "Birthdate",
-          Label: "Data de nascimento",
-          Value: ["Birthdate"]
+          Id: "Date",
+          Label: "Data",
+          Value: ["Date"]
         },
         {
           Id: "Genre",
           Label: "Gênero",
           Value: ["Genre"]
-        },
-        {
-          Id: "Facebook",
-          Label: "Facebook",
-          Value: ["Facebook"]
-        },
-        {
-          Id: "Twitter",
-          Label: "Twitter",
-          Value: ["Twitter"]
         },
         {
           Id: "Email",
@@ -1975,8 +1942,7 @@ export default {
           Label: "Telefones (x3)",
           Value: ["Phone", "Phone", "Phone"]
         }
-      ],
-      RequiredFields: ["Name", "CPF", "Email"]
+      ]
     },
     Settings: {
       snackbarDuration: 3000,
@@ -2061,7 +2027,6 @@ export default {
       return [item, ...array];
     },
     addNewItemBelow(array, item) {
-      debugger;
       return [...array, item];
     },
     removeItemFromArray(array, id) {
@@ -2224,6 +2189,16 @@ export default {
       this.Service.Form.Fields = this.Service.Form.Fields.filter(f => {
         return f.Id !== id;
       });
+    },
+    reshuffle(index) {
+      let z = this.Service.Form.Rules[0];
+      let a = this.Service.Form.Rules[1];
+      let b = this.Service.Form.Rules[2];
+      if (index === 2) {
+        this.Service.Form.Rules = [z, b, a];
+      } else {
+        this.Service.Form.Rules = [z, a, b];
+      }
     }
   },
   validations: {
