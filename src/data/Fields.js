@@ -2,7 +2,7 @@ export default [
   {
     Id: "Text",
     Name: "Texto simples",
-    DefaultLabel: "Campo de texto"
+    DefaultLabel: "Texto simples"
   },
   {
     Id: "Number",
@@ -15,14 +15,9 @@ export default [
     DefaultLabel: "CPF"
   },
   {
-    Id: "Address",
-    Name: "Endereço",
-    DefaultLabel: "Endereço"
-  },
-  {
     Id: "Date",
     Name: "Date",
-    DefaultLabel: "Campo de data"
+    DefaultLabel: "Data de ..."
   },
   {
     Id: "Genre",
