@@ -1,7 +1,7 @@
-import LongText from "./LongText";
+import ShortText from "./ShortText";
 
 const DescriptionGen = name => {
-  return `Serviço ${name} ${LongText}`;
+  return `Serviço ${name} ${ShortText}`;
 };
 
 export default [
@@ -15,7 +15,8 @@ export default [
     get Description() {
       return DescriptionGen(this.Name);
     },
-    Cost: 0.9,
+    ServiceS1Value: 0.9,
+    ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
     Rules: [
@@ -96,7 +97,8 @@ export default [
     get Description() {
       return DescriptionGen(this.Name);
     },
-    Cost: 0.2,
+    ServiceS1Value: 0.2,
+    ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
     Rules: [
@@ -177,7 +179,8 @@ export default [
     get Description() {
       return DescriptionGen(this.Name);
     },
-    Cost: 0.1,
+    ServiceS1Value: 0.1,
+    ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
     Rules: [
@@ -258,7 +261,8 @@ export default [
     get Description() {
       return DescriptionGen(this.Name);
     },
-    Cost: 5.5,
+    ServiceS1Value: 5.5,
+    ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
     Rules: [
@@ -339,7 +343,8 @@ export default [
     get Description() {
       return DescriptionGen(this.Name);
     },
-    Cost: 3.0,
+    ServiceS1Value: 3.0,
+    ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
     Rules: [
@@ -420,7 +425,8 @@ export default [
     get Description() {
       return DescriptionGen(this.Name);
     },
-    Cost: 3.0,
+    ServiceS1Value: 3.0,
+    ServiceCost: 0.1,
     Vigence: "1095",
     Exclusive: false,
     Rules: [
@@ -501,7 +507,8 @@ export default [
     get Description() {
       return DescriptionGen(this.Name);
     },
-    Cost: 1.0,
+    ServiceS1Value: 1.0,
+    ServiceCost: 0.1,
     Vigence: "1095",
     Exclusive: false,
     Rules: [
@@ -582,7 +589,8 @@ export default [
     get Description() {
       return DescriptionGen(this.Name);
     },
-    Cost: 1.0,
+    ServiceS1Value: 1.0,
+    ServiceCost: 0.1,
     Vigence: "1095",
     Exclusive: false,
     Rules: [
@@ -663,7 +671,8 @@ export default [
     get Description() {
       return DescriptionGen(this.Name);
     },
-    Cost: 1.57,
+    ServiceS1Value: 1.57,
+    ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
     Rules: [
@@ -744,7 +753,8 @@ export default [
     get Description() {
       return DescriptionGen(this.Name);
     },
-    Cost: 0.46,
+    ServiceS1Value: 0.46,
+    ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
     Rules: [

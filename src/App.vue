@@ -3,9 +3,28 @@
     id="app"
     :class="{'s1-loc-comp__mezzanine-is-active' : (Package.ShowServiceDetails && !Package.ServicesDialog) || Service.ShowServiceDetails}"
   >
+    <div class="s1-prop__auto-gen">
+      <md-button
+        class="md-icon-button squared"
+        @click="Settings.activePage = 'allPackages'"
+        :class="{'md-primary' : Settings.activePage === 'allPackages'}"
+      >PK</md-button>
+      <md-button
+        class="md-icon-button squared"
+        @click="Settings.activePage = 'allServices'"
+        :class="{'md-primary' : Settings.activePage === 'allServices'}"
+      >SV</md-button>
+      <md-button
+        class="md-icon-button squared"
+        @click="Settings.activePage = 'allSuppliers'"
+        :class="{'md-primary' : Settings.activePage === 'allSuppliers'}"
+      >FC</md-button>
+    </div>
     <div v-if="Settings.activePage === 'allServices'">
       <section class="s1-U__width--900px s1-U__pd16" style="margin: 0 auto;">
-        <div v-show="Service.Data.length > 0 && !Service.CreationInterface">
+        <div
+          v-show="Service.Data.length > 0 && !Service.CreationInterface && !Service.EditionInterface"
+        >
           <div class="s1-U__full-width s1-U__mg--bt32">
             <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
               <span>Serviços</span>
@@ -30,51 +49,72 @@
               </div>
             </md-button>
           </div>
-          <div class="md-layout md-gutter">
-            <div
-              class="md-layout-item md-size-50 s1-U__mg--bt20"
-              v-for="service in Service.Data"
-              :key="service.Id"
-            >
-              <md-card>
-                <!-- RENAN -->
-                <div class="s1-U__pd16 s1-U__border--bottom1">
-                  <div class="s1-U__align-children--top s1-U__justify-content--space-between">
-                    <div class="s1-U__full-width s1-U__text-ellipsis">
-                      <h2 class="md-headline s1-U__text-ellipsis">{{service.FriendlyName}}</h2>
-                      <span class="md-caption">{{getNameById(Suppliers, service.Supplier)}}</span>
-                    </div>
-                    <div class="s1-U__flex-shrink-0 s1-U__align-children--center">
-                      <md-menu md-direction="bottom-end">
-                        <md-button class="md-icon-button squared" md-menu-trigger>
-                          <md-icon>more_vert</md-icon>
-                        </md-button>
-
-                        <md-menu-content>
-                          <md-menu-item
-                            @click="setShowServiceDetailInServices(service)"
-                          >Ver detalhes</md-menu-item>
-                          <md-menu-item @click="edit('Service', service.Id)">Editar</md-menu-item>
-                        </md-menu-content>
-                      </md-menu>
-                    </div>
-                  </div>
-                </div>
-                <div class="s1-U__pd16">
-                  <div class="s1-U__align-children--top s1-U__justify-content--space-between">
-                    <div class="s1-U__align-children--center">
-                      <div v-show="service.Exclusive">
-                        <md-icon class="md-accent s1-U__flex-shrink-0 s1-U__mg--rt8">
-                          <span class="s1-U__opacity--54">star</span>
-                        </md-icon>
-                        <md-tooltip md-direction="left">Vendido exclusivamente</md-tooltip>
+          <div class="s1-U__align-children--top">
+            <div class="s1-U__flex-shrink-0 s1-U__width--210px s1-U__pd--rt16">
+              <md-list class="s1-U__bg-color--transparent">
+                <md-list-item
+                  v-for="type in ServiceTypes"
+                  :key="'type-' + type.Id + '-menu'"
+                  @click="Service.ActiveCategory = type.Id; closeAndClearServiceDetails()"
+                  :class="{'s1-loc-comp__avtive-border-right s1-U__text-color--primary' : Service.ActiveCategory === type.Id}"
+                >
+                  <p class="s1-U__mg--rt8">{{type.Name}}</p>
+                  <md-badge
+                    v-if="getListByProp(Service.Data, type.Id, 'ServiceType').length > 0"
+                    :md-content="getListByProp(Service.Data, type.Id, 'ServiceType').length"
+                    class="md-primary"
+                  ></md-badge>
+                </md-list-item>
+              </md-list>
+            </div>
+            <div class="md-layout md-gutter s1-U__full-width">
+              <!-- SERVICES LIST -->
+              <div
+                class="md-layout-item md-size-50 s1-U__mg--bt20"
+                v-for="service in getListByProp(Service.Data, Service.ActiveCategory, 'ServiceType')"
+                :key="service.Id"
+              >
+                <md-card>
+                  <div class="s1-U__pd16 s1-U__border--bottom1">
+                    <div class="s1-U__align-children--top s1-U__justify-content--space-between">
+                      <div class="s1-U__full-width s1-U__text-ellipsis">
+                        <h2 class="md-headline s1-U__text-ellipsis">{{service.FriendlyName}}</h2>
+                        <span class="md-caption">{{getNameById(Suppliers, service.Supplier)}}</span>
                       </div>
-                      <p class="s1-U__text-color--dark-2">{{service.Name}}</p>
+                      <div class="s1-U__flex-shrink-0 s1-U__align-children--center">
+                        <md-menu md-direction="bottom-end">
+                          <md-button class="md-icon-button squared" md-menu-trigger>
+                            <md-icon>more_vert</md-icon>
+                          </md-button>
+
+                          <md-menu-content>
+                            <md-menu-item
+                              @click="setShowServiceDetailInServices(service)"
+                            >Ver detalhes</md-menu-item>
+                            <md-menu-item @click="edit('Service', service.Id)">Editar</md-menu-item>
+                          </md-menu-content>
+                        </md-menu>
+                      </div>
                     </div>
-                    <p class="s1-U__text-color--accent md-subheading">{{formatMoney(service.Cost)}}</p>
                   </div>
-                </div>
-              </md-card>
+                  <div class="s1-U__pd16">
+                    <div class="s1-U__align-children--top s1-U__justify-content--space-between">
+                      <div class="s1-U__align-children--center">
+                        <div v-show="service.Exclusive">
+                          <md-icon class="md-accent s1-U__flex-shrink-0 s1-U__mg--rt8">
+                            <span class="s1-U__opacity--54">star</span>
+                          </md-icon>
+                          <md-tooltip md-direction="left">Vendido exclusivamente</md-tooltip>
+                        </div>
+                        <p class="s1-U__text-color--dark-2">{{service.Name}}</p>
+                      </div>
+                      <p
+                        class="s1-U__text-color--accent md-subheading"
+                      >{{formatMoney(service.ServiceS1Value)}}</p>
+                    </div>
+                  </div>
+                </md-card>
+              </div>
             </div>
           </div>
         </div>
@@ -216,21 +256,41 @@
                     </md-select>
                   </md-field>
                 </div>
-                <div class="s1-loc__md-field-wrapper s1-U__width--100px">
+                <div class="s1-loc__md-field-wrapper s1-U__width--180px">
                   <md-field
-                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.Cost.$dirty && $v.Service.Form.Cost.$invalid}"
+                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceS1Value.$dirty && $v.Service.Form.ServiceS1Value.$invalid}"
                   >
-                    <label for="Service-Cost">Custo</label>
+                    <label for="Service-ServiceS1Value">Custo repassado</label>
                     <md-input
-                      id="Service-Cost"
-                      name="Service-Cost"
+                      id="Service-ServiceS1Value"
+                      name="Service-ServiceS1Value"
                       type="number"
-                      @blur="$v.Service.Form.Cost.$touch()"
-                      @focus="$v.Service.Form.Cost.$reset()"
-                      v-model="Service.Form.Cost"
+                      @blur="$v.Service.Form.ServiceS1Value.$touch()"
+                      @focus="$v.Service.Form.ServiceS1Value.$reset()"
+                      v-model="Service.Form.ServiceS1Value"
                       required
                     ></md-input>
-                    <span class="md-error" v-if="!$v.Service.Form.Cost.required">Obrigatório</span>
+                    <span
+                      class="md-error"
+                      v-if="!$v.Service.Form.ServiceS1Value.required"
+                    >Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--180px">
+                  <md-field
+                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceCost.$dirty && $v.Service.Form.ServiceCost.$invalid}"
+                  >
+                    <label for="Service-ServiceCost">Custo fornecedor</label>
+                    <md-input
+                      id="Service-ServiceCost"
+                      name="Service-ServiceCost"
+                      type="number"
+                      @blur="$v.Service.Form.ServiceCost.$touch()"
+                      @focus="$v.Service.Form.ServiceCost.$reset()"
+                      v-model="Service.Form.ServiceCost"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Service.Form.ServiceCost.required">Obrigatório</span>
                   </md-field>
                 </div>
                 <div class="s1-loc__md-field-wrapper">
@@ -436,6 +496,387 @@
           </md-card>
         </div>
 
+        <!-- EDIT SERVICE -->
+        <div v-show="Service.EditionInterface">
+          <div
+            class="md-layout md-alignment-center-center s1-loc__loading"
+            style="position: fixed;top: 0;left: 0;"
+            :class="Service.Loading && 'active'"
+          >
+            <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+          </div>
+          <div class="s1-U__mg--bt32">
+            <div class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
+              <md-button
+                class="md-dense md-icon-button s1-U__mg--rt16 s1-U__mg--tp16"
+                @click="Service.DiscardEditionInterface = true"
+              >
+                <md-icon>arrow_back</md-icon>
+              </md-button>
+              <div v-if="Service.Form.Id && Service.EditionInterface === true">
+                <p class="md-caption s1-U__text-uppercase">
+                  <span>{{getNameById(Service.Data, Service.Form.Id)}} - {{getPropById(Service.Data, Service.Form.Id, 'FriendlyName')}}</span>
+                </p>
+                <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
+                  <span>Edição de serviço</span>
+                </h1>
+              </div>
+            </div>
+          </div>
+          <md-card>
+            <md-content class="md-scrollbar s1-U__pd0 s1-U__pd16" style="overflow: auto">
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp4"
+              >Geral</h3>
+              <div class="s1-U__pd--lt16">
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field
+                    :md-counter="false"
+                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.Name.$dirty && $v.Service.Form.Name.$invalid}"
+                  >
+                    <label for="Service-Name-edit">Nome</label>
+                    <md-input
+                      id="Service-Name-edit"
+                      name="Service-Name-edit"
+                      type="text"
+                      @blur="$v.Service.Form.Name.$touch()"
+                      @focus="$v.Service.Form.Name.$reset()"
+                      v-model="Service.Form.Name"
+                      maxlength="20"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Service.Form.Name.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field
+                    :md-counter="false"
+                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.FriendlyName.$dirty && $v.Service.Form.FriendlyName.$invalid}"
+                  >
+                    <label for="Service-FriendlyName-edit">Nome camarada</label>
+                    <md-input
+                      id="Service-FriendlyName-edit"
+                      name="Service-FriendlyName-edit"
+                      type="text"
+                      @blur="$v.Service.Form.FriendlyName.$touch()"
+                      @focus="$v.Service.Form.FriendlyName.$reset()"
+                      v-model="Service.Form.FriendlyName"
+                      maxlength="20"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Service.Form.FriendlyName.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--180px">
+                  <md-field>
+                    <label for="Service-Supplier-edit">Fornecedor</label>
+                    <md-select
+                      id="Service-Supplier-edit"
+                      name="Service-Supplier-edit"
+                      v-model="Service.Form.Supplier"
+                      required
+                    >
+                      <md-option
+                        v-for="supplier in Suppliers"
+                        :key="'supplier' + supplier.Id"
+                        :value="supplier.Id"
+                      >{{supplier.Name}}</md-option>
+                    </md-select>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--144px">
+                  <md-field>
+                    <label for="Service-Type-edit">Tipo</label>
+                    <md-select
+                      id="Service-Type-edit"
+                      name="Service-Type-edit"
+                      v-model="Service.Form.ServiceType"
+                      required
+                    >
+                      <md-option
+                        v-for="serviceType in ServiceTypes"
+                        :key="'serviceType' + serviceType.Id"
+                        :value="serviceType.Id"
+                      >{{serviceType.Name}}</md-option>
+                    </md-select>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--540px">
+                  <md-field>
+                    <label for="Service-Description-edit">Descrição</label>
+                    <md-textarea
+                      id="Service-Description-edit"
+                      name="Service-Description-edit"
+                      v-model="Service.Form.Description"
+                      md-autogrow
+                    ></md-textarea>
+                  </md-field>
+                </div>
+                <md-checkbox
+                  v-model="Service.Form.Exclusive"
+                >Esse serviço só pode ser vendido sozinho em um pacote</md-checkbox>
+              </div>
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
+              >Contratação</h3>
+              <div class="s1-U__pd--lt16">
+                <div class="s1-loc__md-field-wrapper s1-U__width--180px">
+                  <md-field>
+                    <label for="Service-CurrencyCode-edit">Moeda</label>
+                    <md-select
+                      id="Service-CurrencyCode-edit"
+                      name="Service-CurrencyCode-edit"
+                      v-model="Service.Form.CurrencyCode"
+                      required
+                    >
+                      <md-option
+                        v-for="currency in Currencies"
+                        :key="'currency' + currency.Id"
+                        :value="currency.Id"
+                      >{{currency.Name}}</md-option>
+                    </md-select>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--180px">
+                  <md-field
+                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceS1Value.$dirty && $v.Service.Form.ServiceS1Value.$invalid}"
+                  >
+                    <label for="Service-ServiceS1Value-edit">Custo repassado</label>
+                    <md-input
+                      id="Service-ServiceS1Value-edit"
+                      name="Service-ServiceS1Value-edit"
+                      type="number"
+                      @blur="$v.Service.Form.ServiceS1Value.$touch()"
+                      @focus="$v.Service.Form.ServiceS1Value.$reset()"
+                      v-model="Service.Form.ServiceS1Value"
+                      required
+                    ></md-input>
+                    <span
+                      class="md-error"
+                      v-if="!$v.Service.Form.ServiceS1Value.required"
+                    >Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--180px">
+                  <md-field
+                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceCost.$dirty && $v.Service.Form.ServiceCost.$invalid}"
+                  >
+                    <label for="Service-ServiceCost-edit">Custo fornecedor</label>
+                    <md-input
+                      id="Service-ServiceCost-edit"
+                      name="Service-ServiceCost-edit"
+                      type="number"
+                      @blur="$v.Service.Form.ServiceCost.$touch()"
+                      @focus="$v.Service.Form.ServiceCost.$reset()"
+                      v-model="Service.Form.ServiceCost"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Service.Form.ServiceCost.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper">
+                  <div class="s1-U__text-color--dark-2 s1-U__mg--bt8">Vigência</div>
+                  <div class="s1-U__align-children--bottom s1-U__mg--bt16">
+                    <md-field
+                      class="s1-md-field--w50px s1-U__mg0"
+                      :class="{'md-invalid md-field-helper-text': $v.Service.Form.Vigence.$dirty && $v.Service.Form.Vigence.$invalid}"
+                    >
+                      <md-input
+                        class="s1-U__text-align--center"
+                        id="Service-Vigence"
+                        name="Service-Vigence"
+                        type="number"
+                        @blur="$v.Service.Form.Vigence.$touch()"
+                        @focus="$v.Service.Form.Vigence.$reset()"
+                        v-model="Service.Form.Vigence"
+                        required
+                      ></md-input>
+                    </md-field>
+                    <p class="s1-U__mg--lt8">dias</p>
+                  </div>
+                </div>
+              </div>
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
+              >Favorecidos</h3>
+              <div class="s1-U__pd--lt16 s1-U__pd--rt16">
+                <table style="border-spacing: 0">
+                  <tbody>
+                    <tr
+                      v-for="(fav, index) in Service.Form.Rules"
+                      :key="fav.Appliedto + '-in-form'"
+                    >
+                      <td class="s1-U__pd--rt8">
+                        <p
+                          class="md-body-2 s1-U__flex-shrink-0 s1-U__text-color--dark-2 s1-U__text-align--right"
+                        >{{fav.Appliedto}}:</p>
+                      </td>
+                      <td
+                        class="s1-U__pd--rt8 s1-U__pd--bt8 s1-U__pd--tp8"
+                        v-show="Service.FormFavoredVisibility[fav.Appliedto] && fav.Appliedto !== 'Titular'"
+                      >
+                        <md-field class="s1-md-field--w150px s1-U__mg0">
+                          <md-select
+                            id="Service-CurrencyCode"
+                            name="Service-CurrencyCode"
+                            v-model="Service.Form.Rules[index].Operator"
+                            required
+                          >
+                            <md-option
+                              v-for="operator in Operators"
+                              :key="'operator' + operator.Id"
+                              :value="operator.Id"
+                            >{{operator.Name}}</md-option>
+                          </md-select>
+                        </md-field>
+                      </td>
+                      <td
+                        class="s1-U__pd--rt8 s1-U__pd--bt8 s1-U__pd--tp8"
+                        v-show="Service.FormFavoredVisibility[fav.Appliedto]"
+                      >
+                        <md-field class="s1-md-field--w50px s1-U__mg0">
+                          <md-input
+                            class="s1-U__text-align--center"
+                            id="Service-Value"
+                            name="Service-Value"
+                            type="number"
+                            v-model="Service.Form.Rules[index].Value"
+                            @change="(!Service.Form.Rules[index].Value || parseInt(Service.Form.Rules[index].Value) === 0) && Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '1' : null"
+                            required
+                          ></md-input>
+                        </md-field>
+                      </td>
+                      <td colspan="2" v-show="!Service.FormFavoredVisibility[fav.Appliedto]">
+                        <div class="s1-U__align-children--center">
+                          <span
+                            class="s1-U__text-color--dark-2 s1-U__pd--rt16 s1-U__flex-shrink-0"
+                          >nenhum</span>
+                          <md-button
+                            class="md-dense s1-U__mg--bt4 md-primary s1-md-bordered"
+                            @click="Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.Appliedto] = !Service.FormFavoredVisibility[fav.Appliedto]"
+                          >
+                            <div class="s1-U__align-children--center">
+                              <md-icon>{{Service.FormFavoredVisibility[fav.Appliedto] ? 'close' : 'add'}}</md-icon>
+                              <span class="s1-U__mg--lt4">Adicionar</span>
+                            </div>
+                          </md-button>
+                        </div>
+                      </td>
+                      <td class v-show="Service.FormFavoredVisibility[fav.Appliedto]">
+                        <md-button
+                          class="md-dense s1-U__mg--bt4 md-icon-button"
+                          @click="Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.Appliedto] = !Service.FormFavoredVisibility[fav.Appliedto]"
+                          v-if="fav.Appliedto !== 'Titular'"
+                        >
+                          <md-icon>{{Service.FormFavoredVisibility[fav.Appliedto] ? 'close' : 'add'}}</md-icon>
+                        </md-button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
+              >Campos</h3>
+              <div class="service-fields s1-U__pd--lt16 s1-U__pd--rt16">
+                <div
+                  v-for="favored in ['Titular', 'Beneficiário', 'Dependente']"
+                  :key="favored + '-group'"
+                >
+                  <h4
+                    class="s1-U__text-color--dark-2 md-body-2"
+                    v-if="Service.FormFavoredVisibility[favored]"
+                  >{{favored}}</h4>
+                  <div
+                    class="md-layout wrap s1-U__mg--tp4 s1-U__mg--bt16 s1-U__pd16 s1-U__bg-color--body-bg s1-U__border-solid--1"
+                    v-if="Service.FormFavoredVisibility[favored]"
+                  >
+                    <div
+                      class="md-layout-item s1-U__pd--bt8 s1-U__pd--rt8 md-xsmall-size-100 md-small-size-50 md-medium-size-50 md-large-size-33 md-xlarge-size-33"
+                      v-for="(field, index) in getListByProp(Service.Form.Fields, favored, 'AppliedTo')"
+                      :key="field.Id + '-chip'"
+                    >
+                      <md-card class="s1-U__pd16">
+                        <div
+                          class="s1-U__mg--bt8 s1-U__align-children--center s1-U__justify-content--space-between s1-U__text-uppercase"
+                        >
+                          <div class="s1-U__align-children--center">
+                            <md-icon class="md-accent">stop</md-icon>
+                            <p class="md-caption s1-U__mg--rt4 s1-U__text-color--accent">
+                              <b>{{getNameById(Fields, field.Type)}}</b>
+                            </p>
+                          </div>
+                          <md-button
+                            class="md-icon-button s1-U__mg--lt4 squared md-dense"
+                            @click="removeField(field.Id)"
+                            :disabled="index < 2"
+                          >
+                            <md-icon>
+                              <span :class="{'s1-U__invisible' : index < 2}">close</span>
+                            </md-icon>
+                            <md-tooltip md-direction="left">remover</md-tooltip>
+                          </md-button>
+                        </div>
+                        <div class="s1-loc__md-field-wrapper">
+                          <md-field class="s1-U__mg0 s1-U__mg--tp8">
+                            <label for>Nome do campo</label>
+                            <md-input
+                              type="text"
+                              @blur="field.Label.length === 0 ? field.Label = getNameById(Fields, field.Type) : null"
+                              v-model="field.Label"
+                              required
+                            ></md-input>
+                          </md-field>
+                        </div>
+                      </md-card>
+                    </div>
+                    <div
+                      class="md-layout-item s1-U__pd--bt8 s1-U__pd--rt8 md-xsmall-size-100 md-small-size-50 md-medium-size-50 md-large-size-33 md-xlarge-size-33"
+                      style="min-height: 120px"
+                    >
+                      <md-menu class="s1-U__full-width s1-U__full-height">
+                        <md-button
+                          class="md-accent md-icon-button s1-md-bordered squared s1-U__full-width s1-U__full-height md-button-content--full-width"
+                          md-menu-trigger
+                        >
+                          <md-icon style="transform: translateY(-1px)">add</md-icon>
+                          <span class="s1-U__mg--lt4">adicionar campo</span>
+                        </md-button>
+
+                        <md-menu-content>
+                          <md-menu-item
+                            v-for="field in Service.FieldOptions"
+                            :key="field.Id + '-option-to-add'"
+                            @click="addNewField(favored, field.Value, field.Name)"
+                          >
+                            <span>{{field.Label}}</span>
+                            <md-icon>{{ field.Value.length > 1 ? 'apps' : 'stop' }}</md-icon>
+                          </md-menu-item>
+                        </md-menu-content>
+                      </md-menu>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
+              >Critérios</h3>
+              <div
+                class="s1-U__pd--lt16 s1-U__pd--rt16 s1-U__mg--bt32 s1-U__text-color--dark-2"
+              >Nenhum critério disponível para configuração.</div>
+            </md-content>
+            <div class="s1-U__text-align--right s1-U__pd16 s1-U__border--top1 s1-U__flex-shrink-0">
+              <md-button
+                class="md-primary md-raised"
+                :disabled="$v.Service.Form.$invalid"
+                @click="saveEdited('Service')"
+              >
+                <span class="s1-U__pd--lt8 s1-U__pd--rt8">Salvar</span>
+              </md-button>
+            </div>
+          </md-card>
+        </div>
+
         <!-- SERVICE DETAILS -->
         <div
           class="s1-mezzanine-wrapper s1-U__full-height s1-U__bg-color--white"
@@ -487,7 +928,9 @@
                   >Custos</h3>
                   <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                     <p class="md-caption">CUSTO FORNECEDOR</p>
-                    <p class="s1-U__text-ellipsis">{{formatMoney(Service.DetailedService.Cost)}}</p>
+                    <p
+                      class="s1-U__text-ellipsis"
+                    >{{formatMoney(Service.DetailedService.ServiceS1Value)}}</p>
                   </div>
                   <h3
                     class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
@@ -501,59 +944,6 @@
           </div>
         </div>
 
-        <md-dialog
-          class="s1-U__width--400px"
-          :md-close-on-esc="false"
-          :md-click-outside-to-close="false"
-          :md-active.sync="Service.EditionInterface"
-          :class="Service.DiscardEditionInterface && 's1-U__invisible'"
-          v-if="Service.Data.length > 0"
-        >
-          <div
-            class="md-layout md-alignment-center-center s1-loc__loading"
-            :class="Service.Loading && 'active'"
-          >
-            <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
-          </div>
-          <div
-            class="s1-U__border--bottom1 s1-U__pd16 s1-U__flex-shrink-0 s1-U__align-children--center s1-U__justify-content--space-between"
-          >
-            <div class="md-title">{{Service.Data[Service.EditingIndex].Name}}</div>
-            <md-button class="md-icon-button" @click="Service.DiscardEditionInterface = true">
-              <md-icon>close</md-icon>
-            </md-button>
-          </div>
-          <md-content class="md-scrollbar s1-U__pd0 s1-U__pd16" style="overflow: auto">
-            <div class="s1-loc__md-field-wrapper s1-U__width--180px">
-              <md-field
-                :class="{'md-invalid md-field-helper-text': $v.Service.Form.Name.$dirty && $v.Service.Form.Name.$invalid}"
-              >
-                <label for="Edit-Service-Name">Nome</label>
-                <md-input
-                  id="Edit-Service-Name"
-                  name="Edit-Service-Name"
-                  type="text"
-                  @blur="$v.Service.Form.Name.$touch()"
-                  @focus="$v.Service.Form.Name.$reset()"
-                  v-model="Service.Form.Name"
-                  required
-                ></md-input>
-                <span class="md-error" v-if="!$v.Service.Form.Name.required">Obrigatório</span>
-                <span class="md-error" v-if="!$v.Service.Form.Name.minLength">Mínimo de 4 caracteres</span>
-              </md-field>
-            </div>
-          </md-content>
-          <md-dialog-actions class="s1-U__pd16 s1-U__border--top1 s1-U__flex-shrink-0">
-            <md-button
-              class="md-primary md-raised"
-              :disabled="$v.Service.Form.$invalid"
-              @click="saveEdited('Service')"
-            >
-              <span class="s1-U__pd--lt8 s1-U__pd--rt8">Cadastrar</span>
-            </md-button>
-          </md-dialog-actions>
-        </md-dialog>
-
         <md-dialog-confirm
           :md-active.sync="Service.DiscardCreationInterface"
           md-title="Descartar cadastro?"
@@ -565,7 +955,6 @@
         />
 
         <md-dialog-confirm
-          :md-backdrop="false"
           :md-active.sync="Service.DiscardEditionInterface"
           md-title="Descartar edição?"
           md-content="Ao sair, as informações do serviço em edição serão descartadas"
@@ -626,7 +1015,7 @@
                 <p class="md-caption">
                   <span class="s1-U__text-uppercase">RZ Corporation</span>
                 </p>
-                <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
+                <h1 class="md-display-1 s1-U__text-color--dark-2">
                   <span>Pacotes</span>
                 </h1>
               </div>
@@ -688,7 +1077,7 @@
                   </div>
                   <p class="s1-U__text-align--right s1-U__pd--rt16">
                     <span class="md-caption s1-U__text-color--dark-3">
-                      <b>{{formatMoney(pack.ServicesCost)}}</b>
+                      <b>{{formatMoney(pack.ServicesServiceS1Value)}}</b>
                       <md-tooltip md-direction="left">Custo fornecedor</md-tooltip>
                     </span>
                   </p>
@@ -848,7 +1237,7 @@
                       <div class="s1-U__align-children--center">
                         <span
                           class="md-body-2 s1-U__text-color--accent s1-U__mg--rt8 s1-U__flex-shrink-0"
-                        >{{formatMoney(getPropById(Services, service, 'Cost'))}}</span>
+                        >{{formatMoney(getPropById(Services, service, 'ServiceS1Value'))}}</span>
                         <md-button
                           class="md-dense s1-md-bordered s1-U__flex-shrink-0"
                           @click="setShowServiceDetail(getObjByProp(Services, service, 'Id'))"
@@ -889,7 +1278,7 @@
                 <p>
                   <span class="md-body-2 s1-U__text-color--dark-2">
                     <span class="s1-U__mg--rt4">Custo de</span>
-                    <b>{{formatMoney(getServicesCost())}}</b>
+                    <b>{{formatMoney(getServicesServiceS1Value())}}</b>
                   </span>
                 </p>
                 <p>
@@ -985,7 +1374,7 @@
                   >
                     <h3 class="s1-U__fw--300 s1-U__text-color--primary s1-U__pd--rt16">
                       <span class="md-caption s1-U__text-color--accent">
-                        {{formatMoney(service.Cost)}}
+                        {{formatMoney(service.ServiceS1Value)}}
                         <md-tooltip md-direction="right">Custo fornecedor</md-tooltip>
                       </span>
                     </h3>
@@ -1031,7 +1420,7 @@
                         :key="service.Id"
                       >
                         <span>{{service.FriendlyName}}</span>
-                        <span class="s1-U__mg--lt16">{{formatMoney(service.Cost)}}</span>
+                        <span class="s1-U__mg--lt16">{{formatMoney(service.ServiceS1Value)}}</span>
                       </div>
                     </div>
                   </div>
@@ -1106,7 +1495,9 @@
                       >Custos</h3>
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                         <p class="md-caption">CUSTO FORNECEDOR</p>
-                        <p class="s1-U__text-ellipsis">{{formatMoney(Package.DetailedService.Cost)}}</p>
+                        <p
+                          class="s1-U__text-ellipsis"
+                        >{{formatMoney(Package.DetailedService.ServiceS1Value)}}</p>
                       </div>
                       <h3
                         class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
@@ -1134,15 +1525,22 @@
           <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
         </div>
         <div class="s1-U__mg--bt32">
-          <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
+          <div class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
             <md-button
-              class="md-dense md-icon-button s1-U__mg--rt16"
+              class="md-dense md-icon-button s1-U__mg--rt16 s1-U__mg--tp16"
               @click="Package.DiscardEditionInterface = true"
             >
               <md-icon>arrow_back</md-icon>
             </md-button>
-            <span>Cadastro de pacote</span>
-          </h1>
+            <div v-if="Package.Form.Id && Package.EditionInterface === true">
+              <p class="md-caption s1-U__text-uppercase">
+                <span>RZ Corporation / {{getNameById(Package.Data, Package.Form.Id)}}</span>
+              </p>
+              <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
+                <span>Edição de pacote</span>
+              </h1>
+            </div>
+          </div>
         </div>
         <md-card>
           <md-card-content>
@@ -1224,7 +1622,7 @@
                       <div class="s1-U__align-children--center">
                         <span
                           class="md-body-2 s1-U__text-color--accent s1-U__mg--rt8 s1-U__flex-shrink-0"
-                        >{{formatMoney(getPropById(Services, service, 'Cost'))}}</span>
+                        >{{formatMoney(getPropById(Services, service, 'ServiceS1Value'))}}</span>
                         <md-button
                           class="md-dense s1-md-bordered s1-U__flex-shrink-0"
                           @click="setShowServiceDetail(getObjByProp(Services, service, 'Id'))"
@@ -1265,7 +1663,7 @@
                 <p>
                   <span class="md-body-2 s1-U__text-color--dark-2">
                     <span class="s1-U__mg--rt4">Custo de</span>
-                    <b>{{formatMoney(getServicesCost())}}</b>
+                    <b>{{formatMoney(getServicesServiceS1Value())}}</b>
                   </span>
                 </p>
                 <p>
@@ -1319,12 +1717,6 @@
               <div
                 class="s1-U__pd16 s1-U__border--bottom1 s1-U__align-children--center s1-U__justify-content--flex-end"
               >
-                <!-- <md-button class="s1-md-bordered">
-                <div class="s1-U__align-children--center s1-U__pd--rt8">
-                  <md-icon class="s1-U__mg--rt8">filter_list</md-icon>
-                  <span>Filtros</span>
-                </div>
-                </md-button>-->
                 <div class="s1-loc__md-field-wrapper s1-U__width--180px">
                   <md-field class="s1-U__mg0">
                     <md-input class="s1-U__full-width" placeholder="Buscar"/>
@@ -1361,7 +1753,7 @@
                   >
                     <h3 class="s1-U__fw--300 s1-U__text-color--primary s1-U__pd--rt16">
                       <span class="md-caption s1-U__text-color--accent">
-                        {{formatMoney(service.Cost)}}
+                        {{formatMoney(service.ServiceS1Value)}}
                         <md-tooltip md-direction="right">Custo fornecedor</md-tooltip>
                       </span>
                     </h3>
@@ -1407,7 +1799,7 @@
                         :key="service.Id"
                       >
                         <span>{{service.FriendlyName}}</span>
-                        <span class="s1-U__mg--lt16">{{formatMoney(service.Cost)}}</span>
+                        <span class="s1-U__mg--lt16">{{formatMoney(service.ServiceS1Value)}}</span>
                       </div>
                     </div>
                   </div>
@@ -1482,7 +1874,9 @@
                       >Custos</h3>
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                         <p class="md-caption">CUSTO FORNECEDOR</p>
-                        <p class="s1-U__text-ellipsis">{{formatMoney(Package.DetailedService.Cost)}}</p>
+                        <p
+                          class="s1-U__text-ellipsis"
+                        >{{formatMoney(Package.DetailedService.ServiceS1Value)}}</p>
                       </div>
                       <h3
                         class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
@@ -1549,7 +1943,9 @@
                 <h3 class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary">Custos</h3>
                 <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                   <p class="md-caption">CUSTO FORNECEDOR</p>
-                  <p class="s1-U__text-ellipsis">{{formatMoney(Package.DetailedService.Cost)}}</p>
+                  <p
+                    class="s1-U__text-ellipsis"
+                  >{{formatMoney(Package.DetailedService.ServiceS1Value)}}</p>
                 </div>
                 <h3
                   class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
@@ -1562,6 +1958,7 @@
           </md-card>
         </div>
       </div>
+      
       <md-dialog-confirm
         :md-active.sync="Package.DiscardCreationInterface"
         md-title="Descartar cadastro?"
@@ -1596,6 +1993,509 @@
         <span>Pacote editado com sucesso</span>
         <md-button class="md-accent" @click="Package.SuccessFeedbackEdition = false">OK</md-button>
       </md-snackbar>
+    </div>
+    <div v-if="Settings.activePage === 'allSuppliers'">
+      <section class="s1-U__width--900px s1-U__pd16" style="margin: 0 auto;">
+        <div
+          v-show="Supplier.Data.length > 0 && !Supplier.CreationInterface && !Supplier.EditionInterface"
+        >
+          <div class="s1-U__full-width s1-U__mg--bt32">
+            <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
+              <span>Fornecedores</span>
+            </h1>
+          </div>
+          <div
+            class="s1-U__align-children--center s1-U__mg--bt16 s1-U__justify-content--space-between"
+          >
+            <md-button class="s1-md-bordered s1-U__mg--bt16">
+              <div class="s1-U__align-children--center">
+                <md-icon>filter_list</md-icon>
+                <span>filtros</span>
+              </div>
+            </md-button>
+            <md-button
+              class="md-raised md-primary s1-U__mg--bt16"
+              @click="create('Supplier', 'Supplier-Name')"
+            >
+              <div class="s1-U__align-children--center">
+                <md-icon>add</md-icon>
+                <span>Fornecedor</span>
+              </div>
+            </md-button>
+          </div>
+          <md-table v-if="Supplier.Data.length > 0" md-card>
+            <md-table-row>
+              <md-table-head>Nome</md-table-head>
+              <md-table-head>Documento</md-table-head>
+              <md-table-head>E-mail</md-table-head>
+              <md-table-head>Telefone</md-table-head>
+              <md-table-head md-numeric></md-table-head>
+            </md-table-row>
+
+            <md-table-row v-for="supplier in Supplier.Data" :key="supplier.Id">
+              <md-table-cell>
+                <p class="md-caption">{{supplier.Name}}</p>
+                <h3>{{supplier.FantasyName}}</h3>
+              </md-table-cell>
+              <md-table-cell>
+                <p class="md-caption">{{supplier.DocumentType}}</p>
+                <p>{{supplier.Document}}</p>
+              </md-table-cell>
+              <md-table-cell>
+                <p class="text-s1-U__text-nowrap">{{supplier.Email}}</p>
+                <p class="text-s1-U__text-nowrap">{{supplier.Email2}}</p>
+              </md-table-cell>
+              <md-table-cell>
+                <p class="text-s1-U__text-nowrap">{{supplier.Phone}}</p>
+                <p class="text-s1-U__text-nowrap">{{supplier.Phone2}}</p>
+              </md-table-cell>
+              <md-table-cell md-numeric class="s1-U__text-align--right">
+                <md-menu md-direction="bottom-end">
+                  <md-button class="md-icon-button squared" md-menu-trigger>
+                    <md-icon>more_vert</md-icon>
+                  </md-button>
+
+                  <md-menu-content>
+                    <md-menu-item @click="setShowSupplierDetail(supplier)">Ver detalhes</md-menu-item>
+                    <md-menu-item @click="edit('Supplier', supplier.Id)">Editar</md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+              </md-table-cell>
+            </md-table-row>
+          </md-table>
+          <div class="s1-U__text-align--center" v-else>
+            <p class="md-body-2 s1-U__text-color--dark-2 s1-U__mg--bt4">Nenhum fornecedor criado</p>
+            <md-button class="md-primary md-raised" @click="create('Supplier', 'Supplier-Name')">
+              <div class="s1-U__align-children--center s1-U__pd--rt8 s1-U__pd--lt4">
+                <md-icon class="s1-U__mg--rt4">add</md-icon>
+                <span>Cadastrar fornecedor</span>
+              </div>
+            </md-button>
+          </div>
+        </div>
+
+        <!-- CREATE SUPPLIER -->
+        <div v-show="Supplier.CreationInterface">
+          <div
+            class="md-layout md-alignment-center-center s1-loc__loading"
+            style="position: fixed;top: 0;left: 0;"
+            :class="Supplier.Loading && 'active'"
+          >
+            <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+          </div>
+          <div class="s1-U__mg--bt32">
+            <div class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
+              <md-button
+                class="md-dense md-icon-button s1-U__mg--rt16"
+                @click="Supplier.DiscardCreationInterface = true"
+              >
+                <md-icon>arrow_back</md-icon>
+              </md-button>
+              <div>
+                <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
+                  <span>Cadastro de fornecedor</span>
+                </h1>
+              </div>
+            </div>
+          </div>
+          <md-card>
+            <md-content class="md-scrollbar s1-U__pd0 s1-U__pd16" style="overflow: auto">
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp4"
+              >Geral</h3>
+              <div class="s1-U__pd--lt16">
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field
+                    :md-counter="false"
+                    :class="{'md-invalid md-field-helper-text': $v.Supplier.Form.Name.$dirty && $v.Supplier.Form.Name.$invalid}"
+                  >
+                    <label for="Supplier-Name">Nome</label>
+                    <md-input
+                      id="Supplier-Name"
+                      name="Supplier-Name"
+                      type="text"
+                      @blur="$v.Supplier.Form.Name.$touch()"
+                      @focus="$v.Supplier.Form.Name.$reset()"
+                      v-model="Supplier.Form.Name"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Supplier.Form.Name.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field
+                    :md-counter="false"
+                    :class="{'md-invalid md-field-helper-text': $v.Supplier.Form.FantasyName.$dirty && $v.Supplier.Form.FantasyName.$invalid}"
+                  >
+                    <label for="Supplier-FantasyName">Nome fantasia</label>
+                    <md-input
+                      id="Supplier-FantasyName"
+                      name="Supplier-FantasyName"
+                      type="text"
+                      @blur="$v.Supplier.Form.FantasyName.$touch()"
+                      @focus="$v.Supplier.Form.FantasyName.$reset()"
+                      v-model="Supplier.Form.FantasyName"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Supplier.Form.FantasyName.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field
+                    :md-counter="false"
+                    :class="{'md-invalid md-field-helper-text': $v.Supplier.Form.DocumentType.$dirty && $v.Supplier.Form.DocumentType.$invalid}"
+                  >
+                    <label for="Supplier-DocumentType">Tipo de documento</label>
+                    <md-input
+                      id="Supplier-DocumentType"
+                      name="Supplier-DocumentType"
+                      type="text"
+                      @blur="$v.Supplier.Form.DocumentType.$touch()"
+                      @focus="$v.Supplier.Form.DocumentType.$reset()"
+                      v-model="Supplier.Form.DocumentType"
+                      required
+                    ></md-input>
+                    <span
+                      class="md-error"
+                      v-if="!$v.Supplier.Form.DocumentType.required"
+                    >Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field
+                    :md-counter="false"
+                    :class="{'md-invalid md-field-helper-text': $v.Supplier.Form.Document.$dirty && $v.Supplier.Form.Document.$invalid}"
+                  >
+                    <label for="Supplier-Document">Documento</label>
+                    <md-input
+                      id="Supplier-Document"
+                      name="Supplier-Document"
+                      type="text"
+                      @blur="$v.Supplier.Form.Document.$touch()"
+                      @focus="$v.Supplier.Form.Document.$reset()"
+                      v-model="Supplier.Form.Document"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Supplier.Form.Document.required">Obrigatório</span>
+                  </md-field>
+                </div>
+              </div>
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
+              >Contato</h3>
+              <div class="s1-U__pd--lt16">
+                <div class="s1-U__align-children--top s1-U__flex-wrap">
+                  <div class="s1-loc__md-field-wrapper s1-U__width--210px s1-U__pd--rt16">
+                    <md-field
+                      :md-counter="false"
+                      :class="{'md-invalid md-field-helper-text': $v.Supplier.Form.Email.$dirty && $v.Supplier.Form.Email.$invalid}"
+                    >
+                      <label for="Supplier-Email">E-mail 1</label>
+                      <md-input
+                        id="Supplier-Email"
+                        name="Supplier-Email"
+                        type="text"
+                        @blur="$v.Supplier.Form.Email.$touch()"
+                        @focus="$v.Supplier.Form.Email.$reset()"
+                        v-model="Supplier.Form.Email"
+                        required
+                      ></md-input>
+                      <span class="md-error" v-if="!$v.Supplier.Form.Email.required">Obrigatório</span>
+                    </md-field>
+                  </div>
+                  <div
+                    class="s1-loc__md-field-wrapper s1-U__width--210px"
+                    v-show="Supplier.Form.Email"
+                  >
+                    <md-field>
+                      <label for="Supplier-Email2">E-mail 2</label>
+                      <md-input
+                        id="Supplier-Email2"
+                        name="Supplier-Email2"
+                        type="text"
+                        v-model="Supplier.Form.Email2"
+                      ></md-input>
+                    </md-field>
+                  </div>
+                </div>
+                <div class="s1-U__align-children--top s1-U__flex-wrap">
+                  <div class="s1-loc__md-field-wrapper s1-U__width--210px s1-U__pd--rt16">
+                    <md-field
+                      :md-counter="false"
+                      :class="{'md-invalid md-field-helper-text': $v.Supplier.Form.Phone.$dirty && $v.Supplier.Form.Phone.$invalid}"
+                    >
+                      <label for="Supplier-Phone">Telefone 1</label>
+                      <md-input
+                        id="Supplier-Phone"
+                        name="Supplier-Phone"
+                        type="text"
+                        @blur="$v.Supplier.Form.Phone.$touch()"
+                        @focus="$v.Supplier.Form.Phone.$reset()"
+                        v-model="Supplier.Form.Phone"
+                        required
+                      ></md-input>
+                      <span class="md-error" v-if="!$v.Supplier.Form.Phone.required">Obrigatório</span>
+                    </md-field>
+                  </div>
+                  <div
+                    class="s1-loc__md-field-wrapper s1-U__width--210px"
+                    v-show="Supplier.Form.Phone"
+                  >
+                    <md-field>
+                      <label for="Supplier-Phone2">Telefone 2</label>
+                      <md-input
+                        id="Supplier-Phone2"
+                        name="Supplier-Phone2"
+                        type="text"
+                        v-model="Supplier.Form.Phone2"
+                      ></md-input>
+                    </md-field>
+                  </div>
+                </div>
+              </div>
+            </md-content>
+            <div class="s1-U__text-align--right s1-U__pd16 s1-U__border--top1 s1-U__flex-shrink-0">
+              <md-button
+                class="md-primary md-raised"
+                :disabled="$v.Supplier.Form.$invalid"
+                @click="saveCreated('Supplier')"
+              >
+                <span class="s1-U__pd--lt8 s1-U__pd--rt8">Cadastrar</span>
+              </md-button>
+            </div>
+          </md-card>
+        </div>
+
+        <!-- EDIT SUPPLIER -->
+        <div v-show="Supplier.EditionInterface">
+          <div
+            class="md-layout md-alignment-center-center s1-loc__loading"
+            style="position: fixed;top: 0;left: 0;"
+            :class="Supplier.Loading && 'active'"
+          >
+            <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+          </div>
+          <div class="s1-U__mg--bt32">
+            <div class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
+              <md-button
+                class="md-dense md-icon-button s1-U__mg--rt16 s1-U__mg--tp16"
+                @click="Supplier.DiscardEditionInterface = true"
+              >
+                <md-icon>arrow_back</md-icon>
+              </md-button>
+              <div v-if="Supplier.Form.Id && Supplier.EditionInterface === true">
+                <p class="md-caption s1-U__text-uppercase">
+                  <span>{{getNameById(Supplier.Data, Supplier.Form.Id)}} - {{getPropById(Supplier.Data, Supplier.Form.Id, 'FriendlyName')}}</span>
+                </p>
+                <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
+                  <span>Edição de fornecedor</span>
+                </h1>
+              </div>
+            </div>
+          </div>
+          <md-card>
+            <md-content class="md-scrollbar s1-U__pd0 s1-U__pd16" style="overflow: auto">
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp4"
+              >Geral</h3>
+              <div class="s1-U__pd--lt16">
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field
+                    :md-counter="false"
+                    :class="{'md-invalid md-field-helper-text': $v.Supplier.Form.Name.$dirty && $v.Supplier.Form.Name.$invalid}"
+                  >
+                    <label for="Supplier-Name-edit">Nome</label>
+                    <md-input
+                      id="Supplier-Name-edit"
+                      name="Supplier-Name-edit"
+                      type="text"
+                      @blur="$v.Supplier.Form.Name.$touch()"
+                      @focus="$v.Supplier.Form.Name.$reset()"
+                      v-model="Supplier.Form.Name"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Supplier.Form.Name.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field
+                    :md-counter="false"
+                    :class="{'md-invalid md-field-helper-text': $v.Supplier.Form.FantasyName.$dirty && $v.Supplier.Form.FantasyName.$invalid}"
+                  >
+                    <label for="Supplier-FantasyName-edit">Nome fantasia</label>
+                    <md-input
+                      id="Supplier-FantasyName-edit"
+                      name="Supplier-FantasyName-edit"
+                      type="text"
+                      @blur="$v.Supplier.Form.FantasyName.$touch()"
+                      @focus="$v.Supplier.Form.FantasyName.$reset()"
+                      v-model="Supplier.Form.FantasyName"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Supplier.Form.FantasyName.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field
+                    :md-counter="false"
+                    :class="{'md-invalid md-field-helper-text': $v.Supplier.Form.DocumentType.$dirty && $v.Supplier.Form.DocumentType.$invalid}"
+                  >
+                    <label for="Supplier-DocumentType-edit">Tipo de documento</label>
+                    <md-input
+                      id="Supplier-DocumentType-edit"
+                      name="Supplier-DocumentType-edit"
+                      type="text"
+                      @blur="$v.Supplier.Form.DocumentType.$touch()"
+                      @focus="$v.Supplier.Form.DocumentType.$reset()"
+                      v-model="Supplier.Form.DocumentType"
+                      required
+                    ></md-input>
+                    <span
+                      class="md-error"
+                      v-if="!$v.Supplier.Form.DocumentType.required"
+                    >Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field
+                    :md-counter="false"
+                    :class="{'md-invalid md-field-helper-text': $v.Supplier.Form.Document.$dirty && $v.Supplier.Form.Document.$invalid}"
+                  >
+                    <label for="Supplier-Document-edit">Documento</label>
+                    <md-input
+                      id="Supplier-Document-edit"
+                      name="Supplier-Document-edit"
+                      type="text"
+                      @blur="$v.Supplier.Form.Document.$touch()"
+                      @focus="$v.Supplier.Form.Document.$reset()"
+                      v-model="Supplier.Form.Document"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Supplier.Form.Document.required">Obrigatório</span>
+                  </md-field>
+                </div>
+              </div>
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
+              >Contato</h3>
+              <div class="s1-U__pd--lt16">
+                <div class="s1-U__align-children--top s1-U__flex-wrap">
+                  <div class="s1-loc__md-field-wrapper s1-U__width--210px s1-U__pd--rt16">
+                    <md-field
+                      :md-counter="false"
+                      :class="{'md-invalid md-field-helper-text': $v.Supplier.Form.Email.$dirty && $v.Supplier.Form.Email.$invalid}"
+                    >
+                      <label for="Supplier-Email-edit">E-mail 1</label>
+                      <md-input
+                        id="Supplier-Email-edit"
+                        name="Supplier-Email-edit"
+                        type="text"
+                        @blur="$v.Supplier.Form.Email.$touch()"
+                        @focus="$v.Supplier.Form.Email.$reset()"
+                        v-model="Supplier.Form.Email"
+                        required
+                      ></md-input>
+                      <span class="md-error" v-if="!$v.Supplier.Form.Email.required">Obrigatório</span>
+                    </md-field>
+                  </div>
+                  <div
+                    class="s1-loc__md-field-wrapper s1-U__width--210px"
+                    v-show="Supplier.Form.Email"
+                  >
+                    <md-field>
+                      <label for="Supplier-Email2-edit">E-mail 2</label>
+                      <md-input
+                        id="Supplier-Email2-edit"
+                        name="Supplier-Email2-edit"
+                        type="text"
+                        v-model="Supplier.Form.Email2"
+                      ></md-input>
+                    </md-field>
+                  </div>
+                </div>
+                <div class="s1-U__align-children--top s1-U__flex-wrap">
+                  <div class="s1-loc__md-field-wrapper s1-U__width--210px s1-U__pd--rt16">
+                    <md-field
+                      :md-counter="false"
+                      :class="{'md-invalid md-field-helper-text': $v.Supplier.Form.Phone.$dirty && $v.Supplier.Form.Phone.$invalid}"
+                    >
+                      <label for="Supplier-Phone-edit">Telefone 1</label>
+                      <md-input
+                        id="Supplier-Phone-edit"
+                        name="Supplier-Phone-edit"
+                        type="text"
+                        @blur="$v.Supplier.Form.Phone.$touch()"
+                        @focus="$v.Supplier.Form.Phone.$reset()"
+                        v-model="Supplier.Form.Phone"
+                        required
+                      ></md-input>
+                      <span class="md-error" v-if="!$v.Supplier.Form.Phone.required">Obrigatório</span>
+                    </md-field>
+                  </div>
+                  <div
+                    class="s1-loc__md-field-wrapper s1-U__width--210px"
+                    v-show="Supplier.Form.Phone"
+                  >
+                    <md-field>
+                      <label for="Supplier-Phone2-edit">Telefone 2</label>
+                      <md-input
+                        id="Supplier-Phone2-edit"
+                        name="Supplier-Phone2-edit"
+                        type="text"
+                        v-model="Supplier.Form.Phone2"
+                      ></md-input>
+                    </md-field>
+                  </div>
+                </div>
+              </div>
+            </md-content>
+            <div class="s1-U__text-align--right s1-U__pd16 s1-U__border--top1 s1-U__flex-shrink-0">
+              <md-button
+                class="md-primary md-raised"
+                :disabled="$v.Supplier.Form.$invalid"
+                @click="saveEdited('Supplier')"
+              >
+                <span class="s1-U__pd--lt8 s1-U__pd--rt8">Salvar</span>
+              </md-button>
+            </div>
+          </md-card>
+        </div>
+
+        <md-dialog-confirm
+          :md-active.sync="Supplier.DiscardCreationInterface"
+          md-title="Descartar cadastro?"
+          md-content="Ao sair, as informações do fornecedor em cadastro serão descartadas"
+          md-confirm-text="descartar"
+          md-cancel-text="voltar"
+          @md-cancel="Supplier.DiscardCreationInterface = false"
+          @md-confirm="discardCreation('Supplier')"
+        />
+        <md-snackbar
+          :md-duration="Settings.snackbarDuration"
+          :md-active.sync="Supplier.SuccessFeedbackCreation"
+          md-persistent
+        >
+          <span>Fornecedor criado com sucesso</span>
+          <md-button class="md-accent" @click="Supplier.SuccessFeedbackCreation = false">OK</md-button>
+        </md-snackbar>
+        <md-dialog-confirm
+          :md-active.sync="Supplier.DiscardEditionInterface"
+          md-title="Descartar cadastro?"
+          md-content="Ao sair, as informações do fornecedor em edição serão descartadas"
+          md-confirm-text="descartar"
+          md-cancel-text="voltar"
+          @md-cancel="Supplier.DiscardEditionInterface = false"
+          @md-confirm="discardEdition('Supplier')"
+        />
+        <md-snackbar
+          :md-duration="Settings.snackbarDuration"
+          :md-active.sync="Supplier.SuccessFeedbackEdition"
+          md-persistent
+        >
+          <span>Fornecedor editado com sucesso</span>
+          <md-button class="md-accent" @click="Supplier.SuccessFeedbackEdition = false">OK</md-button>
+        </md-snackbar>
+      </section>
     </div>
   </div>
 </template>
@@ -1633,6 +2533,50 @@ export default {
     Currencies,
     Operators,
     Fields,
+    Supplier: {
+      Form: {
+        Name: null,
+        FantasyName: null,
+        Document: null,
+        DocumentType: null,
+        Phone: null,
+        Phone2: null,
+        Email: null,
+        Email2: null
+      },
+      DefaultForm: {
+        Name: null,
+        FantasyName: null,
+        Document: null,
+        DocumentType: null,
+        Phone: null,
+        Phone2: null,
+        Email: null,
+        Email2: null
+      },
+      Detailed: {
+        Name: null,
+        FantasyName: null,
+        Document: null,
+        DocumentType: null,
+        Phone: null,
+        Phone2: null,
+        Email: null,
+        Email2: null
+      },
+      Data: Suppliers,
+      MockData: Suppliers,
+      Loading: false,
+      EditingIndex: 0,
+      EditionInterface: false,
+      DiscardEditionInterface: false,
+      SuccessFeedbackEdition: false,
+      CreationInterface: false,
+      DiscardCreationInterface: false,
+      SuccessFeedbackCreation: false,
+      DeleteConfirmation: false,
+      SuccessFeedbackDeletion: false
+    },
     Package: {
       moreQty: 3,
       Form: {
@@ -1640,8 +2584,8 @@ export default {
         Name: null,
         Services: [],
         TenantId: null,
-        ServicesCost: null,
-        TotalCost: null,
+        ServicesServiceS1Value: null,
+        TotalServiceS1Value: null,
         Price: 0.0
       },
       DefaultForm: {
@@ -1649,8 +2593,8 @@ export default {
         Name: null,
         Services: [],
         TenantId: null,
-        ServicesCost: null,
-        TotalCost: null,
+        ServicesServiceS1Value: null,
+        TotalServiceS1Value: null,
         Price: 0.0
       },
       Data: Packages,
@@ -1680,7 +2624,8 @@ export default {
         Supplier: "0",
         ServiceType: "0",
         Description: null,
-        Cost: null,
+        ServiceS1Value: null,
+        ServiceCost: null,
         Vigence: null,
         Rules: [
           {
@@ -1703,6 +2648,7 @@ export default {
     },
     Service: {
       moreQty: 3,
+      ActiveCategory: "0",
       Form: {
         Id: null,
         Name: null,
@@ -1710,7 +2656,8 @@ export default {
         Supplier: "0",
         ServiceType: "0",
         Description: null,
-        Cost: 0.0,
+        ServiceS1Value: 0.0,
+        ServiceCost: 0.0,
         Vigence: 30,
         CurrencyCode: "BRL",
         Exclusive: false,
@@ -1789,7 +2736,8 @@ export default {
         Supplier: "0",
         ServiceType: "0",
         Description: null,
-        Cost: 0.0,
+        ServiceS1Value: 0.0,
+        ServiceCost: 0.0,
         Vigence: 30,
         CurrencyCode: "BRL",
         Rules: [
@@ -1878,7 +2826,6 @@ export default {
         Content: null
       },
       ServicesDialog: false,
-      ActiveCategory: "0",
       ShowServiceDetails: false,
       DetailedService: {
         Id: null,
@@ -1887,7 +2834,8 @@ export default {
         Supplier: "0",
         ServiceType: "0",
         Description: null,
-        Cost: null,
+        ServiceS1Value: null,
+        ServiceCost: null,
         Vigence: null,
         Rules: [
           {
@@ -2079,7 +3027,7 @@ export default {
       }
     },
     edit(entityName, id, idToFocus = null) {
-      this.setEditingIndex("Package", id);
+      this.setEditingIndex(entityName, id);
       this[entityName].Form = {
         ...this[entityName].Data[this[entityName].EditingIndex]
       };
@@ -2176,7 +3124,7 @@ export default {
       return this.Package.Form.Services.includes(id);
     },
     getServices(type) {
-      return this.getListByProp(this.Services, type, "ServiceType");
+      return this.getListByProp(this.Service.Data, type, "ServiceType");
     },
     getObjIncluded() {
       if (this.Package.Form.Services.length === 0) return [];
@@ -2190,7 +3138,7 @@ export default {
     getPriceByType(type) {
       if (this.getIncludedServicesByType(type).length === 0) return 0;
       const reducer = (accumulator, currentValue) => {
-        return accumulator + currentValue.Cost;
+        return accumulator + currentValue.ServiceS1Value;
       };
       const array = this.getIncludedServicesByType(type);
       return array.reduce(reducer, 0);
@@ -2204,7 +3152,8 @@ export default {
         Supplier: "0",
         ServiceType: "0",
         Description: null,
-        Cost: null,
+        ServiceS1Value: null,
+        ServiceCost: null,
         Vigence: null,
         CurrencyCode: "BRL",
         Rules: [],
@@ -2231,17 +3180,17 @@ export default {
         this.Service.DetailedService = service;
       }
     },
-    getServicesCost() {
+    getServicesServiceS1Value() {
       let cost = 0;
       if (this.Package.Form.Services.length > 0) {
         cost = this.Package.Form.Services.map(s => {
-          return getPropById(Services, s, "Cost");
+          return getPropById(Services, s, "ServiceS1Value");
         }).reduce((accumulator, currentValue) => {
           return accumulator + currentValue;
         });
       }
 
-      this.Package.Form.ServicesCost = cost;
+      this.Package.Form.ServicesServiceS1Value = cost;
       return cost;
     },
     getServicesValue() {
@@ -2254,7 +3203,7 @@ export default {
         });
       }
 
-      this.Package.Form.TotalCost = value;
+      this.Package.Form.TotalServiceS1Value = value;
       return value;
     },
     addNewField(favored, ids, label) {
@@ -2340,10 +3289,38 @@ export default {
         ServiceType: {
           required
         },
-        Cost: {
+        ServiceS1Value: {
+          required
+        },
+        ServiceCost: {
           required
         },
         Vigence: {
+          required
+        }
+      }
+    },
+    Supplier: {
+      Form: {
+        Id: {
+          required
+        },
+        Name: {
+          required
+        },
+        FantasyName: {
+          required
+        },
+        Document: {
+          required
+        },
+        DocumentType: {
+          required
+        },
+        Email: {
+          required
+        },
+        Phone: {
           required
         }
       }

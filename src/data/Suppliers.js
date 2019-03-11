@@ -5,7 +5,10 @@ export default [
     FantasyName: "Dona Carochinha",
     Document: "120938102938102",
     DocumentType: "CNPJ",
-    LogoUri: ""
+    Phone: "31 3299 9909",
+    Phone2: "",
+    Email: "email@mail.com",
+    Email2: ""
   },
   {
     Id: "1",
@@ -13,7 +16,10 @@ export default [
     FantasyName: "Dotô Dôto",
     Document: "1209832023908",
     DocumentType: "CNPJ",
-    LogoUri: ""
+    Phone: "31 3299 9909",
+    Phone2: "",
+    Email: "email@mail.com",
+    Email2: ""
   },
   {
     Id: "2",
@@ -21,6 +27,9 @@ export default [
     FantasyName: "RZZ",
     Document: "992827373",
     DocumentType: "CM",
-    LogoUri: ""
+    Phone: "31 3299 9909",
+    Phone2: "",
+    Email: "email@mail.com",
+    Email2: ""
   }
 ];
