@@ -91,7 +91,9 @@
                             <md-menu-item
                               @click="setShowServiceDetailInServices(service)"
                             >Ver detalhes</md-menu-item>
-                            <md-menu-item @click="edit('Service', service.Id)">Editar</md-menu-item>
+                            <md-menu-item
+                              @click="edit('Service', service.Id, 'Service-Name-edit')"
+                            >Editar</md-menu-item>
                           </md-menu-content>
                         </md-menu>
                       </div>
@@ -99,15 +101,7 @@
                   </div>
                   <div class="s1-U__pd16">
                     <div class="s1-U__align-children--top s1-U__justify-content--space-between">
-                      <div class="s1-U__align-children--center">
-                        <div v-show="service.Exclusive">
-                          <md-icon class="md-accent s1-U__flex-shrink-0 s1-U__mg--rt8">
-                            <span class="s1-U__opacity--54">star</span>
-                          </md-icon>
-                          <md-tooltip md-direction="left">Vendido exclusivamente</md-tooltip>
-                        </div>
-                        <p class="s1-U__text-color--dark-2">{{service.Name}}</p>
-                      </div>
+                      <p class="s1-U__text-color--dark-2">{{service.Name}}</p>
                       <p
                         class="s1-U__text-color--accent md-subheading"
                       >{{formatMoney(service.ServiceS1Value)}}</p>
@@ -231,9 +225,34 @@
                     ></md-textarea>
                   </md-field>
                 </div>
-                <md-checkbox
-                  v-model="Service.Form.Exclusive"
-                >Esse serviço só pode ser vendido sozinho em um pacote</md-checkbox>
+                <div class="s1-loc__md-field-wrapper s1-U__mg--bt24 s1-U__mg--tp16">
+                  <p class="s1-U__text-color--dark-2 s1-U__mg--bt16">Propósito</p>
+                  <div class="s1-U__pd--lt16 s1-U__mg--bt8">
+                    <md-radio class="s1-U__mg0" v-model="Service.Form.Purpose" value="Sale">Venda</md-radio>
+                  </div>
+                  <div class="s1-U__pd--lt16">
+                    <md-radio
+                      class="s1-U__mg0"
+                      v-model="Service.Form.Purpose"
+                      value="Benefit"
+                    >Benefício</md-radio>
+                  </div>
+                </div>
+                <div class="s1-U__mg--bt48">
+                  <p class="s1-U__text-color--dark-2 s1-U__mg--bt16">Distribuição</p>
+                  <div class="s1-loc__md-field-wrapper s1-U__pd--lt16 s1-U__mg--bt8">
+                    <md-checkbox
+                      class="s1-U__mg0"
+                      v-model="Service.Form.Exclusive"
+                    >Sozinho em um pacote</md-checkbox>
+                  </div>
+                  <div class="s1-loc__md-field-wrapper s1-U__pd--lt16">
+                    <md-checkbox
+                      class="s1-U__mg0"
+                      v-model="Service.Form.Group"
+                    >Junto de outros serviços em um pacote</md-checkbox>
+                  </div>
+                </div>
               </div>
               <h3
                 class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
@@ -612,9 +631,34 @@
                     ></md-textarea>
                   </md-field>
                 </div>
-                <md-checkbox
-                  v-model="Service.Form.Exclusive"
-                >Esse serviço só pode ser vendido sozinho em um pacote</md-checkbox>
+                <div class="s1-loc__md-field-wrapper s1-U__mg--bt24 s1-U__mg--tp16">
+                  <p class="s1-U__text-color--dark-2 s1-U__mg--bt16">Propósito</p>
+                  <div class="s1-U__pd--lt16 s1-U__mg--bt8">
+                    <md-radio class="s1-U__mg0" v-model="Service.Form.Purpose" value="Sale">Venda</md-radio>
+                  </div>
+                  <div class="s1-U__pd--lt16">
+                    <md-radio
+                      class="s1-U__mg0"
+                      v-model="Service.Form.Purpose"
+                      value="Benefit"
+                    >Benefício</md-radio>
+                  </div>
+                </div>
+                <div class="s1-U__mg--bt48">
+                  <p class="s1-U__text-color--dark-2 s1-U__mg--bt16">Distribuição</p>
+                  <div class="s1-loc__md-field-wrapper s1-U__pd--lt16 s1-U__mg--bt8">
+                    <md-checkbox
+                      class="s1-U__mg0"
+                      v-model="Service.Form.Exclusive"
+                    >Sozinho em um pacote</md-checkbox>
+                  </div>
+                  <div class="s1-loc__md-field-wrapper s1-U__pd--lt16">
+                    <md-checkbox
+                      class="s1-U__mg0"
+                      v-model="Service.Form.Group"
+                    >Junto de outros serviços em um pacote</md-checkbox>
+                  </div>
+                </div>
               </div>
               <h3
                 class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
@@ -1008,13 +1052,10 @@
         <div class="md-layout md-alignment-center-space-between s1-U__full-width s1-U__mg--bt32">
           <div class="md-layout-item">
             <div class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
-              <md-button class="md-dense md-icon-button s1-U__mg--rt16 s1-U__mg--tp16">
+              <md-button class="md-dense md-icon-button s1-U__mg--rt16">
                 <md-icon>arrow_back</md-icon>
               </md-button>
               <div>
-                <p class="md-caption">
-                  <span class="s1-U__text-uppercase">RZ Corporation</span>
-                </p>
                 <h1 class="md-display-1 s1-U__text-color--dark-2">
                   <span>Pacotes</span>
                 </h1>
@@ -1039,7 +1080,7 @@
             </div>
           </md-button>
         </div>
-        <div class="s1-U__pd--lt20 s1-U__pd--rt20" v-else>
+        <div class="s1-U__pd--lt20" v-else>
           <div class="md-layout md-gutter">
             <div class="md-layout md-gutter">
               <div
@@ -1049,6 +1090,10 @@
               >
                 <md-card>
                   <div class="s1-U__pd--lt16 s1-U__pd--rt16 s1-U__pd--tp16">
+                    <span class="md-caption">
+                      {{getNameById(Accounts, pack.TenantId)}}
+                      <md-tooltip md-direction="right">Conta</md-tooltip>
+                    </span>
                     <h2 class="md-title s1-U__text-color--primary">{{pack.Name}}</h2>
                   </div>
                   <div class="s1-U__pd--lt16 s1-U__pd--rt16 s1-U__pd--bt16 s1-U__pd--tp8">
@@ -1075,6 +1120,12 @@
                       </li>
                     </ul>
                   </div>
+                  <div class="s1-U__align-children--center s1-U__pd--lt16 s1-U__pd--rt16">
+                    <p
+                      class="md-body-2"
+                      :class="pack.Active ? 's1-U__text-color--primary' : 's1-U__text-color--dark-3'"
+                    >{{pack.Active ? 'ATIVO' : 'INATIVO'}}</p>
+                  </div>
                   <p class="s1-U__text-align--right s1-U__pd--rt16">
                     <span class="md-caption s1-U__text-color--dark-3">
                       <b>{{formatMoney(pack.ServicesServiceS1Value)}}</b>
@@ -1086,23 +1137,27 @@
                   >
                     <div class="s1-U__full-width">
                       <md-button
-                        class="md-icon-button md-dense s1-md-bordered squared s1-U__mg--rt4"
-                      >
-                        <md-icon>launch</md-icon>
-                        <md-tooltip md-direction="right">Gerar release</md-tooltip>
-                      </md-button>
-                      <md-button
-                        class="md-icon-button md-dense s1-md-bordered squared s1-U__mg--rt4"
-                      >
-                        <md-icon>list</md-icon>
-                        <md-tooltip md-direction="right">Ver detalhes</md-tooltip>
-                      </md-button>
-                      <md-button
                         class="md-icon-button md-dense s1-md-bordered squared"
+                        @click="Package.IdToSwitchActive = pack.Id; Package.ConfirmSwitchActive = true;"
+                      >
+                        <md-icon>{{getObjByProp(Package.Data, pack.Id, 'Id').Active ? 'block' : 'check'}}</md-icon>
+                        <md-tooltip
+                          md-direction="left"
+                        >{{getObjByProp(Package.Data, pack.Id, 'Id').Active ? 'Inativar pacote' : 'Ativar pacote'}}</md-tooltip>
+                      </md-button>
+                      <md-button
+                        class="md-icon-button md-dense s1-md-bordered squared s1-U__mg--lt4"
                         @click="edit('Package', pack.Id, 'Package-edit-Name')"
                       >
                         <md-icon>edit</md-icon>
                         <md-tooltip md-direction="right">Editar</md-tooltip>
+                      </md-button>
+                      <md-button
+                        class="md-icon-button md-dense s1-md-bordered squared s1-U__mg--lt4"
+                        @click="newByClone('Package', pack, 'Package-Name')"
+                      >
+                        <md-icon>file_copy</md-icon>
+                        <md-tooltip md-direction="right">Clonar</md-tooltip>
                       </md-button>
                     </div>
                     <p
@@ -1120,6 +1175,17 @@
           </div>
         </div>
       </div>
+
+      <md-dialog-confirm
+        v-if="Package.IdToSwitchActive"
+        :md-active.sync="Package.ConfirmSwitchActive"
+        :md-title="`${getObjByProp(Package.Data, Package.IdToSwitchActive, 'Id').Active ? 'Inativar' : 'Ativar'} pacote?`"
+        :md-content="`Alterar o estado do pacote ${getObjByProp(Package.Data, Package.IdToSwitchActive, 'Id').Name}?`"
+        :md-confirm-text="`${getObjByProp(Package.Data, Package.IdToSwitchActive, 'Id').Active ? 'Inativar' : 'Ativar'}`"
+        md-cancel-text="voltar"
+        @md-cancel="Package.ConfirmSwitchActive = false; IdToSwitchActive = null"
+        @md-confirm="getObjByProp(Package.Data, Package.IdToSwitchActive, 'Id').Active = !getObjByProp(Package.Data, Package.IdToSwitchActive, 'Id').Active"
+      />
       <!-- REGISTER -->
       <div
         class="s1-U__width--900px s1-U__pd16"
@@ -1136,15 +1202,12 @@
           <div class="md-layout-item">
             <div class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
               <md-button
-                class="md-dense md-icon-button s1-U__mg--rt16 s1-U__mg--tp16"
+                class="md-dense md-icon-button s1-U__mg--rt16"
                 @click="Package.DiscardCreationInterface = true"
               >
                 <md-icon>arrow_back</md-icon>
               </md-button>
               <div>
-                <p class="md-caption">
-                  <span class="s1-U__text-uppercase">RZ Corporation</span>
-                </p>
                 <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
                   <span>Criação de pacote</span>
                 </h1>
@@ -1386,7 +1449,7 @@
                       <md-button
                         class="md-dense"
                         @click="!hasIncluded(service.Id) ? Package.Form.Services = addNewItemAbove(Package.Form.Services, service.Id) : Package.Form.Services = removeItemFromArray(Package.Form.Services, service.Id)"
-                      >{{!hasIncluded(service.Id) ? 'adicionar mais' : 'remover'}}</md-button>
+                      >{{!hasIncluded(service.Id) ? 'adicionar' : 'remover'}}</md-button>
                     </div>
                   </div>
                 </md-card>
@@ -1527,15 +1590,12 @@
         <div class="s1-U__mg--bt32">
           <div class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
             <md-button
-              class="md-dense md-icon-button s1-U__mg--rt16 s1-U__mg--tp16"
+              class="md-dense md-icon-button s1-U__mg--rt16"
               @click="Package.DiscardEditionInterface = true"
             >
               <md-icon>arrow_back</md-icon>
             </md-button>
             <div v-if="Package.Form.Id && Package.EditionInterface === true">
-              <p class="md-caption s1-U__text-uppercase">
-                <span>RZ Corporation / {{getNameById(Package.Data, Package.Form.Id)}}</span>
-              </p>
               <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
                 <span>Edição de pacote</span>
               </h1>
@@ -1765,7 +1825,7 @@
                       <md-button
                         class="md-dense"
                         @click="!hasIncluded(service.Id) ? Package.Form.Services = addNewItemAbove(Package.Form.Services, service.Id) : Package.Form.Services = removeItemFromArray(Package.Form.Services, service.Id)"
-                      >{{!hasIncluded(service.Id) ? 'adicionar menos' : 'remover'}}</md-button>
+                      >{{!hasIncluded(service.Id) ? 'adicionar' : 'remover'}}</md-button>
                     </div>
                   </div>
                 </md-card>
@@ -2050,7 +2110,10 @@
                 <p class="text-s1-U__text-nowrap">{{supplier.Phone2}}</p>
               </md-table-cell>
               <md-table-cell md-numeric class="s1-U__text-align--right">
-                <md-button class="s1-md-bordered" @click="edit('Supplier', supplier.Id)">Editar</md-button>
+                <md-button
+                  class="s1-md-bordered"
+                  @click="edit('Supplier', supplier.Id, 'Supplier-Name-edit')"
+                >Editar</md-button>
                 <!-- <md-menu md-direction="bottom-end">
                   <md-button class="md-icon-button squared" md-menu-trigger>
                     <md-icon>more_vert</md-icon>
@@ -2587,7 +2650,8 @@ export default {
         TenantId: null,
         ServicesServiceS1Value: null,
         TotalServiceS1Value: null,
-        Price: 0.0
+        Price: 0.0,
+        Active: true
       },
       DefaultForm: {
         Id: null,
@@ -2596,7 +2660,8 @@ export default {
         TenantId: null,
         ServicesServiceS1Value: null,
         TotalServiceS1Value: null,
-        Price: 0.0
+        Price: 0.0,
+        Active: true
       },
       Data: Packages,
       MockData: Packages,
@@ -2645,7 +2710,9 @@ export default {
             Value: "0"
           }
         ]
-      }
+      },
+      ConfirmSwitchActive: false,
+      IdToSwitchActive: null
     },
     Service: {
       moreQty: 3,
@@ -2662,6 +2729,8 @@ export default {
         Vigence: 30,
         CurrencyCode: "BRL",
         Exclusive: false,
+        Group: false,
+        Purpose: "Sale",
         Rules: [
           {
             Appliedto: "Titular",
@@ -2741,6 +2810,9 @@ export default {
         ServiceCost: 0.0,
         Vigence: 30,
         CurrencyCode: "BRL",
+        Exclusive: false,
+        Group: false,
+        Purpose: "Sale",
         Rules: [
           {
             Appliedto: "Titular",
@@ -3014,6 +3086,20 @@ export default {
         getObjByProp(this[entityName].Data, id, "Id")
       );
     },
+    newByClone(entityName, item, idToFocus = null) {
+      this[entityName].Form = { ...item };
+      this[entityName].Form.Name = null;
+      this[entityName].Form.Id = randomString(64, "#aA");
+
+      this[entityName].CreationInterface = true;
+
+      if (idToFocus) {
+        setTimeout(() => {
+          if (document.getElementById(idToFocus))
+            document.getElementById(idToFocus).focus();
+        }, 300);
+      }
+    },
     create(entityName, idToFocus = null) {
       this[entityName].Form = { ...this[entityName].DefaultForm };
       this[entityName].Form.Id = randomString(64, "#aA");
@@ -3157,6 +3243,9 @@ export default {
         ServiceCost: null,
         Vigence: null,
         CurrencyCode: "BRL",
+        Exclusive: false,
+        Group: false,
+        Purpose: "Sale",
         Rules: [],
         Fields: []
       };

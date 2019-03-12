@@ -19,6 +19,8 @@ export default [
     ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
+    Group: false,
+    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -101,6 +103,8 @@ export default [
     ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
+    Group: false,
+    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -183,6 +187,8 @@ export default [
     ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
+    Group: false,
+    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -265,6 +271,8 @@ export default [
     ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
+    Group: false,
+    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -347,6 +355,8 @@ export default [
     ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
+    Group: false,
+    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -429,6 +439,8 @@ export default [
     ServiceCost: 0.1,
     Vigence: "1095",
     Exclusive: false,
+    Group: false,
+    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -511,6 +523,8 @@ export default [
     ServiceCost: 0.1,
     Vigence: "1095",
     Exclusive: false,
+    Group: false,
+    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -593,6 +607,8 @@ export default [
     ServiceCost: 0.1,
     Vigence: "1095",
     Exclusive: false,
+    Group: false,
+    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -675,6 +691,8 @@ export default [
     ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
+    Group: false,
+    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -757,6 +775,8 @@ export default [
     ServiceCost: 0.1,
     Vigence: "365",
     Exclusive: false,
+    Group: false,
+    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
