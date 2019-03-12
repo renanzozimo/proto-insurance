@@ -3183,13 +3183,10 @@ export default {
     },
     getServicesServiceS1Value() {
       let cost = 0;
-      debugger;
       if (this.Package.Form.Services.length > 0) {
         cost = this.Package.Form.Services.map(s => {
-          debugger;
           return getPropById(this.Service.Data, s, "ServiceS1Value");
         }).reduce((accumulator, currentValue) => {
-          debugger;
           return accumulator + parseFloat(currentValue);
         });
       }
