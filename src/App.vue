@@ -79,7 +79,7 @@
                     <div class="s1-U__align-children--top s1-U__justify-content--space-between">
                       <div class="s1-U__full-width s1-U__text-ellipsis">
                         <h2 class="md-headline s1-U__text-ellipsis">{{service.FriendlyName}}</h2>
-                        <span class="md-caption">{{getNameById(Suppliers, service.Supplier)}}</span>
+                        <span class="md-caption">{{getNameById(Supplier.Data, service.Supplier)}}</span>
                       </div>
                       <div class="s1-U__flex-shrink-0 s1-U__align-children--center">
                         <md-menu md-direction="bottom-end">
@@ -196,7 +196,7 @@
                       required
                     >
                       <md-option
-                        v-for="supplier in Suppliers"
+                        v-for="supplier in Supplier.Data"
                         :key="'supplier' + supplier.Id"
                         :value="supplier.Id"
                       >{{supplier.Name}}</md-option>
@@ -577,7 +577,7 @@
                       required
                     >
                       <md-option
-                        v-for="supplier in Suppliers"
+                        v-for="supplier in Supplier.Data"
                         :key="'supplier' + supplier.Id"
                         :value="supplier.Id"
                       >{{supplier.Name}}</md-option>
@@ -917,7 +917,7 @@
                     <p class="md-caption">FORNECEDOR</p>
                     <p
                       class="s1-U__text-ellipsis"
-                    >{{getNameById(Suppliers ,Service.DetailedService.Supplier)}}</p>
+                    >{{getNameById(Supplier.Data ,Service.DetailedService.Supplier)}}</p>
                   </div>
                   <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                     <p class="md-caption">VIGÊNCIA</p>
@@ -1060,7 +1060,7 @@
                         v-for="service in getXItems(pack.Services, Package.moreQty).items"
                         :key="'Service-'+ service+'-Package-'+pack.Id"
                       >
-                        <span>{{getPropById(Services, service, 'FriendlyName')}}</span>
+                        <span>{{getPropById(Service.Data, service, 'FriendlyName')}}</span>
                       </li>
                       <li v-if="getXItems(pack.Services, Package.moreQty).rest.length > 0">
                         <span>
@@ -1069,7 +1069,7 @@
                             <span
                               v-for="(rest, index) in getXItems(pack.Services, Package.moreQty).rest"
                               :key="rest"
-                            >{{getPropById(Services, rest, 'FriendlyName')}} {{ index === (getXItems(pack.Services, Package.moreQty).rest.length - 1) ? '' : ', ' }}</span>
+                            >{{getPropById(Service.Data, rest, 'FriendlyName')}} {{ index === (getXItems(pack.Services, Package.moreQty).rest.length - 1) ? '' : ', ' }}</span>
                           </md-tooltip>
                         </span>
                       </li>
@@ -1233,15 +1233,15 @@
                     >
                       <span
                         class="s1-U__width--210px s1-U__text-ellipsis"
-                      >{{getPropById(Services, service, 'FriendlyName')}}</span>
+                      >{{getPropById(Service.Data, service, 'FriendlyName')}}</span>
                       <div class="s1-U__align-children--center">
                         <span
                           class="md-body-2 s1-U__text-color--accent s1-U__mg--rt8 s1-U__flex-shrink-0"
-                        >{{formatMoney(getPropById(Services, service, 'ServiceS1Value'))}}</span>
+                        >{{formatMoney(getPropById(Service.Data, service, 'ServiceS1Value'))}}</span>
                         <md-button
                           class="md-dense s1-md-bordered s1-U__flex-shrink-0"
-                          @click="setShowServiceDetail(getObjByProp(Services, service, 'Id'))"
-                        >{{getPropById(Services, service, "Id") === Package.DetailedService.Id ? 'fechar detalhes' : 'ver detalhes'}}</md-button>
+                          @click="setShowServiceDetail(getObjByProp(Service.Data, service, 'Id'))"
+                        >{{getPropById(Service.Data, service, "Id") === Package.DetailedService.Id ? 'fechar detalhes' : 'ver detalhes'}}</md-button>
                       </div>
                     </div>
                   </div>
@@ -1386,7 +1386,7 @@
                       <md-button
                         class="md-dense"
                         @click="!hasIncluded(service.Id) ? Package.Form.Services = addNewItemAbove(Package.Form.Services, service.Id) : Package.Form.Services = removeItemFromArray(Package.Form.Services, service.Id)"
-                      >{{!hasIncluded(service.Id) ? 'adicionar' : 'remover'}}</md-button>
+                      >{{!hasIncluded(service.Id) ? 'adicionar mais' : 'remover'}}</md-button>
                     </div>
                   </div>
                 </md-card>
@@ -1484,7 +1484,7 @@
                         <p class="md-caption">FORNECEDOR</p>
                         <p
                           class="s1-U__text-ellipsis"
-                        >{{getNameById(Suppliers ,Package.DetailedService.Supplier)}}</p>
+                        >{{getNameById(Supplier.Data ,Package.DetailedService.Supplier)}}</p>
                       </div>
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                         <p class="md-caption">VIGÊNCIA</p>
@@ -1618,15 +1618,15 @@
                     >
                       <span
                         class="s1-U__width--210px s1-U__text-ellipsis"
-                      >{{getPropById(Services, service, 'FriendlyName')}}</span>
+                      >{{getPropById(Service.Data, service, 'FriendlyName')}}</span>
                       <div class="s1-U__align-children--center">
                         <span
                           class="md-body-2 s1-U__text-color--accent s1-U__mg--rt8 s1-U__flex-shrink-0"
-                        >{{formatMoney(getPropById(Services, service, 'ServiceS1Value'))}}</span>
+                        >{{formatMoney(getPropById(Service.Data, service, 'ServiceS1Value'))}}</span>
                         <md-button
                           class="md-dense s1-md-bordered s1-U__flex-shrink-0"
-                          @click="setShowServiceDetail(getObjByProp(Services, service, 'Id'))"
-                        >{{getPropById(Services, service, "Id") === Package.DetailedService.Id ? 'fechar detalhes' : 'ver detalhes'}}</md-button>
+                          @click="setShowServiceDetail(getObjByProp(Service.Data, service, 'Id'))"
+                        >{{getPropById(Service.Data, service, "Id") === Package.DetailedService.Id ? 'fechar detalhes' : 'ver detalhes'}}</md-button>
                       </div>
                     </div>
                   </div>
@@ -1765,7 +1765,7 @@
                       <md-button
                         class="md-dense"
                         @click="!hasIncluded(service.Id) ? Package.Form.Services = addNewItemAbove(Package.Form.Services, service.Id) : Package.Form.Services = removeItemFromArray(Package.Form.Services, service.Id)"
-                      >{{!hasIncluded(service.Id) ? 'adicionar' : 'remover'}}</md-button>
+                      >{{!hasIncluded(service.Id) ? 'adicionar menos' : 'remover'}}</md-button>
                     </div>
                   </div>
                 </md-card>
@@ -1863,7 +1863,7 @@
                         <p class="md-caption">FORNECEDOR</p>
                         <p
                           class="s1-U__text-ellipsis"
-                        >{{getNameById(Suppliers ,Package.DetailedService.Supplier)}}</p>
+                        >{{getNameById(Supplier.Data ,Package.DetailedService.Supplier)}}</p>
                       </div>
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                         <p class="md-caption">VIGÊNCIA</p>
@@ -1934,7 +1934,7 @@
                   <p class="md-caption">FORNECEDOR</p>
                   <p
                     class="s1-U__text-ellipsis"
-                  >{{getNameById(Suppliers ,Package.DetailedService.Supplier)}}</p>
+                  >{{getNameById(Supplier.Data ,Package.DetailedService.Supplier)}}</p>
                 </div>
                 <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                   <p class="md-caption">VIGÊNCIA</p>
@@ -1958,7 +1958,7 @@
           </md-card>
         </div>
       </div>
-      
+
       <md-dialog-confirm
         :md-active.sync="Package.DiscardCreationInterface"
         md-title="Descartar cadastro?"
@@ -3129,7 +3129,7 @@ export default {
     getObjIncluded() {
       if (this.Package.Form.Services.length === 0) return [];
       return this.Package.Form.Services.map(serviceId => {
-        return getObjByProp(Services, serviceId, "Id");
+        return getObjByProp(this.Service.Data, serviceId, "Id");
       });
     },
     getIncludedServicesByType(type) {
@@ -3184,7 +3184,7 @@ export default {
       let cost = 0;
       if (this.Package.Form.Services.length > 0) {
         cost = this.Package.Form.Services.map(s => {
-          return getPropById(Services, s, "ServiceS1Value");
+          return getPropById(this.Service.Data, s, "ServiceS1Value");
         }).reduce((accumulator, currentValue) => {
           return accumulator + currentValue;
         });
@@ -3197,7 +3197,7 @@ export default {
       let value = 0;
       if (this.Package.Form.Services.length > 0) {
         value = this.Package.Form.Services.map(s => {
-          return getPropById(Services, s, "Value");
+          return getPropById(this.Service.Data, s, "Value");
         }).reduce((accumulator, currentValue) => {
           return accumulator + currentValue;
         });
