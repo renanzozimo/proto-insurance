@@ -193,7 +193,7 @@
                         v-for="supplier in Supplier.Data"
                         :key="'supplier' + supplier.Id"
                         :value="supplier.Id"
-                      >{{supplier.Name}}</md-option>
+                      >{{supplier.FantasyName}}</md-option>
                     </md-select>
                   </md-field>
                 </div>
@@ -599,7 +599,7 @@
                         v-for="supplier in Supplier.Data"
                         :key="'supplier' + supplier.Id"
                         :value="supplier.Id"
-                      >{{supplier.Name}}</md-option>
+                      >{{supplier.FantasyName}}</md-option>
                     </md-select>
                   </md-field>
                 </div>
@@ -971,7 +971,13 @@
                     class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
                   >Custos</h3>
                   <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                    <p class="md-caption">CUSTO FORNECEDOR</p>
+                    <p class="md-caption">CUSTO</p>
+                    <p
+                      class="s1-U__text-ellipsis"
+                    >{{formatMoney(Service.DetailedService.ServiceCost)}}</p>
+                  </div>
+                  <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                    <p class="md-caption">VALOR</p>
                     <p
                       class="s1-U__text-ellipsis"
                     >{{formatMoney(Service.DetailedService.ServiceS1Value)}}</p>
@@ -1557,7 +1563,13 @@
                         class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
                       >Custos</h3>
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                        <p class="md-caption">CUSTO FORNECEDOR</p>
+                        <p class="md-caption">CUSTO</p>
+                        <p
+                          class="s1-U__text-ellipsis"
+                        >{{formatMoney(Package.DetailedService.ServiceCost)}}</p>
+                      </div>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                        <p class="md-caption">VALOR</p>
                         <p
                           class="s1-U__text-ellipsis"
                         >{{formatMoney(Package.DetailedService.ServiceS1Value)}}</p>
@@ -1933,7 +1945,13 @@
                         class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
                       >Custos</h3>
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                        <p class="md-caption">CUSTO FORNECEDOR</p>
+                        <p class="md-caption">CUSTO</p>
+                        <p
+                          class="s1-U__text-ellipsis"
+                        >{{formatMoney(Package.DetailedService.ServiceCost)}}</p>
+                      </div>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                        <p class="md-caption">VALOR</p>
                         <p
                           class="s1-U__text-ellipsis"
                         >{{formatMoney(Package.DetailedService.ServiceS1Value)}}</p>
@@ -2002,7 +2020,13 @@
                 </div>
                 <h3 class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary">Custos</h3>
                 <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                  <p class="md-caption">CUSTO FORNECEDOR</p>
+                  <p class="md-caption">CUSTO</p>
+                  <p
+                    class="s1-U__text-ellipsis"
+                  >{{formatMoney(Package.DetailedService.ServiceCost)}}</p>
+                </div>
+                <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                  <p class="md-caption">VALOR</p>
                   <p
                     class="s1-U__text-ellipsis"
                   >{{formatMoney(Package.DetailedService.ServiceS1Value)}}</p>
@@ -2693,6 +2717,10 @@ export default {
         ServiceS1Value: null,
         ServiceCost: null,
         Vigence: null,
+        CurrencyCode: "BRL",
+        Exclusive: false,
+        Group: false,
+        Purpose: "Sale",
         Rules: [
           {
             Appliedto: "Titular",
@@ -2708,6 +2736,56 @@ export default {
             Appliedto: "Dependente",
             Operator: "=",
             Value: "0"
+          }
+        ],
+        Fields: [
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
+            Type: "Text",
+            Label: "Nome",
+            DataType: "string",
+            AppliedTo: "Titular",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl2",
+            Type: "CPF",
+            Label: "CPF",
+            DataType: "string",
+            AppliedTo: "Titular",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
+            Type: "Text",
+            Label: "Nome",
+            DataType: "string",
+            AppliedTo: "Beneficiário",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl2",
+            Type: "CPF",
+            Label: "CPF",
+            DataType: "string",
+            AppliedTo: "Beneficiário",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kll",
+            Type: "Text",
+            Label: "Nome",
+            DataType: "string",
+            AppliedTo: "Dependente",
+            Criterias: []
+          },
+          {
+            Id: "asda777989dihahd1892uiojke2bn1w089yasokdaksdda09u2oi1kl2",
+            Type: "CPF",
+            Label: "CPF",
+            DataType: "string",
+            AppliedTo: "Dependente",
+            Criterias: []
           }
         ]
       },
@@ -2910,6 +2988,10 @@ export default {
         ServiceS1Value: null,
         ServiceCost: null,
         Vigence: null,
+        CurrencyCode: "BRL",
+        Exclusive: false,
+        Group: false,
+        Purpose: "Sale",
         Rules: [
           {
             Appliedto: "Titular",
