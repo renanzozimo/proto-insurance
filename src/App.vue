@@ -2050,7 +2050,8 @@
                 <p class="text-s1-U__text-nowrap">{{supplier.Phone2}}</p>
               </md-table-cell>
               <md-table-cell md-numeric class="s1-U__text-align--right">
-                <md-menu md-direction="bottom-end">
+                <md-button class="s1-md-bordered" @click="edit('Supplier', supplier.Id)">Editar</md-button>
+                <!-- <md-menu md-direction="bottom-end">
                   <md-button class="md-icon-button squared" md-menu-trigger>
                     <md-icon>more_vert</md-icon>
                   </md-button>
@@ -2059,7 +2060,7 @@
                     <md-menu-item @click="setShowSupplierDetail(supplier)">Ver detalhes</md-menu-item>
                     <md-menu-item @click="edit('Supplier', supplier.Id)">Editar</md-menu-item>
                   </md-menu-content>
-                </md-menu>
+                </md-menu>-->
               </md-table-cell>
             </md-table-row>
           </md-table>
@@ -3138,7 +3139,7 @@ export default {
     getPriceByType(type) {
       if (this.getIncludedServicesByType(type).length === 0) return 0;
       const reducer = (accumulator, currentValue) => {
-        return accumulator + currentValue.ServiceS1Value;
+        return accumulator + parseFloat(currentValue.ServiceS1Value);
       };
       const array = this.getIncludedServicesByType(type);
       return array.reduce(reducer, 0);
@@ -3182,11 +3183,14 @@ export default {
     },
     getServicesServiceS1Value() {
       let cost = 0;
+      debugger;
       if (this.Package.Form.Services.length > 0) {
         cost = this.Package.Form.Services.map(s => {
+          debugger;
           return getPropById(this.Service.Data, s, "ServiceS1Value");
         }).reduce((accumulator, currentValue) => {
-          return accumulator + currentValue;
+          debugger;
+          return accumulator + parseFloat(currentValue);
         });
       }
 
