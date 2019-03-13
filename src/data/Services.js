@@ -20,7 +20,6 @@ export default [
     Vigence: "365",
     Exclusive: false,
     Group: false,
-    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -104,7 +103,6 @@ export default [
     Vigence: "365",
     Exclusive: false,
     Group: false,
-    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -188,7 +186,6 @@ export default [
     Vigence: "365",
     Exclusive: false,
     Group: false,
-    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -272,7 +269,6 @@ export default [
     Vigence: "365",
     Exclusive: false,
     Group: false,
-    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -356,7 +352,6 @@ export default [
     Vigence: "365",
     Exclusive: false,
     Group: false,
-    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -440,7 +435,6 @@ export default [
     Vigence: "1095",
     Exclusive: false,
     Group: false,
-    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -524,7 +518,6 @@ export default [
     Vigence: "1095",
     Exclusive: false,
     Group: false,
-    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -608,7 +601,6 @@ export default [
     Vigence: "1095",
     Exclusive: false,
     Group: false,
-    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -692,7 +684,6 @@ export default [
     Vigence: "365",
     Exclusive: false,
     Group: false,
-    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",
@@ -776,7 +767,6 @@ export default [
     Vigence: "365",
     Exclusive: false,
     Group: false,
-    Purpose: "Sale",
     Rules: [
       {
         Appliedto: "Titular",

@@ -225,20 +225,7 @@
                     ></md-textarea>
                   </md-field>
                 </div>
-                <div class="s1-loc__md-field-wrapper s1-U__mg--bt24 s1-U__mg--tp16">
-                  <p class="s1-U__text-color--dark-2 s1-U__mg--bt16">Propósito</p>
-                  <div class="s1-U__pd--lt16 s1-U__mg--bt8">
-                    <md-radio class="s1-U__mg0" v-model="Service.Form.Purpose" value="Sale">Venda</md-radio>
-                  </div>
-                  <div class="s1-U__pd--lt16">
-                    <md-radio
-                      class="s1-U__mg0"
-                      v-model="Service.Form.Purpose"
-                      value="Benefit"
-                    >Benefício</md-radio>
-                  </div>
-                </div>
-                <div class="s1-U__mg--bt48">
+                <div class="s1-U__mg--bt48 s1-U__mg--tp16">
                   <p class="s1-U__text-color--dark-2 s1-U__mg--bt16">Distribuição</p>
                   <div class="s1-loc__md-field-wrapper s1-U__pd--lt16 s1-U__mg--bt8">
                     <md-checkbox
@@ -631,20 +618,7 @@
                     ></md-textarea>
                   </md-field>
                 </div>
-                <div class="s1-loc__md-field-wrapper s1-U__mg--bt24 s1-U__mg--tp16">
-                  <p class="s1-U__text-color--dark-2 s1-U__mg--bt16">Propósito</p>
-                  <div class="s1-U__pd--lt16 s1-U__mg--bt8">
-                    <md-radio class="s1-U__mg0" v-model="Service.Form.Purpose" value="Sale">Venda</md-radio>
-                  </div>
-                  <div class="s1-U__pd--lt16">
-                    <md-radio
-                      class="s1-U__mg0"
-                      v-model="Service.Form.Purpose"
-                      value="Benefit"
-                    >Benefício</md-radio>
-                  </div>
-                </div>
-                <div class="s1-U__mg--bt48">
+                <div class="s1-U__mg--bt48 s1-U__mg--tp16">
                   <p class="s1-U__text-color--dark-2 s1-U__mg--bt16">Distribuição</p>
                   <div class="s1-loc__md-field-wrapper s1-U__pd--lt16 s1-U__mg--bt8">
                     <md-checkbox
@@ -1129,8 +1103,8 @@
                   <div class="s1-U__align-children--center s1-U__pd--lt16 s1-U__pd--rt16">
                     <p
                       class="md-body-2"
-                      :class="pack.Active ? 's1-U__text-color--primary' : 's1-U__text-color--dark-3'"
-                    >{{pack.Active ? 'ATIVO' : 'INATIVO'}}</p>
+                      :class="pack.Active ? 's1-loc__text-color--success' : 's1-U__text-color--dark-3'"
+                    >{{pack.Active ? 'Ativo' : 'Inativo'}} para {{ pack.Purpose === 'Sale' ? 'venda' : 'benefício' }}</p>
                   </div>
                   <p class="s1-U__text-align--right s1-U__pd--rt16">
                     <span class="md-caption s1-U__text-color--dark-3">
@@ -1270,6 +1244,15 @@
                     <span class="md-error" v-if="!$v.Package.Form.TenantId.required">Obrigatório</span>
                   </md-field>
                 </div>
+                <div class="s1-loc__md-field-wrapper s1-U__mg--bt24 s1-U__mg--tp8">
+                  <p class="s1-U__text-color--dark-2 s1-U__mg--bt16">Propósito</p>
+                  <div class="s1-U__pd--lt16 s1-U__mg--bt8">
+                    <md-radio class="s1-U__mg0" v-model="Package.Form.Purpose" value="Sale">Venda</md-radio>
+                  </div>
+                  <div class="s1-U__pd--lt16">
+                    <md-radio class="s1-U__mg0" v-model="Package.Form.Purpose" value="Ben">Benefício</md-radio>
+                  </div>
+                </div>
               </div>
             </section>
             <section class="s1-U__mg--bt64">
@@ -1321,7 +1304,7 @@
                 </div>
               </div>
             </section>
-            <section class="s1-U__mg--bt64">
+            <section class="s1-U__mg--bt64" v-show="Package.Form.Purpose === 'Sale'">
               <h3
                 class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16"
               >Valor do pacote</h3>
@@ -1658,6 +1641,15 @@
                     </md-select>
                   </md-field>
                 </div>
+                <div class="s1-loc__md-field-wrapper s1-U__mg--bt24 s1-U__mg--tp8">
+                  <p class="s1-U__text-color--dark-2 s1-U__mg--bt16">Propósito</p>
+                  <div class="s1-U__pd--lt16 s1-U__mg--bt8">
+                    <md-radio class="s1-U__mg0" v-model="Package.Form.Purpose" value="Sale">Venda</md-radio>
+                  </div>
+                  <div class="s1-U__pd--lt16">
+                    <md-radio class="s1-U__mg0" v-model="Package.Form.Purpose" value="Ben">Benefício</md-radio>
+                  </div>
+                </div>
               </div>
             </section>
             <section class="s1-U__mg--bt64">
@@ -1709,7 +1701,7 @@
                 </div>
               </div>
             </section>
-            <section class="s1-U__mg--bt64">
+            <section class="s1-U__mg--bt64" v-show="Package.Form.Purpose === 'Sale'">
               <h3
                 class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16"
               >Valor do pacote</h3>
@@ -2675,7 +2667,8 @@ export default {
         ServicesServiceS1Value: null,
         TotalServiceS1Value: null,
         Price: 0.0,
-        Active: true
+        Active: true,
+        Purpose: "Sale"
       },
       DefaultForm: {
         Id: null,
@@ -2685,7 +2678,8 @@ export default {
         ServicesServiceS1Value: null,
         TotalServiceS1Value: null,
         Price: 0.0,
-        Active: true
+        Active: true,
+        Purpose: "Sale"
       },
       Data: Packages,
       MockData: Packages,
@@ -2720,7 +2714,6 @@ export default {
         CurrencyCode: "BRL",
         Exclusive: false,
         Group: false,
-        Purpose: "Sale",
         Rules: [
           {
             Appliedto: "Titular",
@@ -2808,7 +2801,6 @@ export default {
         CurrencyCode: "BRL",
         Exclusive: false,
         Group: false,
-        Purpose: "Sale",
         Rules: [
           {
             Appliedto: "Titular",
@@ -2890,7 +2882,6 @@ export default {
         CurrencyCode: "BRL",
         Exclusive: false,
         Group: false,
-        Purpose: "Sale",
         Rules: [
           {
             Appliedto: "Titular",
@@ -2991,7 +2982,6 @@ export default {
         CurrencyCode: "BRL",
         Exclusive: false,
         Group: false,
-        Purpose: "Sale",
         Rules: [
           {
             Appliedto: "Titular",
@@ -3327,7 +3317,6 @@ export default {
         CurrencyCode: "BRL",
         Exclusive: false,
         Group: false,
-        Purpose: "Sale",
         Rules: [],
         Fields: []
       };

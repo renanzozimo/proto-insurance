@@ -6,7 +6,8 @@ export default [
     ServicesServiceS1Value: 0.9,
     Price: 9.99,
     TenantId: "5c3784c0b3264775f0d3acdd",
-    Active: true
+    Active: true,
+    Purpose: "Sale"
   },
   {
     Id: "as9089uoisdjklasda89ioskldn",
@@ -15,7 +16,8 @@ export default [
     ServicesServiceS1Value: 6.7,
     Price: 29.9,
     TenantId: "5c3784c0b3264775f0d3acdd",
-    Active: true
+    Active: true,
+    Purpose: "Sale"
   },
   {
     Id: "asda8ioshda0sdohaoksd",
@@ -24,7 +26,8 @@ export default [
     ServicesServiceS1Value: 3.9,
     Price: 19.9,
     TenantId: "as8udsihda8sdoahojklsda8sasddadasd",
-    Active: false
+    Active: false,
+    Purpose: "Sale"
   },
   {
     Id: "as89yuih3dejkasdasd",
@@ -33,6 +36,7 @@ export default [
     ServicesServiceS1Value: 1.2,
     Price: 19.9,
     TenantId: "asdauihda89hu123hu2jkhq8dasoda",
-    Active: false
+    Active: false,
+    Purpose: "Sale"
   }
 ];
