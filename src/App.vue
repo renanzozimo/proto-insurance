@@ -51,7 +51,7 @@
           </div>
           <div class="s1-U__align-children--top">
             <div class="s1-U__flex-shrink-0 s1-U__width--210px s1-U__pd--rt16">
-              <md-list class="s1-U__bg-color--transparent">
+              <md-list class="s1-U__bg-color--transparent s1-U__pd0">
                 <md-list-item
                   v-for="type in ServiceTypes"
                   :key="'type-' + type.Id + '-menu'"
@@ -214,6 +214,9 @@
                     </md-select>
                   </md-field>
                 </div>
+                <div class="s1-loc__md-field-wrapper s1-U__mg--tp8 s1-U__mg--bt24">
+                  <md-checkbox class="s1-U__mg0" v-model="Service.Form.TimeStemp">Carimbo do tempo</md-checkbox>
+                </div>
                 <div class="s1-loc__md-field-wrapper s1-U__width--540px">
                   <md-field>
                     <label for="Service-Description">Descrição</label>
@@ -225,19 +228,18 @@
                     ></md-textarea>
                   </md-field>
                 </div>
-                <div class="s1-U__mg--bt48 s1-U__mg--tp16">
+                <div class="s1-loc__md-field-wrapper s1-U__mg--bt24 s1-U__mg--tp8">
                   <p class="s1-U__text-color--dark-2 s1-U__mg--bt16">Distribuição</p>
-                  <div class="s1-loc__md-field-wrapper s1-U__pd--lt16 s1-U__mg--bt8">
-                    <md-checkbox
+                  <div
+                    class="s1-U__pd--lt16 s1-U__mg--bt8"
+                    v-for="distribution in ['Sozinho em um pacote', 'Junto de outros serviços em um pacote', 'Sozinho em um pacote ou junto de outros serviços em um pacote', ]"
+                    :key="'distribution-' + distribution"
+                  >
+                    <md-radio
                       class="s1-U__mg0"
-                      v-model="Service.Form.Exclusive"
-                    >Sozinho em um pacote</md-checkbox>
-                  </div>
-                  <div class="s1-loc__md-field-wrapper s1-U__pd--lt16">
-                    <md-checkbox
-                      class="s1-U__mg0"
-                      v-model="Service.Form.Group"
-                    >Junto de outros serviços em um pacote</md-checkbox>
+                      v-model="Service.Form.Distribution"
+                      :value="distribution"
+                    >{{distribution}}</md-radio>
                   </div>
                 </div>
               </div>
@@ -245,6 +247,22 @@
                 class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
               >Contratação</h3>
               <div class="s1-U__pd--lt16">
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field>
+                    <label for="Service-ActivationFrequency">Frequência de ativação</label>
+                    <md-select
+                      id="Service-ActivationFrequency"
+                      name="Service-ActivationFrequency"
+                      v-model="Service.Form.ActivationFrequency"
+                    >
+                      <md-option
+                        v-for="frequecy in Frequences"
+                        :key="'frequecy' + frequecy.Id"
+                        :value="frequecy.Id"
+                      >{{frequecy.Name}}</md-option>
+                    </md-select>
+                  </md-field>
+                </div>
                 <div class="s1-loc__md-field-wrapper s1-U__width--180px">
                   <md-field>
                     <label for="Service-CurrencyCode">Moeda</label>
@@ -262,7 +280,24 @@
                     </md-select>
                   </md-field>
                 </div>
-                <div class="s1-loc__md-field-wrapper s1-U__width--180px">
+                <div class="s1-loc__md-field-wrapper s1-U__width--160px">
+                  <md-field
+                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceCost.$dirty && $v.Service.Form.ServiceCost.$invalid}"
+                  >
+                    <label for="Service-ServiceCost">Custo fornecedor</label>
+                    <md-input
+                      id="Service-ServiceCost"
+                      name="Service-ServiceCost"
+                      type="number"
+                      @blur="$v.Service.Form.ServiceCost.$touch()"
+                      @focus="$v.Service.Form.ServiceCost.$reset()"
+                      v-model="Service.Form.ServiceCost"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Service.Form.ServiceCost.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--160px">
                   <md-field
                     :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceS1Value.$dirty && $v.Service.Form.ServiceS1Value.$invalid}"
                   >
@@ -280,23 +315,6 @@
                       class="md-error"
                       v-if="!$v.Service.Form.ServiceS1Value.required"
                     >Obrigatório</span>
-                  </md-field>
-                </div>
-                <div class="s1-loc__md-field-wrapper s1-U__width--180px">
-                  <md-field
-                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceCost.$dirty && $v.Service.Form.ServiceCost.$invalid}"
-                  >
-                    <label for="Service-ServiceCost">Custo fornecedor</label>
-                    <md-input
-                      id="Service-ServiceCost"
-                      name="Service-ServiceCost"
-                      type="number"
-                      @blur="$v.Service.Form.ServiceCost.$touch()"
-                      @focus="$v.Service.Form.ServiceCost.$reset()"
-                      v-model="Service.Form.ServiceCost"
-                      required
-                    ></md-input>
-                    <span class="md-error" v-if="!$v.Service.Form.ServiceCost.required">Obrigatório</span>
                   </md-field>
                 </div>
                 <div class="s1-loc__md-field-wrapper">
@@ -607,6 +625,9 @@
                     </md-select>
                   </md-field>
                 </div>
+                <div class="s1-loc__md-field-wrapper s1-U__mg--tp8 s1-U__mg--bt24">
+                  <md-checkbox class="s1-U__mg0" v-model="Service.Form.TimeStemp">Carimbo do tempo</md-checkbox>
+                </div>
                 <div class="s1-loc__md-field-wrapper s1-U__width--540px">
                   <md-field>
                     <label for="Service-Description-edit">Descrição</label>
@@ -618,19 +639,18 @@
                     ></md-textarea>
                   </md-field>
                 </div>
-                <div class="s1-U__mg--bt48 s1-U__mg--tp16">
+                <div class="s1-loc__md-field-wrapper s1-U__mg--bt24 s1-U__mg--tp8">
                   <p class="s1-U__text-color--dark-2 s1-U__mg--bt16">Distribuição</p>
-                  <div class="s1-loc__md-field-wrapper s1-U__pd--lt16 s1-U__mg--bt8">
-                    <md-checkbox
+                  <div
+                    class="s1-U__pd--lt16 s1-U__mg--bt8"
+                    v-for="distribution in ['Sozinho em um pacote', 'Junto de outros serviços em um pacote', 'Sozinho em um pacote ou junto de outros serviços em um pacote', ]"
+                    :key="'distribution-' + distribution"
+                  >
+                    <md-radio
                       class="s1-U__mg0"
-                      v-model="Service.Form.Exclusive"
-                    >Sozinho em um pacote</md-checkbox>
-                  </div>
-                  <div class="s1-loc__md-field-wrapper s1-U__pd--lt16">
-                    <md-checkbox
-                      class="s1-U__mg0"
-                      v-model="Service.Form.Group"
-                    >Junto de outros serviços em um pacote</md-checkbox>
+                      v-model="Service.Form.Distribution"
+                      :value="distribution"
+                    >{{distribution}}</md-radio>
                   </div>
                 </div>
               </div>
@@ -638,6 +658,22 @@
                 class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp32"
               >Contratação</h3>
               <div class="s1-U__pd--lt16">
+                <div class="s1-loc__md-field-wrapper s1-U__width--210px">
+                  <md-field>
+                    <label for="Service-ActivationFrequency-edit">Frequência de ativação</label>
+                    <md-select
+                      id="Service-ActivationFrequency-edit"
+                      name="Service-ActivationFrequency-edit"
+                      v-model="Service.Form.ActivationFrequency"
+                    >
+                      <md-option
+                        v-for="frequecy in Frequences"
+                        :key="'frequecy' + frequecy.Id"
+                        :value="frequecy.Id"
+                      >{{frequecy.Name}}</md-option>
+                    </md-select>
+                  </md-field>
+                </div>
                 <div class="s1-loc__md-field-wrapper s1-U__width--180px">
                   <md-field>
                     <label for="Service-CurrencyCode-edit">Moeda</label>
@@ -655,7 +691,24 @@
                     </md-select>
                   </md-field>
                 </div>
-                <div class="s1-loc__md-field-wrapper s1-U__width--180px">
+                <div class="s1-loc__md-field-wrapper s1-U__width--160px">
+                  <md-field
+                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceCost.$dirty && $v.Service.Form.ServiceCost.$invalid}"
+                  >
+                    <label for="Service-ServiceCost-edit">Custo fornecedor</label>
+                    <md-input
+                      id="Service-ServiceCost-edit"
+                      name="Service-ServiceCost-edit"
+                      type="number"
+                      @blur="$v.Service.Form.ServiceCost.$touch()"
+                      @focus="$v.Service.Form.ServiceCost.$reset()"
+                      v-model="Service.Form.ServiceCost"
+                      required
+                    ></md-input>
+                    <span class="md-error" v-if="!$v.Service.Form.ServiceCost.required">Obrigatório</span>
+                  </md-field>
+                </div>
+                <div class="s1-loc__md-field-wrapper s1-U__width--160px">
                   <md-field
                     :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceS1Value.$dirty && $v.Service.Form.ServiceS1Value.$invalid}"
                   >
@@ -675,23 +728,6 @@
                     >Obrigatório</span>
                   </md-field>
                 </div>
-                <div class="s1-loc__md-field-wrapper s1-U__width--180px">
-                  <md-field
-                    :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceCost.$dirty && $v.Service.Form.ServiceCost.$invalid}"
-                  >
-                    <label for="Service-ServiceCost-edit">Custo fornecedor</label>
-                    <md-input
-                      id="Service-ServiceCost-edit"
-                      name="Service-ServiceCost-edit"
-                      type="number"
-                      @blur="$v.Service.Form.ServiceCost.$touch()"
-                      @focus="$v.Service.Form.ServiceCost.$reset()"
-                      v-model="Service.Form.ServiceCost"
-                      required
-                    ></md-input>
-                    <span class="md-error" v-if="!$v.Service.Form.ServiceCost.required">Obrigatório</span>
-                  </md-field>
-                </div>
                 <div class="s1-loc__md-field-wrapper">
                   <div class="s1-U__text-color--dark-2 s1-U__mg--bt8">Vigência</div>
                   <div class="s1-U__align-children--bottom s1-U__mg--bt16">
@@ -701,8 +737,8 @@
                     >
                       <md-input
                         class="s1-U__text-align--center"
-                        id="Service-Vigence"
-                        name="Service-Vigence"
+                        id="Service-Vigence-edit"
+                        name="Service-Vigence-edit"
                         type="number"
                         @blur="$v.Service.Form.Vigence.$touch()"
                         @focus="$v.Service.Form.Vigence.$reset()"
@@ -2593,6 +2629,7 @@ import ServiceTypes from "./data/ServiceTypes.js";
 import Currencies from "./data/Currencies.js";
 import Operators from "./data/Operators.js";
 import Fields from "./data/Fields.js";
+import Frequences from "./data/Frequences.js";
 
 import formatMoney from "./assets/utils/formatMoney.js";
 import getListByProp from "./assets/utils/getListByProp.js";
@@ -2613,6 +2650,7 @@ export default {
     Currencies,
     Operators,
     Fields,
+    Frequences,
     Supplier: {
       Form: {
         Name: null,
@@ -2712,8 +2750,10 @@ export default {
         ServiceCost: null,
         Vigence: null,
         CurrencyCode: "BRL",
-        Exclusive: false,
-        Group: false,
+        TimeStemp: false,
+        ActivationFrequency: "daily",
+        Distribution:
+          "Sozinho em um pacote ou junto de outros serviços em um pacote",
         Rules: [
           {
             Appliedto: "Titular",
@@ -2799,8 +2839,10 @@ export default {
         ServiceCost: 0.0,
         Vigence: 30,
         CurrencyCode: "BRL",
-        Exclusive: false,
-        Group: false,
+        TimeStemp: false,
+        ActivationFrequency: "daily",
+        Distribution:
+          "Sozinho em um pacote ou junto de outros serviços em um pacote",
         Rules: [
           {
             Appliedto: "Titular",
@@ -2880,8 +2922,10 @@ export default {
         ServiceCost: 0.0,
         Vigence: 30,
         CurrencyCode: "BRL",
-        Exclusive: false,
-        Group: false,
+        TimeStemp: false,
+        ActivationFrequency: "daily",
+        Distribution:
+          "Sozinho em um pacote ou junto de outros serviços em um pacote",
         Rules: [
           {
             Appliedto: "Titular",
@@ -2980,8 +3024,10 @@ export default {
         ServiceCost: null,
         Vigence: null,
         CurrencyCode: "BRL",
-        Exclusive: false,
-        Group: false,
+        TimeStemp: false,
+        ActivationFrequency: "daily",
+        Distribution:
+          "Sozinho em um pacote ou junto de outros serviços em um pacote",
         Rules: [
           {
             Appliedto: "Titular",
@@ -3315,8 +3361,10 @@ export default {
         ServiceCost: null,
         Vigence: null,
         CurrencyCode: "BRL",
-        Exclusive: false,
-        Group: false,
+        TimeStemp: false,
+        ActivationFrequency: "daily",
+        Distribution:
+          "Sozinho em um pacote ou junto de outros serviços em um pacote",
         Rules: [],
         Fields: []
       };

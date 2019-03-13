@@ -18,8 +18,10 @@ export default [
     ServiceS1Value: 0.9,
     ServiceCost: 0.1,
     Vigence: "365",
-    Exclusive: false,
-    Group: false,
+    TimeStemp: false,
+    ActivationFrequency: "daily",
+    Distribution:
+      "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
         Appliedto: "Titular",
@@ -101,8 +103,10 @@ export default [
     ServiceS1Value: 0.2,
     ServiceCost: 0.1,
     Vigence: "365",
-    Exclusive: false,
-    Group: false,
+    TimeStemp: false,
+    ActivationFrequency: "daily",
+    Distribution:
+      "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
         Appliedto: "Titular",
@@ -184,8 +188,10 @@ export default [
     ServiceS1Value: 0.1,
     ServiceCost: 0.1,
     Vigence: "365",
-    Exclusive: false,
-    Group: false,
+    TimeStemp: false,
+    ActivationFrequency: "daily",
+    Distribution:
+      "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
         Appliedto: "Titular",
@@ -267,8 +273,10 @@ export default [
     ServiceS1Value: 5.5,
     ServiceCost: 0.1,
     Vigence: "365",
-    Exclusive: false,
-    Group: false,
+    TimeStemp: false,
+    ActivationFrequency: "daily",
+    Distribution:
+      "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
         Appliedto: "Titular",
@@ -350,8 +358,10 @@ export default [
     ServiceS1Value: 3.0,
     ServiceCost: 0.1,
     Vigence: "365",
-    Exclusive: false,
-    Group: false,
+    TimeStemp: false,
+    ActivationFrequency: "daily",
+    Distribution:
+      "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
         Appliedto: "Titular",
@@ -433,8 +443,8 @@ export default [
     ServiceS1Value: 3.0,
     ServiceCost: 0.1,
     Vigence: "1095",
-    Exclusive: false,
-    Group: false,
+    Distribution:
+      "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
         Appliedto: "Titular",
@@ -516,8 +526,8 @@ export default [
     ServiceS1Value: 1.0,
     ServiceCost: 0.1,
     Vigence: "1095",
-    Exclusive: false,
-    Group: false,
+    Distribution:
+      "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
         Appliedto: "Titular",
@@ -599,8 +609,8 @@ export default [
     ServiceS1Value: 1.0,
     ServiceCost: 0.1,
     Vigence: "1095",
-    Exclusive: false,
-    Group: false,
+    Distribution:
+      "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
         Appliedto: "Titular",
@@ -682,8 +692,10 @@ export default [
     ServiceS1Value: 1.57,
     ServiceCost: 0.1,
     Vigence: "365",
-    Exclusive: false,
-    Group: false,
+    TimeStemp: false,
+    ActivationFrequency: "daily",
+    Distribution:
+      "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
         Appliedto: "Titular",
@@ -765,8 +777,10 @@ export default [
     ServiceS1Value: 0.46,
     ServiceCost: 0.1,
     Vigence: "365",
-    Exclusive: false,
-    Group: false,
+    TimeStemp: false,
+    ActivationFrequency: "daily",
+    Distribution:
+      "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
         Appliedto: "Titular",

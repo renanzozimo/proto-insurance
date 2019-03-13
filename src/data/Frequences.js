@@ -1,5 +1,9 @@
 export default [
   {
+    Id: "daily",
+    Name: "Diária"
+  },
+  {
     Id: "weekly",
     Name: "Semanal"
   },
