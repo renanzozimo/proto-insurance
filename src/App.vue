@@ -90,7 +90,7 @@
                           <md-menu-content>
                             <md-menu-item
                               @click="setShowServiceDetailInServices(service)"
-                            >Ver detalhes</md-menu-item>
+                            >{{Service.DetailedService.Id === service.Id ? 'Fechar detalhes' : 'Ver detalhes'}}</md-menu-item>
                             <md-menu-item
                               @click="edit('Service', service.Id, 'Service-Name-edit')"
                             >Editar</md-menu-item>
@@ -131,7 +131,7 @@
               </md-button>
               <div>
                 <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
-                  <span>Criação de serviço</span>
+                  <span>Cadastro de serviço</span>
                 </h1>
               </div>
             </div>
@@ -347,16 +347,16 @@
                   <tbody>
                     <tr
                       v-for="(fav, index) in Service.Form.Rules"
-                      :key="fav.Appliedto + '-in-form'"
+                      :key="fav.AppliedTo + '-in-form'"
                     >
                       <td class="s1-U__pd--rt8">
                         <p
                           class="md-body-2 s1-U__flex-shrink-0 s1-U__text-color--dark-2 s1-U__text-align--right"
-                        >{{fav.Appliedto}}:</p>
+                        >{{fav.AppliedTo}}:</p>
                       </td>
                       <td
                         class="s1-U__pd--rt8 s1-U__pd--bt8 s1-U__pd--tp8"
-                        v-show="Service.FormFavoredVisibility[fav.Appliedto] && fav.Appliedto !== 'Titular'"
+                        v-show="Service.FormFavoredVisibility[fav.AppliedTo] && fav.AppliedTo !== 'Titular'"
                       >
                         <md-field class="s1-md-field--w150px s1-U__mg0">
                           <md-select
@@ -375,7 +375,7 @@
                       </td>
                       <td
                         class="s1-U__pd--rt8 s1-U__pd--bt8 s1-U__pd--tp8"
-                        v-show="Service.FormFavoredVisibility[fav.Appliedto]"
+                        v-show="Service.FormFavoredVisibility[fav.AppliedTo]"
                       >
                         <md-field class="s1-md-field--w50px s1-U__mg0">
                           <md-input
@@ -384,34 +384,34 @@
                             name="Service-Value"
                             type="number"
                             v-model="Service.Form.Rules[index].Value"
-                            @change="(!Service.Form.Rules[index].Value || parseInt(Service.Form.Rules[index].Value) === 0) && Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '1' : null"
+                            @change="(!Service.Form.Rules[index].Value || parseInt(Service.Form.Rules[index].Value) === 0) && Service.FormFavoredVisibility[fav.AppliedTo] ? Service.Form.Rules[index].Value = '1' : null"
                             required
                           ></md-input>
                         </md-field>
                       </td>
-                      <td colspan="2" v-show="!Service.FormFavoredVisibility[fav.Appliedto]">
+                      <td colspan="2" v-show="!Service.FormFavoredVisibility[fav.AppliedTo]">
                         <div class="s1-U__align-children--center">
                           <span
                             class="s1-U__text-color--dark-2 s1-U__pd--rt16 s1-U__flex-shrink-0"
                           >nenhum</span>
                           <md-button
                             class="md-dense s1-U__mg--bt4 md-primary s1-md-bordered"
-                            @click="Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.Appliedto] = !Service.FormFavoredVisibility[fav.Appliedto]"
+                            @click="Service.FormFavoredVisibility[fav.AppliedTo] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.AppliedTo] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.AppliedTo] = !Service.FormFavoredVisibility[fav.AppliedTo]"
                           >
                             <div class="s1-U__align-children--center">
-                              <md-icon>{{Service.FormFavoredVisibility[fav.Appliedto] ? 'close' : 'add'}}</md-icon>
+                              <md-icon>{{Service.FormFavoredVisibility[fav.AppliedTo] ? 'close' : 'add'}}</md-icon>
                               <span class="s1-U__mg--lt4">Adicionar</span>
                             </div>
                           </md-button>
                         </div>
                       </td>
-                      <td class v-show="Service.FormFavoredVisibility[fav.Appliedto]">
+                      <td class v-show="Service.FormFavoredVisibility[fav.AppliedTo]">
                         <md-button
                           class="md-dense s1-U__mg--bt4 md-icon-button"
-                          @click="Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.Appliedto] = !Service.FormFavoredVisibility[fav.Appliedto]"
-                          v-if="fav.Appliedto !== 'Titular'"
+                          @click="Service.FormFavoredVisibility[fav.AppliedTo] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.AppliedTo] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.AppliedTo] = !Service.FormFavoredVisibility[fav.AppliedTo]"
+                          v-if="fav.AppliedTo !== 'Titular'"
                         >
-                          <md-icon>{{Service.FormFavoredVisibility[fav.Appliedto] ? 'close' : 'add'}}</md-icon>
+                          <md-icon>{{Service.FormFavoredVisibility[fav.AppliedTo] ? 'close' : 'add'}}</md-icon>
                         </md-button>
                       </td>
                     </tr>
@@ -514,7 +514,7 @@
                 :disabled="$v.Service.Form.$invalid"
                 @click="saveCreated('Service')"
               >
-                <span class="s1-U__pd--lt8 s1-U__pd--rt8">Cadastrar</span>
+                <span class="s1-U__pd--lt8 s1-U__pd--rt8">Cadastrar serviço</span>
               </md-button>
             </div>
           </md-card>
@@ -758,16 +758,16 @@
                   <tbody>
                     <tr
                       v-for="(fav, index) in Service.Form.Rules"
-                      :key="fav.Appliedto + '-in-form'"
+                      :key="fav.AppliedTo + '-in-form'"
                     >
                       <td class="s1-U__pd--rt8">
                         <p
                           class="md-body-2 s1-U__flex-shrink-0 s1-U__text-color--dark-2 s1-U__text-align--right"
-                        >{{fav.Appliedto}}:</p>
+                        >{{fav.AppliedTo}}:</p>
                       </td>
                       <td
                         class="s1-U__pd--rt8 s1-U__pd--bt8 s1-U__pd--tp8"
-                        v-show="Service.FormFavoredVisibility[fav.Appliedto] && fav.Appliedto !== 'Titular'"
+                        v-show="Service.FormFavoredVisibility[fav.AppliedTo] && fav.AppliedTo !== 'Titular'"
                       >
                         <md-field class="s1-md-field--w150px s1-U__mg0">
                           <md-select
@@ -786,7 +786,7 @@
                       </td>
                       <td
                         class="s1-U__pd--rt8 s1-U__pd--bt8 s1-U__pd--tp8"
-                        v-show="Service.FormFavoredVisibility[fav.Appliedto]"
+                        v-show="Service.FormFavoredVisibility[fav.AppliedTo]"
                       >
                         <md-field class="s1-md-field--w50px s1-U__mg0">
                           <md-input
@@ -795,34 +795,34 @@
                             name="Service-Value"
                             type="number"
                             v-model="Service.Form.Rules[index].Value"
-                            @change="(!Service.Form.Rules[index].Value || parseInt(Service.Form.Rules[index].Value) === 0) && Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '1' : null"
+                            @change="(!Service.Form.Rules[index].Value || parseInt(Service.Form.Rules[index].Value) === 0) && Service.FormFavoredVisibility[fav.AppliedTo] ? Service.Form.Rules[index].Value = '1' : null"
                             required
                           ></md-input>
                         </md-field>
                       </td>
-                      <td colspan="2" v-show="!Service.FormFavoredVisibility[fav.Appliedto]">
+                      <td colspan="2" v-show="!Service.FormFavoredVisibility[fav.AppliedTo]">
                         <div class="s1-U__align-children--center">
                           <span
                             class="s1-U__text-color--dark-2 s1-U__pd--rt16 s1-U__flex-shrink-0"
                           >nenhum</span>
                           <md-button
                             class="md-dense s1-U__mg--bt4 md-primary s1-md-bordered"
-                            @click="Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.Appliedto] = !Service.FormFavoredVisibility[fav.Appliedto]"
+                            @click="Service.FormFavoredVisibility[fav.AppliedTo] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.AppliedTo] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.AppliedTo] = !Service.FormFavoredVisibility[fav.AppliedTo]"
                           >
                             <div class="s1-U__align-children--center">
-                              <md-icon>{{Service.FormFavoredVisibility[fav.Appliedto] ? 'close' : 'add'}}</md-icon>
+                              <md-icon>{{Service.FormFavoredVisibility[fav.AppliedTo] ? 'close' : 'add'}}</md-icon>
                               <span class="s1-U__mg--lt4">Adicionar</span>
                             </div>
                           </md-button>
                         </div>
                       </td>
-                      <td class v-show="Service.FormFavoredVisibility[fav.Appliedto]">
+                      <td class v-show="Service.FormFavoredVisibility[fav.AppliedTo]">
                         <md-button
                           class="md-dense s1-U__mg--bt4 md-icon-button"
-                          @click="Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.Appliedto] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.Appliedto] = !Service.FormFavoredVisibility[fav.Appliedto]"
-                          v-if="fav.Appliedto !== 'Titular'"
+                          @click="Service.FormFavoredVisibility[fav.AppliedTo] ? Service.Form.Rules[index].Value = '0' : Service.Form.Rules[index].Value = '1'; Service.FormFavoredVisibility[fav.AppliedTo] ? Service.Form.Rules[index].Operator = '=' : null; Service.FormFavoredVisibility[fav.AppliedTo] = !Service.FormFavoredVisibility[fav.AppliedTo]"
+                          v-if="fav.AppliedTo !== 'Titular'"
                         >
-                          <md-icon>{{Service.FormFavoredVisibility[fav.Appliedto] ? 'close' : 'add'}}</md-icon>
+                          <md-icon>{{Service.FormFavoredVisibility[fav.AppliedTo] ? 'close' : 'add'}}</md-icon>
                         </md-button>
                       </td>
                     </tr>
@@ -942,7 +942,6 @@
                 class="s1-U__border--bottom1 s1-U__align-children--top s1-U__full-width s1-U__justify-content--space-between"
               >
                 <div class="s1-U__pd16 s1-U__flex-shrink-0 s1-U__width--240px">
-                  <p class="md-caption s1-U__text-uppercase">DETALHES</p>
                   <h2 class="md-title s1-U__text-ellipsis">{{Service.DetailedService.FriendlyName}}</h2>
                   <p
                     class="md-subheading s1-U__text-color--dark-2 s1-U__text-ellipsis"
@@ -961,42 +960,119 @@
                   style="overflow: auto;"
                   v-if="Service.DetailedService.Id"
                 >
+                  <div
+                    class="s1-U__pd--lt16 s1-U__mg--bt24 s1-U__align-children--center s1-U__full-width"
+                  >
+                    <div
+                      class="s1-U__bg-color--accent s1-U__border-radius--5px s1-U__align-children--center s1-U__pd8"
+                      v-if="Service.DetailedService.TimeStemp"
+                    >
+                      <md-icon>
+                        <span class="s1-U__text-color--white">schedule</span>
+                      </md-icon>
+                      <p
+                        class="s1-U__pd--rt8 s1-U__pd--lt8 s1-U__text-color--white"
+                      >Carimbo do tempo ativado</p>
+                    </div>
+                    <div
+                      class="s1-U__bg-color--body-bg s1-U__border-radius--5px s1-U__align-children--center s1-U__pd8"
+                      v-if="!Service.DetailedService.TimeStemp"
+                    >
+                      <md-icon>
+                        <span class="s1-U__text-color--dark-2">schedule</span>
+                      </md-icon>
+                      <p
+                        class="s1-U__pd--rt8 s1-U__pd--lt8 s1-U__text-color--dark-2"
+                      >Sem carimbo do tempo</p>
+                    </div>
+                  </div>
                   <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                    <p class="md-caption">TIPO</p>
+                    <p class="md-caption">Tipo</p>
                     <p
                       class="s1-U__text-ellipsis"
                     >{{getNameById(ServiceTypes ,Service.DetailedService.ServiceType)}}</p>
                   </div>
                   <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                    <p class="md-caption">FORNECEDOR</p>
+                    <p class="md-caption">Fornecedor</p>
                     <p
                       class="s1-U__text-ellipsis"
                     >{{getNameById(Supplier.Data ,Service.DetailedService.Supplier)}}</p>
                   </div>
-                  <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                    <p class="md-caption">VIGÊNCIA</p>
-                    <p class="s1-U__text-ellipsis">{{Service.DetailedService.Vigence}} dias</p>
-                  </div>
                   <h3
                     class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
-                  >Custos</h3>
-                  <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                    <p class="md-caption">CUSTO</p>
-                    <p
-                      class="s1-U__text-ellipsis"
-                    >{{formatMoney(Service.DetailedService.ServiceCost)}}</p>
-                  </div>
-                  <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                    <p class="md-caption">VALOR</p>
-                    <p
-                      class="s1-U__text-ellipsis"
-                    >{{formatMoney(Service.DetailedService.ServiceS1Value)}}</p>
+                  >Distribuição</h3>
+                  <div class="s1-U__pd--lt16 s1-U__mg--bt16 s1-U__align-children--top">
+                    <md-icon class="s1-U__mg--rt8" style="transform: translateY(-1px)">
+                      <span class="s1-U__text-color--dark-3">error</span>
+                    </md-icon>
+                    <p>{{Service.DetailedService.Distribution}}</p>
                   </div>
                   <h3
                     class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
                   >Descrição</h3>
                   <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                     <p class>{{Service.DetailedService.Description}}</p>
+                  </div>
+                  <h3
+                    class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
+                  >Contratação</h3>
+                  <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                    <p class="md-caption">Frequência de ativação</p>
+                    <p
+                      class="s1-U__text-ellipsis"
+                    >{{ getNameById(Frequences, Service.DetailedService.ActivationFrequency)}}</p>
+                  </div>
+                  <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                    <p class="md-caption">Vigência</p>
+                    <p class="s1-U__text-ellipsis">{{Service.DetailedService.Vigence}} dias</p>
+                  </div>
+                  <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                    <p class="md-caption">Custo</p>
+                    <p
+                      class="s1-U__text-ellipsis"
+                    >{{formatMoney(Service.DetailedService.ServiceCost)}}</p>
+                  </div>
+                  <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                    <p class="md-caption">Valor</p>
+                    <p
+                      class="s1-U__text-ellipsis"
+                    >{{formatMoney(Service.DetailedService.ServiceS1Value)}}</p>
+                  </div>
+                  <h3
+                    class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
+                  >Informações requeridas</h3>
+                  <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                    <p class="md-caption">Titular</p>
+                    <div class="s1-chip-wrapper--left">
+                      <md-chip
+                        v-for="field in getListByProp(Service.DetailedService.Fields, 'Titular', 'AppliedTo')"
+                        :key="field.Id + '-fieldzera-' + field.AppliedTo"
+                      >{{field.Label}}</md-chip>
+                    </div>
+                  </div>
+                  <div
+                    class="s1-U__pd--lt16 s1-U__mg--bt16"
+                    v-if="Service.DetailedService.Rules[1].Value > 0"
+                  >
+                    <p class="md-caption">Beneficiário</p>
+                    <div class="s1-chip-wrapper--left">
+                      <md-chip
+                        v-for="field in getListByProp(Service.DetailedService.Fields, 'Beneficiário', 'AppliedTo')"
+                        :key="field.Id + '-fieldzera-' + field.AppliedTo"
+                      >{{field.Label}}</md-chip>
+                    </div>
+                  </div>
+                  <div
+                    class="s1-U__pd--lt16 s1-U__mg--bt16"
+                    v-if="Service.DetailedService.Rules[2].Value > 0"
+                  >
+                    <p class="md-caption">Dependente</p>
+                    <div class="s1-chip-wrapper--left">
+                      <md-chip
+                        v-for="field in getListByProp(Service.DetailedService.Fields, 'Dependente', 'AppliedTo')"
+                        :key="field.Id + '-fieldzera-' + field.AppliedTo"
+                      >{{field.Label}}</md-chip>
+                    </div>
                   </div>
                 </md-content>
               </md-card-content>
@@ -1225,7 +1301,7 @@
               </md-button>
               <div>
                 <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
-                  <span>Criação de pacote</span>
+                  <span>Cadastro de pacote</span>
                 </h1>
               </div>
             </div>
@@ -1292,7 +1368,9 @@
               </div>
             </section>
             <section class="s1-U__mg--bt64">
-              <h3 class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16">Serviços</h3>
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16"
+              >Portifólio de afinidades</h3>
               <div class="s1-U__pd--lt16 s1-U__pd--rt16">
                 <div v-if="Package.Form.Services.length === 0">
                   <p
@@ -1377,14 +1455,14 @@
                 </p>
               </div>
             </section>
-            <md-card-actions class="s1-U__pd16">
-              <md-button
-                class="md-primary md-raised"
-                @click="saveCreated('Package')"
-                :disabled="$v.Package.Form.$invalid"
-              >Cadastrar pacote</md-button>
-            </md-card-actions>
           </md-card-content>
+          <md-card-actions class="s1-U__pd16 s1-U__border--top1">
+            <md-button
+              class="md-primary md-raised"
+              @click="saveCreated('Package')"
+              :disabled="$v.Package.Form.$invalid"
+            >Cadastrar pacote</md-button>
+          </md-card-actions>
         </md-card>
         <md-dialog
           class="s1-loc-comp__services-dialog"
@@ -1541,7 +1619,6 @@
                     class="s1-U__border--bottom1 s1-U__align-children--top s1-U__full-width s1-U__justify-content--space-between"
                   >
                     <div class="s1-U__pd16 s1-U__flex-shrink-0 s1-U__width--240px">
-                      <p class="md-caption s1-U__text-uppercase">DETALHES</p>
                       <h2
                         class="md-title s1-U__text-ellipsis"
                       >{{Package.DetailedService.FriendlyName}}</h2>
@@ -1562,42 +1639,119 @@
                       style="overflow: auto;"
                       v-if="Package.DetailedService.Id"
                     >
+                      <div
+                        class="s1-U__pd--lt16 s1-U__mg--bt24 s1-U__align-children--center s1-U__full-width"
+                      >
+                        <div
+                          class="s1-U__bg-color--accent s1-U__border-radius--5px s1-U__align-children--center s1-U__pd8"
+                          v-if="Package.DetailedService.TimeStemp"
+                        >
+                          <md-icon>
+                            <span class="s1-U__text-color--white">schedule</span>
+                          </md-icon>
+                          <p
+                            class="s1-U__pd--rt8 s1-U__pd--lt8 s1-U__text-color--white"
+                          >Carimbo do tempo ativado</p>
+                        </div>
+                        <div
+                          class="s1-U__bg-color--body-bg s1-U__border-radius--5px s1-U__align-children--center s1-U__pd8"
+                          v-if="!Package.DetailedService.TimeStemp"
+                        >
+                          <md-icon>
+                            <span class="s1-U__text-color--dark-2">schedule</span>
+                          </md-icon>
+                          <p
+                            class="s1-U__pd--rt8 s1-U__pd--lt8 s1-U__text-color--dark-2"
+                          >Sem carimbo do tempo</p>
+                        </div>
+                      </div>
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                        <p class="md-caption">TIPO</p>
+                        <p class="md-caption">Tipo</p>
                         <p
                           class="s1-U__text-ellipsis"
                         >{{getNameById(ServiceTypes ,Package.DetailedService.ServiceType)}}</p>
                       </div>
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                        <p class="md-caption">FORNECEDOR</p>
+                        <p class="md-caption">Fornecedor</p>
                         <p
                           class="s1-U__text-ellipsis"
                         >{{getNameById(Supplier.Data ,Package.DetailedService.Supplier)}}</p>
                       </div>
-                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                        <p class="md-caption">VIGÊNCIA</p>
-                        <p class="s1-U__text-ellipsis">{{Package.DetailedService.Vigence}} dias</p>
-                      </div>
                       <h3
                         class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
-                      >Custos</h3>
-                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                        <p class="md-caption">CUSTO</p>
-                        <p
-                          class="s1-U__text-ellipsis"
-                        >{{formatMoney(Package.DetailedService.ServiceCost)}}</p>
-                      </div>
-                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                        <p class="md-caption">VALOR</p>
-                        <p
-                          class="s1-U__text-ellipsis"
-                        >{{formatMoney(Package.DetailedService.ServiceS1Value)}}</p>
+                      >Distribuição</h3>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16 s1-U__align-children--top">
+                        <md-icon class="s1-U__mg--rt8" style="transform: translateY(-1px)">
+                          <span class="s1-U__text-color--dark-3">error</span>
+                        </md-icon>
+                        <p>{{Package.DetailedService.Distribution}}</p>
                       </div>
                       <h3
                         class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
                       >Descrição</h3>
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                         <p class>{{Package.DetailedService.Description}}</p>
+                      </div>
+                      <h3
+                        class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
+                      >Contratação</h3>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                        <p class="md-caption">Frequência de ativação</p>
+                        <p
+                          class="s1-U__text-ellipsis"
+                        >{{ getNameById(Frequences, Package.DetailedService.ActivationFrequency)}}</p>
+                      </div>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                        <p class="md-caption">Vigência</p>
+                        <p class="s1-U__text-ellipsis">{{Package.DetailedService.Vigence}} dias</p>
+                      </div>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                        <p class="md-caption">Custo</p>
+                        <p
+                          class="s1-U__text-ellipsis"
+                        >{{formatMoney(Package.DetailedService.ServiceCost)}}</p>
+                      </div>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                        <p class="md-caption">Valor</p>
+                        <p
+                          class="s1-U__text-ellipsis"
+                        >{{formatMoney(Package.DetailedService.ServiceS1Value)}}</p>
+                      </div>
+                      <h3
+                        class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
+                      >Informações requeridas</h3>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                        <p class="md-caption">Titular</p>
+                        <div class="s1-chip-wrapper--left">
+                          <md-chip
+                            v-for="field in getListByProp(Package.DetailedService.Fields, 'Titular', 'AppliedTo')"
+                            :key="field.Id + '-fieldzera-' + field.AppliedTo"
+                          >{{field.Label}}</md-chip>
+                        </div>
+                      </div>
+                      <div
+                        class="s1-U__pd--lt16 s1-U__mg--bt16"
+                        v-if="Package.DetailedService.Rules[1].Value > 0"
+                      >
+                        <p class="md-caption">Beneficiário</p>
+                        <div class="s1-chip-wrapper--left">
+                          <md-chip
+                            v-for="field in getListByProp(Package.DetailedService.Fields, 'Beneficiário', 'AppliedTo')"
+                            :key="field.Id + '-fieldzera-' + field.AppliedTo"
+                          >{{field.Label}}</md-chip>
+                        </div>
+                      </div>
+                      <div
+                        class="s1-U__pd--lt16 s1-U__mg--bt16"
+                        v-if="Package.DetailedService.Rules[2].Value > 0"
+                      >
+                        <p class="md-caption">Dependente</p>
+                        <div class="s1-chip-wrapper--left">
+                          <md-chip
+                            v-for="field in getListByProp(Package.DetailedService.Fields, 'Dependente', 'AppliedTo')"
+                            :key="field.Id + '-fieldzera-' + field.AppliedTo"
+                          >{{field.Label}}</md-chip>
+                        </div>
                       </div>
                     </md-content>
                   </md-card-content>
@@ -1627,6 +1781,9 @@
               <md-icon>arrow_back</md-icon>
             </md-button>
             <div v-if="Package.Form.Id && Package.EditionInterface === true">
+              <p class="md-caption s1-U__text-uppercase">
+                <span>{{getNameById(Package.Data, Package.Form.Id)}}</span>
+              </p>
               <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
                 <span>Edição de pacote</span>
               </h1>
@@ -1689,7 +1846,9 @@
               </div>
             </section>
             <section class="s1-U__mg--bt64">
-              <h3 class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16">Serviços</h3>
+              <h3
+                class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16"
+              >Portifólio de afinidades</h3>
               <div class="s1-U__pd--lt16 s1-U__pd--rt16">
                 <div v-if="Package.Form.Services.length === 0">
                   <p
@@ -1774,14 +1933,14 @@
                 </p>
               </div>
             </section>
-            <md-card-actions class="s1-U__pd16">
-              <md-button
-                class="md-primary md-raised"
-                @click="saveEdited('Package')"
-                :disabled="$v.Package.Form.$invalid"
-              >Salvar</md-button>
-            </md-card-actions>
           </md-card-content>
+          <md-card-actions class="s1-U__pd16 s1-U__border--top1">
+            <md-button
+              class="md-primary md-raised"
+              @click="saveEdited('Package')"
+              :disabled="$v.Package.Form.$invalid"
+            >Salvar</md-button>
+          </md-card-actions>
         </md-card>
         <md-dialog
           class="s1-loc-comp__services-dialog"
@@ -1932,7 +2091,6 @@
                     class="s1-U__border--bottom1 s1-U__align-children--top s1-U__full-width s1-U__justify-content--space-between"
                   >
                     <div class="s1-U__pd16 s1-U__flex-shrink-0 s1-U__width--240px">
-                      <p class="md-caption s1-U__text-uppercase">DETALHES</p>
                       <h2
                         class="md-title s1-U__text-ellipsis"
                       >{{Package.DetailedService.FriendlyName}}</h2>
@@ -1953,42 +2111,119 @@
                       style="overflow: auto;"
                       v-if="Package.DetailedService.Id"
                     >
+                      <div
+                        class="s1-U__pd--lt16 s1-U__mg--bt24 s1-U__align-children--center s1-U__full-width"
+                      >
+                        <div
+                          class="s1-U__bg-color--accent s1-U__border-radius--5px s1-U__align-children--center s1-U__pd8"
+                          v-if="Package.DetailedService.TimeStemp"
+                        >
+                          <md-icon>
+                            <span class="s1-U__text-color--white">schedule</span>
+                          </md-icon>
+                          <p
+                            class="s1-U__pd--rt8 s1-U__pd--lt8 s1-U__text-color--white"
+                          >Carimbo do tempo ativado</p>
+                        </div>
+                        <div
+                          class="s1-U__bg-color--body-bg s1-U__border-radius--5px s1-U__align-children--center s1-U__pd8"
+                          v-if="!Package.DetailedService.TimeStemp"
+                        >
+                          <md-icon>
+                            <span class="s1-U__text-color--dark-2">schedule</span>
+                          </md-icon>
+                          <p
+                            class="s1-U__pd--rt8 s1-U__pd--lt8 s1-U__text-color--dark-2"
+                          >Sem carimbo do tempo</p>
+                        </div>
+                      </div>
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                        <p class="md-caption">TIPO</p>
+                        <p class="md-caption">Tipo</p>
                         <p
                           class="s1-U__text-ellipsis"
                         >{{getNameById(ServiceTypes ,Package.DetailedService.ServiceType)}}</p>
                       </div>
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                        <p class="md-caption">FORNECEDOR</p>
+                        <p class="md-caption">Fornecedor</p>
                         <p
                           class="s1-U__text-ellipsis"
                         >{{getNameById(Supplier.Data ,Package.DetailedService.Supplier)}}</p>
                       </div>
-                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                        <p class="md-caption">VIGÊNCIA</p>
-                        <p class="s1-U__text-ellipsis">{{Package.DetailedService.Vigence}} dias</p>
-                      </div>
                       <h3
                         class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
-                      >Custos</h3>
-                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                        <p class="md-caption">CUSTO</p>
-                        <p
-                          class="s1-U__text-ellipsis"
-                        >{{formatMoney(Package.DetailedService.ServiceCost)}}</p>
-                      </div>
-                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                        <p class="md-caption">VALOR</p>
-                        <p
-                          class="s1-U__text-ellipsis"
-                        >{{formatMoney(Package.DetailedService.ServiceS1Value)}}</p>
+                      >Distribuição</h3>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16 s1-U__align-children--top">
+                        <md-icon class="s1-U__mg--rt8" style="transform: translateY(-1px)">
+                          <span class="s1-U__text-color--dark-3">error</span>
+                        </md-icon>
+                        <p>{{Package.DetailedService.Distribution}}</p>
                       </div>
                       <h3
                         class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
                       >Descrição</h3>
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                         <p class>{{Package.DetailedService.Description}}</p>
+                      </div>
+                      <h3
+                        class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
+                      >Contratação</h3>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                        <p class="md-caption">Frequência de ativação</p>
+                        <p
+                          class="s1-U__text-ellipsis"
+                        >{{ getNameById(Frequences, Package.DetailedService.ActivationFrequency)}}</p>
+                      </div>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                        <p class="md-caption">Vigência</p>
+                        <p class="s1-U__text-ellipsis">{{Package.DetailedService.Vigence}} dias</p>
+                      </div>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                        <p class="md-caption">Custo</p>
+                        <p
+                          class="s1-U__text-ellipsis"
+                        >{{formatMoney(Package.DetailedService.ServiceCost)}}</p>
+                      </div>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                        <p class="md-caption">Valor</p>
+                        <p
+                          class="s1-U__text-ellipsis"
+                        >{{formatMoney(Package.DetailedService.ServiceS1Value)}}</p>
+                      </div>
+                      <h3
+                        class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
+                      >Informações requeridas</h3>
+                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                        <p class="md-caption">Titular</p>
+                        <div class="s1-chip-wrapper--left">
+                          <md-chip
+                            v-for="field in getListByProp(Package.DetailedService.Fields, 'Titular', 'AppliedTo')"
+                            :key="field.Id + '-fieldzera-' + field.AppliedTo"
+                          >{{field.Label}}</md-chip>
+                        </div>
+                      </div>
+                      <div
+                        class="s1-U__pd--lt16 s1-U__mg--bt16"
+                        v-if="Package.DetailedService.Rules[1].Value > 0"
+                      >
+                        <p class="md-caption">Beneficiário</p>
+                        <div class="s1-chip-wrapper--left">
+                          <md-chip
+                            v-for="field in getListByProp(Package.DetailedService.Fields, 'Beneficiário', 'AppliedTo')"
+                            :key="field.Id + '-fieldzera-' + field.AppliedTo"
+                          >{{field.Label}}</md-chip>
+                        </div>
+                      </div>
+                      <div
+                        class="s1-U__pd--lt16 s1-U__mg--bt16"
+                        v-if="Package.DetailedService.Rules[2].Value > 0"
+                      >
+                        <p class="md-caption">Dependente</p>
+                        <div class="s1-chip-wrapper--left">
+                          <md-chip
+                            v-for="field in getListByProp(Package.DetailedService.Fields, 'Dependente', 'AppliedTo')"
+                            :key="field.Id + '-fieldzera-' + field.AppliedTo"
+                          >{{field.Label}}</md-chip>
+                        </div>
                       </div>
                     </md-content>
                   </md-card-content>
@@ -2011,7 +2246,6 @@
               class="s1-U__border--bottom1 s1-U__align-children--top s1-U__full-width s1-U__justify-content--space-between"
             >
               <div class="s1-U__pd16 s1-U__flex-shrink-0 s1-U__width--240px">
-                <p class="md-caption s1-U__text-uppercase">DETALHES</p>
                 <h2 class="md-title s1-U__text-ellipsis">{{Package.DetailedService.FriendlyName}}</h2>
                 <p
                   class="md-subheading s1-U__text-color--dark-2 s1-U__text-ellipsis"
@@ -2030,40 +2264,119 @@
                 style="overflow: auto;"
                 v-if="Package.DetailedService.Id"
               >
+                <div
+                  class="s1-U__pd--lt16 s1-U__mg--bt24 s1-U__align-children--center s1-U__full-width"
+                >
+                  <div
+                    class="s1-U__bg-color--accent s1-U__border-radius--5px s1-U__align-children--center s1-U__pd8"
+                    v-if="Package.DetailedService.TimeStemp"
+                  >
+                    <md-icon>
+                      <span class="s1-U__text-color--white">schedule</span>
+                    </md-icon>
+                    <p
+                      class="s1-U__pd--rt8 s1-U__pd--lt8 s1-U__text-color--white"
+                    >Carimbo do tempo ativado</p>
+                  </div>
+                  <div
+                    class="s1-U__bg-color--body-bg s1-U__border-radius--5px s1-U__align-children--center s1-U__pd8"
+                    v-if="!Package.DetailedService.TimeStemp"
+                  >
+                    <md-icon>
+                      <span class="s1-U__text-color--dark-2">schedule</span>
+                    </md-icon>
+                    <p
+                      class="s1-U__pd--rt8 s1-U__pd--lt8 s1-U__text-color--dark-2"
+                    >Sem carimbo do tempo</p>
+                  </div>
+                </div>
                 <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                  <p class="md-caption">TIPO</p>
+                  <p class="md-caption">Tipo</p>
                   <p
                     class="s1-U__text-ellipsis"
                   >{{getNameById(ServiceTypes ,Package.DetailedService.ServiceType)}}</p>
                 </div>
                 <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                  <p class="md-caption">FORNECEDOR</p>
+                  <p class="md-caption">Fornecedor</p>
                   <p
                     class="s1-U__text-ellipsis"
                   >{{getNameById(Supplier.Data ,Package.DetailedService.Supplier)}}</p>
                 </div>
-                <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                  <p class="md-caption">VIGÊNCIA</p>
-                  <p class="s1-U__text-ellipsis">{{Package.DetailedService.Vigence}} dias</p>
-                </div>
-                <h3 class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary">Custos</h3>
-                <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                  <p class="md-caption">CUSTO</p>
-                  <p
-                    class="s1-U__text-ellipsis"
-                  >{{formatMoney(Package.DetailedService.ServiceCost)}}</p>
-                </div>
-                <div class="s1-U__pd--lt16 s1-U__mg--bt16">
-                  <p class="md-caption">VALOR</p>
-                  <p
-                    class="s1-U__text-ellipsis"
-                  >{{formatMoney(Package.DetailedService.ServiceS1Value)}}</p>
+                <h3
+                  class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
+                >Distribuição</h3>
+                <div class="s1-U__pd--lt16 s1-U__mg--bt16 s1-U__align-children--top">
+                  <md-icon class="s1-U__mg--rt8" style="transform: translateY(-1px)">
+                    <span class="s1-U__text-color--dark-3">error</span>
+                  </md-icon>
+                  <p>{{Package.DetailedService.Distribution}}</p>
                 </div>
                 <h3
                   class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
                 >Descrição</h3>
                 <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                   <p class>{{Package.DetailedService.Description}}</p>
+                </div>
+                <h3
+                  class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
+                >Contratação</h3>
+                <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                  <p class="md-caption">Frequência de ativação</p>
+                  <p
+                    class="s1-U__text-ellipsis"
+                  >{{ getNameById(Frequences, Package.DetailedService.ActivationFrequency)}}</p>
+                </div>
+                <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                  <p class="md-caption">Vigência</p>
+                  <p class="s1-U__text-ellipsis">{{Package.DetailedService.Vigence}} dias</p>
+                </div>
+                <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                  <p class="md-caption">Custo</p>
+                  <p
+                    class="s1-U__text-ellipsis"
+                  >{{formatMoney(Package.DetailedService.ServiceCost)}}</p>
+                </div>
+                <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                  <p class="md-caption">Valor</p>
+                  <p
+                    class="s1-U__text-ellipsis"
+                  >{{formatMoney(Package.DetailedService.ServiceS1Value)}}</p>
+                </div>
+                <h3
+                  class="md-title s1-U__mg--bt16 s1-U__mg--tp32 s1-U__text-color--primary"
+                >Informações requeridas</h3>
+                <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                  <p class="md-caption">Titular</p>
+                  <div class="s1-chip-wrapper--left">
+                    <md-chip
+                      v-for="field in getListByProp(Package.DetailedService.Fields, 'Titular', 'AppliedTo')"
+                      :key="field.Id + '-fieldzera-' + field.AppliedTo"
+                    >{{field.Label}}</md-chip>
+                  </div>
+                </div>
+                <div
+                  class="s1-U__pd--lt16 s1-U__mg--bt16"
+                  v-if="Package.DetailedService.Rules[1].Value > 0"
+                >
+                  <p class="md-caption">Beneficiário</p>
+                  <div class="s1-chip-wrapper--left">
+                    <md-chip
+                      v-for="field in getListByProp(Package.DetailedService.Fields, 'Beneficiário', 'AppliedTo')"
+                      :key="field.Id + '-fieldzera-' + field.AppliedTo"
+                    >{{field.Label}}</md-chip>
+                  </div>
+                </div>
+                <div
+                  class="s1-U__pd--lt16 s1-U__mg--bt16"
+                  v-if="Package.DetailedService.Rules[2].Value > 0"
+                >
+                  <p class="md-caption">Dependente</p>
+                  <div class="s1-chip-wrapper--left">
+                    <md-chip
+                      v-for="field in getListByProp(Package.DetailedService.Fields, 'Dependente', 'AppliedTo')"
+                      :key="field.Id + '-fieldzera-' + field.AppliedTo"
+                    >{{field.Label}}</md-chip>
+                  </div>
                 </div>
               </md-content>
             </md-card-content>
@@ -2135,7 +2448,7 @@
               </div>
             </md-button>
           </div>
-          <md-table v-if="Supplier.Data.length > 0" md-card>
+          <md-table class="s1-U__pd--bt16" v-if="Supplier.Data.length > 0" md-card>
             <md-table-row>
               <md-table-head>Nome</md-table-head>
               <md-table-head>Documento</md-table-head>
@@ -2166,16 +2479,6 @@
                   class="s1-md-bordered"
                   @click="edit('Supplier', supplier.Id, 'Supplier-Name-edit')"
                 >Editar</md-button>
-                <!-- <md-menu md-direction="bottom-end">
-                  <md-button class="md-icon-button squared" md-menu-trigger>
-                    <md-icon>more_vert</md-icon>
-                  </md-button>
-
-                  <md-menu-content>
-                    <md-menu-item @click="setShowSupplierDetail(supplier)">Ver detalhes</md-menu-item>
-                    <md-menu-item @click="edit('Supplier', supplier.Id)">Editar</md-menu-item>
-                  </md-menu-content>
-                </md-menu>-->
               </md-table-cell>
             </md-table-row>
           </md-table>
@@ -2184,7 +2487,7 @@
             <md-button class="md-primary md-raised" @click="create('Supplier', 'Supplier-Name')">
               <div class="s1-U__align-children--center s1-U__pd--rt8 s1-U__pd--lt4">
                 <md-icon class="s1-U__mg--rt4">add</md-icon>
-                <span>Cadastrar fornecedor</span>
+                <span>Fornecedor</span>
               </div>
             </md-button>
           </div>
@@ -2215,7 +2518,7 @@
             </div>
           </div>
           <md-card>
-            <md-content class="md-scrollbar s1-U__pd0 s1-U__pd16" style="overflow: auto">
+            <md-content class="md-scrollbar s1-U__pd16" style="overflow: auto">
               <h3
                 class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp4"
               >Geral</h3>
@@ -2376,7 +2679,7 @@
                 :disabled="$v.Supplier.Form.$invalid"
                 @click="saveCreated('Supplier')"
               >
-                <span class="s1-U__pd--lt8 s1-U__pd--rt8">Cadastrar</span>
+                <span class="s1-U__pd--lt8 s1-U__pd--rt8">Cadastrar fornecedor</span>
               </md-button>
             </div>
           </md-card>
@@ -2401,7 +2704,7 @@
               </md-button>
               <div v-if="Supplier.Form.Id && Supplier.EditionInterface === true">
                 <p class="md-caption s1-U__text-uppercase">
-                  <span>{{getNameById(Supplier.Data, Supplier.Form.Id)}} - {{getPropById(Supplier.Data, Supplier.Form.Id, 'FriendlyName')}}</span>
+                  <span>{{getNameById(Supplier.Data, Supplier.Form.Id)}}</span>
                 </p>
                 <h1 class="md-display-1 s1-U__text-color--dark-2 s1-U__align-children--center">
                   <span>Edição de fornecedor</span>
@@ -2410,7 +2713,7 @@
             </div>
           </div>
           <md-card>
-            <md-content class="md-scrollbar s1-U__pd0 s1-U__pd16" style="overflow: auto">
+            <md-content class="md-scrollbar s1-U__pd16" style="overflow: auto">
               <h3
                 class="md-title s1-U__text-color--primary s1-U__fw--300 s1-U__mg--bt16 s1-U__mg--tp4"
               >Geral</h3>
@@ -2756,17 +3059,17 @@ export default {
           "Sozinho em um pacote ou junto de outros serviços em um pacote",
         Rules: [
           {
-            Appliedto: "Titular",
+            AppliedTo: "Titular",
             Operator: "=",
             Value: "1"
           },
           {
-            Appliedto: "Beneficiário",
+            AppliedTo: "Beneficiário",
             Operator: "=",
             Value: "0"
           },
           {
-            Appliedto: "Dependente",
+            AppliedTo: "Dependente",
             Operator: "=",
             Value: "0"
           }
@@ -2845,17 +3148,17 @@ export default {
           "Sozinho em um pacote ou junto de outros serviços em um pacote",
         Rules: [
           {
-            Appliedto: "Titular",
+            AppliedTo: "Titular",
             Operator: "=",
             Value: "1"
           },
           {
-            Appliedto: "Beneficiário",
+            AppliedTo: "Beneficiário",
             Operator: "=",
             Value: "0"
           },
           {
-            Appliedto: "Dependente",
+            AppliedTo: "Dependente",
             Operator: "=",
             Value: "0"
           }
@@ -2928,17 +3231,17 @@ export default {
           "Sozinho em um pacote ou junto de outros serviços em um pacote",
         Rules: [
           {
-            Appliedto: "Titular",
+            AppliedTo: "Titular",
             Operator: "=",
             Value: "1"
           },
           {
-            Appliedto: "Beneficiário",
+            AppliedTo: "Beneficiário",
             Operator: "=",
             Value: "0"
           },
           {
-            Appliedto: "Dependente",
+            AppliedTo: "Dependente",
             Operator: "=",
             Value: "0"
           }
@@ -3030,17 +3333,17 @@ export default {
           "Sozinho em um pacote ou junto de outros serviços em um pacote",
         Rules: [
           {
-            Appliedto: "Titular",
+            AppliedTo: "Titular",
             Operator: "=",
             Value: "1"
           },
           {
-            Appliedto: "Beneficiário",
+            AppliedTo: "Beneficiário",
             Operator: "=",
             Value: "0"
           },
           {
-            Appliedto: "Dependente",
+            AppliedTo: "Dependente",
             Operator: "=",
             Value: "0"
           }

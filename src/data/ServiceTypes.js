@@ -1,7 +1,7 @@
 export default [
   {
     Id: "0",
-    Name: "Capitalização"
+    Name: "Sorteio Cap."
   },
   {
     Id: "1",

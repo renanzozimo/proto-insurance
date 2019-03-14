@@ -24,17 +24,17 @@ export default [
       "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
-        Appliedto: "Titular",
+        AppliedTo: "Titular",
         Operator: "=",
         Value: "1"
       },
       {
-        Appliedto: "Beneficiário",
+        AppliedTo: "Beneficiário",
         Operator: "=",
         Value: "0"
       },
       {
-        Appliedto: "Dependente",
+        AppliedTo: "Dependente",
         Operator: "=",
         Value: "0"
       }
@@ -109,17 +109,17 @@ export default [
       "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
-        Appliedto: "Titular",
+        AppliedTo: "Titular",
         Operator: "=",
         Value: "1"
       },
       {
-        Appliedto: "Beneficiário",
+        AppliedTo: "Beneficiário",
         Operator: "=",
         Value: "0"
       },
       {
-        Appliedto: "Dependente",
+        AppliedTo: "Dependente",
         Operator: "=",
         Value: "0"
       }
@@ -194,17 +194,17 @@ export default [
       "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
-        Appliedto: "Titular",
+        AppliedTo: "Titular",
         Operator: "=",
         Value: "1"
       },
       {
-        Appliedto: "Beneficiário",
+        AppliedTo: "Beneficiário",
         Operator: "=",
         Value: "0"
       },
       {
-        Appliedto: "Dependente",
+        AppliedTo: "Dependente",
         Operator: "=",
         Value: "0"
       }
@@ -279,17 +279,17 @@ export default [
       "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
-        Appliedto: "Titular",
+        AppliedTo: "Titular",
         Operator: "=",
         Value: "1"
       },
       {
-        Appliedto: "Beneficiário",
+        AppliedTo: "Beneficiário",
         Operator: "=",
         Value: "0"
       },
       {
-        Appliedto: "Dependente",
+        AppliedTo: "Dependente",
         Operator: "=",
         Value: "0"
       }
@@ -364,17 +364,17 @@ export default [
       "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
-        Appliedto: "Titular",
+        AppliedTo: "Titular",
         Operator: "=",
         Value: "1"
       },
       {
-        Appliedto: "Beneficiário",
+        AppliedTo: "Beneficiário",
         Operator: "=",
         Value: "0"
       },
       {
-        Appliedto: "Dependente",
+        AppliedTo: "Dependente",
         Operator: "=",
         Value: "0"
       }
@@ -447,17 +447,17 @@ export default [
       "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
-        Appliedto: "Titular",
+        AppliedTo: "Titular",
         Operator: "=",
         Value: "1"
       },
       {
-        Appliedto: "Beneficiário",
+        AppliedTo: "Beneficiário",
         Operator: "=",
         Value: "0"
       },
       {
-        Appliedto: "Dependente",
+        AppliedTo: "Dependente",
         Operator: "=",
         Value: "0"
       }
@@ -530,17 +530,17 @@ export default [
       "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
-        Appliedto: "Titular",
+        AppliedTo: "Titular",
         Operator: "=",
         Value: "1"
       },
       {
-        Appliedto: "Beneficiário",
+        AppliedTo: "Beneficiário",
         Operator: "=",
         Value: "0"
       },
       {
-        Appliedto: "Dependente",
+        AppliedTo: "Dependente",
         Operator: "=",
         Value: "0"
       }
@@ -613,17 +613,17 @@ export default [
       "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
-        Appliedto: "Titular",
+        AppliedTo: "Titular",
         Operator: "=",
         Value: "1"
       },
       {
-        Appliedto: "Beneficiário",
+        AppliedTo: "Beneficiário",
         Operator: "=",
         Value: "0"
       },
       {
-        Appliedto: "Dependente",
+        AppliedTo: "Dependente",
         Operator: "=",
         Value: "0"
       }
@@ -698,17 +698,17 @@ export default [
       "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
-        Appliedto: "Titular",
+        AppliedTo: "Titular",
         Operator: "=",
         Value: "1"
       },
       {
-        Appliedto: "Beneficiário",
+        AppliedTo: "Beneficiário",
         Operator: "=",
         Value: "0"
       },
       {
-        Appliedto: "Dependente",
+        AppliedTo: "Dependente",
         Operator: "=",
         Value: "0"
       }
@@ -783,17 +783,17 @@ export default [
       "Sozinho em um pacote ou junto de outros serviços em um pacote",
     Rules: [
       {
-        Appliedto: "Titular",
+        AppliedTo: "Titular",
         Operator: "=",
         Value: "1"
       },
       {
-        Appliedto: "Beneficiário",
+        AppliedTo: "Beneficiário",
         Operator: "=",
         Value: "0"
       },
       {
-        Appliedto: "Dependente",
+        AppliedTo: "Dependente",
         Operator: "=",
         Value: "0"
       }
