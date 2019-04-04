@@ -31,16 +31,16 @@
             </h1>
           </div>
           <div
-            class="s1-U__align-children--center s1-U__mg--bt16 s1-U__justify-content--space-between"
+            class="s1-U__align-children--center s1-U__pd--bt20 s1-U__justify-content--space-between"
           >
-            <md-button class="s1-md-bordered s1-U__mg--bt16">
+            <md-button class="s1-md-bordered" @click="Service.ShowFilter = true">
               <div class="s1-U__align-children--center">
                 <md-icon>filter_list</md-icon>
                 <span>filtros</span>
               </div>
             </md-button>
             <md-button
-              class="md-raised md-primary s1-U__mg--bt16"
+              class="md-raised md-primary"
               @click="create('Service', 'Service-Name')"
             >
               <div class="s1-U__align-children--center">
@@ -48,6 +48,70 @@
                 <span>serviço</span>
               </div>
             </md-button>
+          </div>
+          <md-dialog :md-active.sync="Service.ShowFilter">
+            <header class="s1-U__border--bottom1 s1-U__align-children--center s1-U__justify-content--space-between s1-U__pd16 s1-U__flex-shrink-0">
+              <h2 class="md-ditle">Filtros</h2>
+              <md-button class="md-icon-button" @click="Service.ShowFilter = false">
+                <md-icon>close</md-icon>
+              </md-button>
+            </header>
+            <md-dialog-content class="s1-U__pd16 s1-U__pd--tp32 s1-U__width--540px">
+                <div class="s1-U__mg--bt24">
+                  <label class="s1-U__text-color--dark-2" for="">Custo de repasse</label>
+                  <div class="s1-U__align-children--center s1-U__mg--tp8">
+                    <span class="s1-U__mg--rt8">Entre</span>
+                    <md-field class="s1-md-field--w100px s1-U__mg0">
+                      <md-input
+                        class="s1-U__text-align--center"
+                        id="start"
+                        name="start"
+                        type="text"
+                        value="R$ 0,00"
+                      ></md-input>
+                    </md-field>
+                    <span class="s1-U__mg--rt8 s1-U__mg--lt8">e</span>
+                    <md-field class="s1-md-field--w100px s1-U__mg0">
+                      <md-input
+                        class="s1-U__text-align--center"
+                        id="end"
+                        name="end"
+                        type="text"
+                        value="R$ 1530,00"
+                      ></md-input>
+                    </md-field>
+                  </div>
+                </div>
+
+            </md-dialog-content>
+            <md-dialog-actions class="s1-U__pd16 s1-U__flex-shrink-0 s1-U__border--top1">
+              <md-button class="md-raised md-primary" @click="Service.ShowFilter = false">
+                Filtrar
+              </md-button>
+            </md-dialog-actions>
+          </md-dialog>
+          <div class="s1-U__pd--bt16 s1-U__align-children--center s1-U__justify-content--space-between">
+            <div>
+              <div class="s1-U__text-color--dark-2 s1-U__pd--tp16">
+                Resultados de busca por <b>"Sorteio"</b>
+              </div>
+            </div>
+            <div class="s1-U__align-children--center s1-U__flex-shrink-0">
+              <div class="s1-loc__md-field-wrapper s1-U__width--180px">
+                <md-field class="s1-U__mg0">
+                  <md-input
+                    id="buscar"
+                    name="buscar"
+                    type="text"
+                    value="Sorteio"
+                    placeholder="buscar"
+                  ></md-input>
+                  <md-button class="md-icon-button md-dense squared s1-U__mg--lt8" style="margin-bottom: 3px; margin-right: 3px">
+                    <md-icon>search</md-icon>
+                  </md-button>
+                </md-field>
+                </div>
+            </div>
           </div>
           <div class="s1-U__align-children--top">
             <div class="s1-U__flex-shrink-0 s1-U__width--210px s1-U__pd--rt16">
@@ -3131,6 +3195,10 @@ export default {
     Service: {
       moreQty: 3,
       ActiveCategory: "0",
+      ShowFilter: false,
+      Filters: {
+        Forn: ['Jujuca LTDA', 'Sem Mais do Dom Dom TMMMMM']
+      },
       Form: {
         Id: null,
         Name: null,
