@@ -1,8 +1,8 @@
 export default [
   {
     Id: "0",
-    Name: "Sem Prefisio Ltda",
-    FantasyName: "Dona Carochinha",
+    Name: "SEMC Prefisio Ltda",
+    FantasyName: "SPS",
     Document: "120938102938102",
     DocumentType: "CNPJ",
     Phone: "31 3299 9909",

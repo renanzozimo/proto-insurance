@@ -344,7 +344,7 @@
                     </md-select>
                   </md-field>
                 </div>
-                <div class="s1-loc__md-field-wrapper s1-U__width--160px">
+                <!-- <div class="s1-loc__md-field-wrapper s1-U__width--160px">
                   <md-field
                     :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceCost.$dirty && $v.Service.Form.ServiceCost.$invalid}"
                   >
@@ -360,7 +360,7 @@
                     ></md-input>
                     <span class="md-error" v-if="!$v.Service.Form.ServiceCost.required">Obrigatório</span>
                   </md-field>
-                </div>
+                </div> -->
                 <div class="s1-loc__md-field-wrapper s1-U__width--160px">
                   <md-field
                     :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceS1Value.$dirty && $v.Service.Form.ServiceS1Value.$invalid}"
@@ -755,7 +755,7 @@
                     </md-select>
                   </md-field>
                 </div>
-                <div class="s1-loc__md-field-wrapper s1-U__width--160px">
+                <!-- <div class="s1-loc__md-field-wrapper s1-U__width--160px">
                   <md-field
                     :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceCost.$dirty && $v.Service.Form.ServiceCost.$invalid}"
                   >
@@ -771,7 +771,7 @@
                     ></md-input>
                     <span class="md-error" v-if="!$v.Service.Form.ServiceCost.required">Obrigatório</span>
                   </md-field>
-                </div>
+                </div> -->
                 <div class="s1-loc__md-field-wrapper s1-U__width--160px">
                   <md-field
                     :class="{'md-invalid md-field-helper-text': $v.Service.Form.ServiceS1Value.$dirty && $v.Service.Form.ServiceS1Value.$invalid}"
@@ -1090,12 +1090,12 @@
                     <p class="md-caption">Vigência</p>
                     <p class="s1-U__text-ellipsis">{{Service.DetailedService.Vigence}} dias</p>
                   </div>
-                  <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                  <!-- <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                     <p class="md-caption">Custo</p>
                     <p
                       class="s1-U__text-ellipsis"
                     >{{formatMoney(Service.DetailedService.ServiceCost)}}</p>
-                  </div>
+                  </div> -->
                   <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                     <p class="md-caption">Valor</p>
                     <p
@@ -1769,12 +1769,12 @@
                         <p class="md-caption">Vigência</p>
                         <p class="s1-U__text-ellipsis">{{Package.DetailedService.Vigence}} dias</p>
                       </div>
-                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                      <!-- <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                         <p class="md-caption">Custo</p>
                         <p
                           class="s1-U__text-ellipsis"
                         >{{formatMoney(Package.DetailedService.ServiceCost)}}</p>
-                      </div>
+                      </div> -->
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                         <p class="md-caption">Valor</p>
                         <p
@@ -2241,12 +2241,12 @@
                         <p class="md-caption">Vigência</p>
                         <p class="s1-U__text-ellipsis">{{Package.DetailedService.Vigence}} dias</p>
                       </div>
-                      <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                      <!-- <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                         <p class="md-caption">Custo</p>
                         <p
                           class="s1-U__text-ellipsis"
                         >{{formatMoney(Package.DetailedService.ServiceCost)}}</p>
-                      </div>
+                      </div> -->
                       <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                         <p class="md-caption">Valor</p>
                         <p
@@ -2394,12 +2394,12 @@
                   <p class="md-caption">Vigência</p>
                   <p class="s1-U__text-ellipsis">{{Package.DetailedService.Vigence}} dias</p>
                 </div>
-                <div class="s1-U__pd--lt16 s1-U__mg--bt16">
+                <!-- <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                   <p class="md-caption">Custo</p>
                   <p
                     class="s1-U__text-ellipsis"
                   >{{formatMoney(Package.DetailedService.ServiceCost)}}</p>
-                </div>
+                </div> -->
                 <div class="s1-U__pd--lt16 s1-U__mg--bt16">
                   <p class="md-caption">Valor</p>
                   <p
@@ -3870,9 +3870,6 @@ export default {
           required
         },
         ServiceS1Value: {
-          required
-        },
-        ServiceCost: {
           required
         },
         Vigence: {

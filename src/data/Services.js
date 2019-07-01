@@ -263,7 +263,7 @@ export default [
   {
     Id: "3",
     Name: "COD01999910",
-    FriendlyName: "Seguro louco",
+    FriendlyName: "Seguro SS1627",
     Supplier: "2",
     ServiceType: "1",
     CurrencyCode: "BRL",
@@ -348,7 +348,7 @@ export default [
   {
     Id: "4",
     Name: "COD01987",
-    FriendlyName: "Seguro demais",
+    FriendlyName: "Seguro DDTIZ",
     Supplier: "1",
     ServiceType: "1",
     CurrencyCode: "BRL",

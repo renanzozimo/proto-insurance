@@ -1,7 +1,7 @@
 export default [
   {
     Id: "asd8ay9hdsd891h",
-    Name: "Pacote Cabuloso",
+    Name: "Pacote S1 Corp SS",
     Services: ["0"],
     ServicesServiceS1Value: 0.9,
     Price: 9.99,
@@ -21,7 +21,7 @@ export default [
   },
   {
     Id: "asda8ioshda0sdohaoksd",
-    Name: "Pacote Cabuloso 2",
+    Name: "Pacote S1 2",
     Services: ["0", "5"],
     ServicesServiceS1Value: 3.9,
     Price: 19.9,
